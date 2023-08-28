@@ -1,0 +1,17 @@
+/* 로그인 페이지 */
+.signInPage{height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.signInPage h1{max-width: 280px; margin-bottom: 112px;}
+.signInPage h1 img{width: 100%;}
+.signInPage fieldset{font-weight: 500;}
+.signInPage fieldset input{width: 100%;}
+.signInPage fieldset ul{}
+.signInPage fieldset ul li{}
+.signInPage fieldset ul li:not(:last-child){margin-bottom: 16px;}
+.signInPage fieldset ul li input{font-size: 20px; height: 60px; padding-inline: 20px; border: 1px solid var(--colorGray); border-radius: 15px;}
+.signInPage fieldset ul li input.error{border: 1px solid var(--colorError);}
+.signInPage fieldset ul li input.error ~ .valueDelete{display: block;}
+.signInPage fieldset ul li input.error ~ .password{display: none;}
+.signInPage fieldset ul:has(.error) + p{display: block;}
+.signInPage fieldset input[type="submit"]{font-size: 24px; height: 72px; border: none; border-radius: 15px; margin-top: 140px; color: white; background-color: var(--colorPoint);}
+.signInPage fieldset input[type="submit"]:hover{background-color: #380B71;}
+.signInPage fieldset input[type="submit"]:disabled{color: var(--colorGray); background-color: #F7F8FA;}

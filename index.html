@@ -5,10 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0, user-scalable=0">
     <!-- Iphone 모바일 확대 방지  maximum-scale=1.0, user-scalable=0-->
-    <title>Document</title> 
+    <title>DEXULIN</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
-    
+    <div class="signInPage">
+        <h1><img src="images/logo.png" alt="DEXULIN logo"></h1>
+        <form>
+            <fieldset>
+                <ul>
+                    <li>
+                        <input type="text" data-formet="number" name="id" placeholder="아이디를 입력해주세요" maxlength="11" required>
+                        <button class="valueDelete">입력 값 제거</button>
+                    </li>
+                    <li>
+                        <input type="password" class="error" data-formet="password" name="password" placeholder="비밀번호를 입력해주세요" required>
+                        <button class="valueDelete">입력 값 제거</button>
+                        <button class="password">비밀번호 보기 / 감추기</button>
+                    </li>
+                </ul>
+                <p class="errorMessage">아이디 또는 비밀번호가 틀렸어요!</p>
+                <input type="submit" value="로그인" disabled>
+            </fieldset>
+        </form>
+    </div>
 </body>
 </html>

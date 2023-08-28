@@ -1,0 +1,14 @@
+
+form{width: 100%;}
+input{box-sizing: border-box;}
+input::placeholder{color: var(--colorGray);}
+li:has(button){position: relative;}
+li:has(button) > button{display: none; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 24px; aspect-ratio: 1; background-repeat: no-repeat; background-position-x: left; background-position-y: top; background-size: 100%; text-indent: -9999px;}
+li:has(button) > button.active{display: block;}
+li:has(button) > button.password{background-image: url('../images/icon-password.png');}
+li:has(button) > button.valueDelete{background-image: url('../images/icon-delete.png');}
+li:has(button) > button.password.show{background-position-y: -24px;}
+.errorMessage{display: none; font-size: 16px; font-weight: 500; color: var(--colorError); margin-top: 16px;}
+
+/* 로그인 페이지 */
+.signInPage{width: 392px; margin-inline: auto;}
