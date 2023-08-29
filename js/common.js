@@ -2,7 +2,7 @@
 // import * as api from './validation';
 // import "./validation";
 
-export const inputValidationMap = {
+const inputValidationMap = {
     mobile() {
         const regex = /^\d{0,11}$/;
         // return regex.test(value);
@@ -18,7 +18,7 @@ export const inputValidationMap = {
     }
 }
 
-export function inputValidation(type, value){
+function inputValidation(type, value){
     return Object.keys(inputValidationMap).includes(type) && inputValidationMap[type](value);
 }
 
@@ -75,8 +75,7 @@ function inputFuc() {
     })
 
     $('input ~ button.valueDelete').click(function(){
-        $(this).siblings('input').val('');
-        $(this).siblings('input').focus();
+        $(this).siblings('input').val('').focus().removeClass('error');
     })
 
     $('input ~ button.password').click(function(e){
@@ -87,10 +86,14 @@ function inputFuc() {
     })
 
     $('input[type="submit"]').click(function(e){
+        // 임시 아이디, 임시 비밀번호
         const userId = '01012345678'
         const userPW = '1234'
+
         if(data['id'] === userId && data['password'] === userPW) {
+            
         }else {
+            // 정보가 맞지 않을 때
             $('fieldset ul li input').addClass('error');
         }
     })
