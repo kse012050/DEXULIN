@@ -39,6 +39,7 @@ function dataValidation(type, value){
 
 $(document).ready(function(){
     $('input').length && inputFuc();
+    $('.dropBox').length && dropBox();
 });
 
 function inputFuc() {
@@ -91,10 +92,17 @@ function inputFuc() {
         const userPW = '1234'
 
         if(data['id'] === userId && data['password'] === userPW) {
-            
+
         }else {
             // 정보가 맞지 않을 때
             $('fieldset ul li input').addClass('error');
         }
     })
+}
+
+
+function dropBox(){
+    $('.dropBox').click(function(){
+        $(this).find('div').toggleClass('active');
+    });
 }

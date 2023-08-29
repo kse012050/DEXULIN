@@ -11,8 +11,32 @@ li:has(button) > button.password.show{background-position-y: -24px;}
 .errorMessage{display: none; font-size: 16px; font-weight: 500; color: var(--colorError); margin-top: 16px;}
 
 
+/* 버튼 */
+[class^="btn"]{width: 127px; height: 48px; border-radius: 10px; font-size: 20px; font-weight: 500;}
+.btn-basic{border: 1px solid var(--colorGray);}
+.btn-bg{background-color: var(--colorPoint); color: white;}
+[class^="btn"]:disabled{background-color: #E4E4E4; color: white;}
+
+
+/* 페이지 가로 크기 */
+[class$="Page"]{width: var(--contentWidth); margin-inline: auto; padding-block: 60px;}
 /* 로그인 페이지 */
-.signInPage{width: 392px; margin-inline: auto;}
+.signInPage{max-width: 392px;}
+
+/* 페이지 서브 타이틀 */
+[class$="Page"] h2{font-size: 32px; font-weight: 700; line-height: 36px;}
+/* 페이지 서브 타이틀 - 드랍박스 */
+[class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: 60px;}
+[class$="Page"] .titleBox .dropBox{position: relative;}
+[class$="Page"] .titleBox .dropBox > button{font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
+[class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--colorGray); margin-inline: 12px;}
+[class$="Page"] .titleBox .dropBox > button::after{content: ''; width: 36px; aspect-ratio: 1; background: url('../images/icon-more.png') no-repeat center / cover; margin-left: 8px;}
+[class$="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box;}
+[class$="Page"] .titleBox .dropBox div.active{display: block;}
+[class$="Page"] .titleBox .dropBox div button{display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left;}
+[class$="Page"] .titleBox .dropBox div button:not(:last-of-type){border-bottom: 1px solid #E4E4E4;}
+[class$="Page"] .titleBox .dropBox div button:is(.active, :hover){color: var(--colorPoint);}
+
 
 
 /* 해더 */
