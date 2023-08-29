@@ -1,4 +1,5 @@
 :root{
+    --contentWidth: 1192px;
     --colorGray: #C6C6C6;
     --colorPoint: #8423FF;
     --colorError: #FF4B4B;
