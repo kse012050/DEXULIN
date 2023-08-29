@@ -38,8 +38,9 @@ function dataValidation(type, value){
 }
 
 $(document).ready(function(){
-    $('input').length && inputFuc();
+    $('fieldset input').length && inputFuc();
     $('.dropBox').length && dropBox();
+    $('.exercisePage').length && exercisePage();
 });
 
 function inputFuc() {
@@ -71,7 +72,7 @@ function inputFuc() {
         })
     });
 
-    $('input, input ~ button').click(function(e){
+    $('input, input ~ button').not('[type="file"]').click(function(e){
         e.preventDefault();
     })
 
@@ -104,5 +105,74 @@ function inputFuc() {
 function dropBox(){
     $('.dropBox').click(function(){
         $(this).find('div').toggleClass('active');
+    });
+}
+
+
+function exercisePage(){
+    let isUpload = false;
+    $('table tbody tr').on("drop",function(e){
+        e.preventDefault();
+        $('input[type="file"]')[0].files = e.originalEvent.dataTransfer.files
+        fileInfoAdd($('input[type="file"]')[0].files[0])
+    })
+    $('table tbody tr').on("dragover",function(e){
+        e.preventDefault();
+    })
+    
+    $('input[type="file"]').change(function(e){
+        fileInfoAdd($('input[type="file"]')[0].files[0])
+    })
+    
+    const uploadMessage = $('table tbody tr').html();
+    function fileInfoAdd(inputFile){
+        // 파일 사이즈
+        let fileSize = inputFile.size;
+
+        if((inputFile.type.includes('sheet') && fileSize < 524288000)) {
+            isUpload = true
+            $('table tbody tr').removeClass('fail')
+            $('[data-btn="upload"]').attr('disabled',false)
+        }else {
+            isUpload = false
+            $('table tbody tr').addClass('fail')
+            $('[data-btn="upload"]').attr('disabled',true)
+        }
+
+        (fileSize >= 1048576) ?
+            (fileSize = decimal(fileSize / 1048576) + 'MB') :
+            (fileSize >= 1024 ? 
+                (fileSize = decimal(fileSize / 1024) + 'KB') :
+                (fileSize += 'Byte'));
+
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        let month = currentDate.getMonth() + 1;
+        month < 10 && (month = '0' + month);
+        const day = currentDate.getDate();
+        const date = `${year}.${month}.${day}`
+
+        $('table tbody tr').html(`
+            <td><button>파일 제거</button></td>
+            <td>${inputFile.name}</td>
+            <td>${fileSize}</td>
+            <td>${isUpload ? '완료' : '업로드 실패'}</td>
+            <td>${date}</td>
+        `)
+
+        $('table tbody tr td button').click(function(e){
+            $('table tbody tr').html(uploadMessage);
+            $('input[type="file"]').val('')
+        })
+    }
+
+    function decimal(number){
+        return number.toFixed(2);
+    }
+
+    // RE 운동등록 - 업로드 버튼
+    $('button[data-btn="upload"]').click(function(){
+        const files = $('input[type="file"]')[0].files[0];
+        console.log(files);
     });
 }

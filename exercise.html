@@ -43,7 +43,8 @@
 
         <strong>파일첨부</strong>
         <p>500MB 이하의 xlsx 파일만 업로드 할 수 있어요!</p>
-        <button class="btn-basic">파일 선택</button>
+        <label class="btn-basic" for="file">파일 선택</label>
+        <input type="file" id="file">
         <table>
             <thead>
                 <tr>
@@ -60,7 +61,7 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn-bg">등록하기</button>
+        <button class="btn-bg" disabled data-btn="upload">등록하기</button>
     </section>
 </body>
 </html>

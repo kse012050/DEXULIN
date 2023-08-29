@@ -1,7 +1,18 @@
 :root{
     --contentWidth: 1192px;
-    --colorGray: #C6C6C6;
-    --colorPoint: #8423FF;
-    --colorError: #FF4B4B;
     --borderRadius: 15px;
+    --dark-1: #191919;
+    --dark-2: #505050;
+    --dark-3: #767676;
+    --dark-4: #999999;
+    --dark-5: #C6C6C6;
+    --dark-6: #E4E4E4;
+    --dark-7: #F7F8FA;
+    --purple: #8423FF;
+    --purple-dark: #380B71;
+    --purple-lighten: #F0E4FF;
+    --red: #FF4B4B;
+    --red-dark: #8F1616;
+    --red-lighten: #FFE4E4;
+    --iconWidth: 24px;
 }

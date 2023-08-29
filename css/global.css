@@ -1,21 +1,22 @@
 
 form{width: 100%;}
 input{box-sizing: border-box;}
-input::placeholder{color: var(--colorGray);}
+input::placeholder{color: var(--dark-5);}
 li:has(button){position: relative;}
-li:has(button) > button{display: none; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 24px; aspect-ratio: 1; background-repeat: no-repeat; background-position-x: left; background-position-y: top; background-size: 100%; text-indent: -9999px;}
+li:has(button) > button{display: none; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: var(--iconWidth); aspect-ratio: 1; background-repeat: no-repeat; background-position-x: left; background-position-y: top; background-size: 100%; text-indent: -9999px;}
 li:has(button) > button.active{display: block;}
 li:has(button) > button.password{background-image: url('../images/icon-password.png');}
 li:has(button) > button.valueDelete{background-image: url('../images/icon-delete.png');}
-li:has(button) > button.password.show{background-position-y: -24px;}
-.errorMessage{display: none; font-size: 16px; font-weight: 500; color: var(--colorError); margin-top: 16px;}
+li:has(button) > button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
+.errorMessage{display: none; font-size: 16px; font-weight: 500; color: var(--red); margin-top: 16px;}
 
 
 /* 버튼 */
-[class^="btn"]{width: 127px; height: 48px; border-radius: 10px; font-size: 20px; font-weight: 500;}
-.btn-basic{border: 1px solid var(--colorGray);}
-.btn-bg{background-color: var(--colorPoint); color: white;}
-[class^="btn"]:disabled{background-color: #E4E4E4; color: white;}
+[class^="btn"]{display: block; width: 127px; line-height: 48px; border-radius: 10px; font-size: 20px; font-weight: 500; text-align: center; cursor: pointer;}
+.btn-basic{border: 1px solid var(--dark-5);}
+.btn-bg{background-color: var(--purple); color: white;}
+.btn-bg:hover{background-color: var(--purple-dark);}
+[class^="btn"]:disabled{background-color: var(--dark-6); color: white;}
 
 
 /* 페이지 가로 크기 */
@@ -29,27 +30,27 @@ li:has(button) > button.password.show{background-position-y: -24px;}
 [class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: 60px;}
 [class$="Page"] .titleBox .dropBox{position: relative;}
 [class$="Page"] .titleBox .dropBox > button{font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
-[class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--colorGray); margin-inline: 12px;}
+[class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}
 [class$="Page"] .titleBox .dropBox > button::after{content: ''; width: 36px; aspect-ratio: 1; background: url('../images/icon-more.png') no-repeat center / cover; margin-left: 8px;}
 [class$="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box;}
 [class$="Page"] .titleBox .dropBox div.active{display: block;}
 [class$="Page"] .titleBox .dropBox div button{display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left;}
-[class$="Page"] .titleBox .dropBox div button:not(:last-of-type){border-bottom: 1px solid #E4E4E4;}
-[class$="Page"] .titleBox .dropBox div button:is(.active, :hover){color: var(--colorPoint);}
+[class$="Page"] .titleBox .dropBox div button:not(:last-of-type){border-bottom: 1px solid var(--dark-6);}
+[class$="Page"] .titleBox .dropBox div button:is(.active, :hover){color: var(--purple);}
 
 
 
 /* 해더 */
-header{position: sticky; top: 0; border-bottom: 1px solid #E4E4E4; padding-top: 32px;}
+header{position: sticky; top: 0; border-bottom: 1px solid var(--dark-6); padding-top: 32px;}
 header > div{width: var(--contentWidth); margin-inline: auto; display: flex; align-items: center; justify-content: space-between;}
 header > div h1{width: 95px;}
 header > div h1 a img{width: 100%;}
 header :is(nav ul, div div){display: flex; justify-content: center; align-items: center; color: #999;}
 header :is(nav ul li a, div div *){display: block; font-size: 16px; font-weight: 500; line-height: 60px; padding-inline: 12px;}
 header > div nav ul{gap: 20px;}
-header > div nav ul li:is(.active, :hover) a{color: var(--colorPoint);}
+header > div nav ul li:is(.active, :hover) a{color: var(--purple);}
 header > div nav ul li.active a{position: relative;}
-header > div nav ul li.active a::after{content: ''; position: absolute; left: 0; bottom: -1px; width: 100%; height: 3px; background-color: var(--colorPoint);}
+header > div nav ul li.active a::after{content: ''; position: absolute; left: 0; bottom: -1px; width: 100%; height: 3px; background-color: var(--purple);}
 header > div div p{position: relative;}
-header > div div p::after{content: ''; position: absolute; right: -0.5px; top: 50%; transform: translateY(-50%); width: 1px; height: 0.75em; background-color: var(--colorGray);}
-header > div div button{color: var(--colorError);}
+header > div div p::after{content: ''; position: absolute; right: -0.5px; top: 50%; transform: translateY(-50%); width: 1px; height: 0.75em; background-color: var(--dark-5);}
+header > div div button{color: var(--red);}
