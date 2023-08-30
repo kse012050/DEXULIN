@@ -56,14 +56,14 @@
 [class^="member"][class$="Page"] .searchArea div ul li span::after{content: ''; width: 2px; height: 16px; background-color: var(--dark-6); margin-inline: 16px;}
 [class^="member"][class$="Page"] .searchArea div ul li span:first-of-type{font-weight: 500;}
 [class^="member"][class$="Page"] .searchArea div ul li span:not(:first-of-type){font-weight: 400; color: var(--dark-4);}
-[class^="member"][class$="Page"] .boardBox :is(.boardTitle, ol li) > *{flex: 149px;}
+[class^="member"][class$="Page"] .boardBox :is(.boardTitle, ol li) > *{flex: 149;}
 
 
 /* 회원관리 - 신규등록 */
 .memberRegistPage ul{display: flex; justify-content: center; align-items: center; gap: 48px;}
 .memberRegistPage ul li{text-align: center;}
 .memberRegistPage ul li a{width: 300px; height: 406px; padding: 24px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); border-radius: var(--borderRadius); border: 3px solid transparent; box-sizing: border-box;}
-.memberRegistPage ul li a::before{content: ''; display: block; --width: 32px; width: var(--width); aspect-ratio: 1; margin-inline: auto; background-image: url('../images/icon-checkbox.png'); background-repeat: no-repeat; background-position-x: left; background-position-y: var(--width); background-size: 100%; margin-bottom: 12px;}
+.memberRegistPage ul li a::before{content: ''; display: block; --width: 32px; width: var(--width); aspect-ratio: 1; margin-inline: auto; background-image: url('../images/icon-check.png'); background-repeat: no-repeat; background-position-x: left; background-position-y: var(--width); background-size: 100%; margin-bottom: 12px;}
 .memberRegistPage ul li a::after{content: ''; display: block; --height: 204px; width: 206px; height: var(--height); margin-inline: auto; background-image: url('../images/img-regist.png'); background-repeat: no-repeat; background-position-x: left; background-position-y: calc(var(--height) * var(--styleIdx) * -1); background-size: 100%;}
 .memberRegistPage ul li a small{display: block; font-size: 16px; font-weight: 400; line-height: 20px; color: var(--dark-4); margin-bottom: 12px;}
 .memberRegistPage ul li a strong{display: block; font-size: 20px; font-weight: 700; line-height: 24px; margin-bottom: 38px;}
@@ -71,3 +71,15 @@
 .memberRegistPage ul li:hover a::before{background-position-y: 0;}
 .memberRegistPage ul li:active a{border-color: var(--purple-dark);}
 .memberRegistPage ul li:active a::before{background-position-y: calc(var(--width) * -1);}
+
+
+/* 기록 다운로드 */
+.downloadPage{text-align: right;}
+.downloadPage h2{text-align: left;}
+.downloadPage .btn-bg{display: inline-block;}
+
+
+/* 관리자 리스트 */
+.managerPage .btn-basic{margin-bottom: 24px;}
+.managerPage .boardBox :is(.boardTitle, ol li) > *:nth-child(1){width: 88px; flex-shrink: 0;}
+.managerPage .boardBox :is(.boardTitle, ol li) > *:not(:nth-child(1)){flex: 1;}

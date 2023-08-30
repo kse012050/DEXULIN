@@ -28,13 +28,14 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 
 
 /* 버튼 */
-[class^="btn"]{display: block; width: 127px; border-radius: 10px; font-size: 20px; font-weight: 500; text-align: center; cursor: pointer; box-sizing: border-box; background-color: transparent;}
+[class^="btn"]{display: block; font-size: 20px; font-weight: 500; text-align: center; padding-inline: 24px; border-radius: 10px; cursor: pointer; box-sizing: border-box; background-color: transparent;}
 .btn-basic{line-height: 44px; border: 1px solid var(--dark-5);}
-.btn-basic:hover{border-color: var(--dark-2);}
-.btn-basic:active{background-color: var(--hover);}
+.btn-basic:not(:disabled):hover{border-color: var(--dark-2);}
+.btn-basic:not(:disabled):active{background-color: var(--hover);}
+.btn-basic:disabled{color: var(--dark-5);}
 .btn-bg{line-height: 48px; background-color: var(--purple); color: white;}
 .btn-bg:hover{background-color: var(--purple-dark);}
-[class^="btn"]:disabled{background-color: var(--dark-6); color: white;}
+.btn-bg:disabled{background-color: var(--dark-6); color: white;}
 
 
 /* 페이지 가로 크기 */
@@ -43,14 +44,15 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 .signInPage{max-width: 392px;}
 
 /* 페이지 서브 타이틀 */
-[class$="Page"] h2{--marginBottom: 60px; font-size: 32px; font-weight: 700; line-height: 36px;}
-[class$="Page"] > h2{margin-bottom: var(--marginBottom);}
+[class$="Page"]{--titleMarginBottom: 60px;}
+[class$="Page"] h2{ font-size: 32px; font-weight: 700; line-height: 36px;}
+[class$="Page"] > h2{margin-bottom: var(--titleMarginBottom);}
 /* 페이지 서브 타이틀 - 이전 페이지 이동 */
 [class$="Page"] h2.back{display: flex; align-items: center; cursor: pointer;}
 [class$="Page"] h2.back::before{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-back.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 100%; margin-right: 12px;}
 [class$="Page"] h2.back:hover::before{background-position-y: calc(var(--width) * -1);}
 /* 페이지 서브 타이틀 - 드랍박스 */
-[class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: var(--marginBottom);}
+[class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: var(--titleMarginBottom);}
 [class$="Page"] .titleBox .dropBox{position: relative;}
 [class$="Page"] .titleBox .dropBox > button{font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
 [class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}
@@ -70,6 +72,7 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 /* 게시판 */
 .boardBox{font-size: 20px; line-height: 60px; text-align: center;}
 .boardBox :is(.boardTitle, ol li){display: flex;}
+.boardBox :is(.boardTitle, ol li) div input[type="checkbox"]{display: none;}
 .boardBox > :is(.boardTitle, ol li) > *{}
 .boardBox .boardTitle{font-weight: 700; background-color: var(--dark-7); border-width: 1px 0; border-style: solid; border-color: var(--dark-3);}
 .boardBox ol{font-weight: 400; color: var(--dark-2);}
@@ -77,6 +80,10 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 .boardBox ol li:hover{background-color: var(--hover);}
 .boardBox ol li div a{opacity: 0; transition: 0.5s opacity; width: 52px; line-height: 30px; font-size: 16px; background-color: white; border: 1px solid var(--dark-6); border-radius: 30px;}
 .boardBox ol li:hover div a{opacity: 1;}
+.boardBox :is(.boardTitle, ol li) div:has(input[type="checkbox"]){display: flex; justify-content: center; align-items: center;}
+.boardBox :is(.boardTitle, ol li) div input[type="checkbox"] + label{ --width: 24px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-checkbox.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 300%;}
+.boardBox :is(.boardTitle, ol li) div input[type="checkbox"] + label:hover{background-position-y: calc(var(--width) * -1);}
+.boardBox :is(.boardTitle, ol li) div input[type="checkbox"]:checked + label{background-position-x: calc(var(--width) * -1);}
 
 /* 페이저 */
 .pagerBox{--gap: 16px; display: flex; justify-content: center; align-items: center; gap: var(--gap); margin-top: 48px;}
