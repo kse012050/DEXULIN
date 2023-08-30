@@ -31,7 +31,9 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 [class$="Page"] .titleBox .dropBox{position: relative;}
 [class$="Page"] .titleBox .dropBox > button{font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
 [class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}
-[class$="Page"] .titleBox .dropBox > button::after{content: ''; width: 36px; aspect-ratio: 1; background: url('../images/icon-more.png') no-repeat center / cover; margin-left: 8px;}
+[class$="Page"] .titleBox .dropBox > button::after{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-more.png'); background-repeat: no-repeat; background-position-x: left; background-position-y: 0; background-size: 100%; margin-left: 8px;}
+[class$="Page"] .titleBox .dropBox:has( div.active ) button::after,
+[class$="Page"] .titleBox .dropBox button:hover::after{background-position-y: calc(var(--width) * -1);}
 [class$="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box; z-index: 1;}
 [class$="Page"] .titleBox .dropBox div.active{display: block;}
 [class$="Page"] .titleBox .dropBox div :is(button, a){display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left; padding-inline: 16px; box-sizing: border-box;}
@@ -39,6 +41,8 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 [class$="Page"] .titleBox .dropBox div :is(button, a).active{color: var(--purple);}
 [class$="Page"] .titleBox .dropBox div :is(button, a):hover{background-color: var(--hover);}
 
+/* 안내 텍스트 */
+.guideText{font-size: 20px; font-weight: 500; line-height: 76px; color: var(--dark-4); text-align: center; background-color: var(--dark-7); border-radius: var(--borderRadius); margin-bottom: 60px;}
 
 /* 게시판 */
 .boardBox{font-size: 20px; line-height: 60px; text-align: center;}
@@ -66,7 +70,7 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 
 
 /* 해더 */
-header{position: sticky; top: 0; border-bottom: 1px solid var(--dark-6); padding-top: 32px;}
+header{position: sticky; top: 0; border-bottom: 1px solid var(--dark-6); padding-top: 32px; background-color: white; z-index: 100;}
 header > div{width: var(--contentWidth); margin-inline: auto; display: flex; align-items: center; justify-content: space-between;}
 header > div h1{width: 95px;}
 header > div h1 a img{width: 100%;}

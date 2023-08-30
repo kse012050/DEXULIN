@@ -55,6 +55,8 @@ $(document).ready(function(){
     $('fieldset input').length && inputFuc();
     $('.dropBox').length && dropBox();
     $('.exercisePage').length && exercisePage();
+
+    $('[class^="member"][class$="Page"]').length && member();
 });
 
 function inputFuc() {
@@ -101,6 +103,7 @@ function inputFuc() {
             $(this).siblings('input').attr('type', 'password')
     })
 
+    // 로그인 submit
     $('input[type="submit"]').click(function(e){
         // 임시 아이디, 임시 비밀번호
         const userId = '01012345678'
@@ -189,4 +192,39 @@ function exercisePage(){
         const files = $('input[type="file"]')[0].files[0];
         console.log(files);
     });
+}
+
+function member() {
+    const testData = []
+    for(let a = 1; a < 11; a++){
+        const randomType = Math.floor(Math.random() * 2) + 1;
+        const randomGender = Math.floor(Math.random() * 2) + 1;
+        testData.push({
+            id: a,
+            type: randomType % 2 === 0 ? '임상군' : '대조군',
+            name: '김리자',
+            birthday: '2001.1.5',
+            gender: randomGender % 2 === 0 ? '남성' : '여성',
+            subscription: '2001.1.5',
+            startTime: '2001.1.5'
+        })
+    }
+    console.log(testData);
+    let htmlContent = '';
+    testData.forEach(function(data){
+        htmlContent += `
+        <li>
+            <span>${data.id}</span>
+            <span>${data.type}</span>
+            <span>${data.name}</span>
+            <span>${data.birthday}</span>
+            <span>${data.gender}</span>
+            <span>${data.subscription}</span>
+            <span>${data.startTime}</span>
+            <div><a href="">상세</a></div>
+        <tr>
+        `
+    })
+
+    $('.memberPage .boardBox ol').html(htmlContent);
 }
