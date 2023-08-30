@@ -52,14 +52,14 @@ $(document).ready(function(){
     // css index
     $('[data-styleIdx]').length && styleIdx();
 
-    $('fieldset input').length && inputFuc();
+    $('.signInPage fieldset input').length && signInPage();
     $('.dropBox').length && dropBox();
     $('.exercisePage').length && exercisePage();
 
     $('[class^="member"][class$="Page"]').length && member();
 });
 
-function inputFuc() {
+function signInPage() {
     const data = {};
     let dataResult = false;
     $('input').each(function(){
@@ -88,7 +88,7 @@ function inputFuc() {
         })
     });
 
-    $('input, input ~ button').not('[type="file"]').click(function(e){
+    $('input, input ~ button').not('[type="file"], [type="checkbox"], [type="radio"], [type="reset"]').click(function(e){
         e.preventDefault();
     })
 

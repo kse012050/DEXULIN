@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0, user-scalable=0">
+    <!-- Iphone 모바일 확대 방지  maximum-scale=1.0, user-scalable=0-->
+    <title>일반유저 - 신규등록 - 회원관리 - DEXULIN</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/import.css">
+    <script src="js/common.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <h1><a href="exercise.html"><img src="images/logo.png" alt="DEXULIN logo"></a></h1>
+            <nav>
+                <ul>
+                    <li><a href="exercise.html">RE 운동등록</a></li>
+                    <li class="active"><a href="member.html">회원 관리</a></li>
+                    <li><a href="download.html">기록 다운로드</a></li>
+                    <li><a href="manager.html">관리자 리스트</a></li>
+                </ul>
+            </nav>
+            <div>
+                <p>홍길동 님</p>
+                <button>로그아웃</button>
+            </div>
+        </div>
+    </header>
+    
+    <section class="memberRegistUserPage">
+        <h2 class="back">회원 관리</h2>
+        <p class="guideText">일반유저 신규등록 중이에요!</p>
+        <form>
+            <fieldset class="manageForm">
+                <ul>
+                    <li>
+                        <label for="name">이름</label>
+                        <div>
+                            <input type="text" name="name" id="name" placeholder="이름을 입력해주세요.">
+                        </div>
+                        <small>정확하게 입력해주세요!</small>
+                    </li>
+                    <li>
+                        <label for="gender">성별</label>
+                        <div>
+                            <input type="radio" name="gender" id="male" checked>
+                            <label for="male">남성</label>
+                            <input type="radio" name="gender" id="female">
+                            <label for="female">여성</label>
+                        </div>
+                    </li>
+                    <li>
+                        <label for="birthday">생년월일</label>
+                        <div>
+                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" maxlength="8">
+                        </div>
+                        <small>숫자만 입력해주세요! ex 19901210</small>
+                    </li>
+                    <li>
+                        <label for="mobile">휴대폰 번호</label>
+                        <div>
+                            <input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요. ex 01012345678" maxlength="11">
+                        </div>
+                        <small>숫자만 입력해주세요! ex 01099990000</small>
+                    </li>
+                    <li>
+                        <label for="time">가입일</label>
+                        <div>
+                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210">
+                        </div>
+                        <small>숫자만 입력해주세요! ex 19901210</small>
+                    </li>
+                    <li>
+                        <label for="type">배정 그룹</label>
+                        <div>
+                            <input type="radio" name="type" id="clinical" checked>
+                            <label for="clinical">임상군</label>
+                            <input type="radio" name="type" id="contrast">
+                            <label for="contrast">대조군</label>
+                        </div>
+                        <small>정확하게 입력해주세요!</small>
+                    </li>
+                </ul>
+                <div class="finBtn">
+                    <input type="reset" class="btn-basic">
+                    <button class="btn-bg" disabled>등록하기</button>
+                </div>
+            </fieldset>
+        </form>
+    </section>
+</body>
+</html>

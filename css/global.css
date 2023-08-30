@@ -1,6 +1,6 @@
 
 form{width: 100%;}
-input{box-sizing: border-box;}
+input{box-sizing: border-box; outline: none;}
 input::placeholder{color: var(--dark-5);}
 li:has(button){position: relative;}
 li:has(button) > button{display: none; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: var(--iconWidth); aspect-ratio: 1; background-repeat: no-repeat; background-position-x: left; background-position-y: top; background-size: 100%; text-indent: -9999px;}
@@ -10,11 +10,29 @@ li:has(button) > button.valueDelete{background-image: url('../images/icon-delete
 li:has(button) > button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .errorMessage{display: none; font-size: 16px; font-weight: 500; color: var(--red); margin-top: 16px;}
 
+.manageForm{}
+.manageForm ul{display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: 48px;}
+.manageForm ul li{width: 492px; font-size: 20px;}
+.manageForm ul li > label{display: block; font-weight: 700; line-height: 24px; color: var(--dark-4); margin-bottom: 8px;}
+.manageForm ul li div{--height: 52px; display: flex; border-bottom: 1px solid var(--dark-6);}
+.manageForm ul li div input:not(:is([type="radio"], [type="checkbox"])){flex: 1; height: var(--height); font-weight: 500; line-height: 28px; border: none;}
+.manageForm ul li div:has(input:focus){border-color: var(--dark-1);}
+.manageForm ul li div input[type="radio"]{display: none;}
+.manageForm ul li div input[type="radio"] + label{line-height: var(--height); display: flex; align-items: center; cursor: pointer;}
+.manageForm ul li div input[type="radio"] + label::before{--width: 24px; content: ''; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-radio.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 200%; margin-right: 8px;}
+.manageForm ul li div input[type="radio"] + label:hover::before{background-position-y: calc(var(--width) * -1);}
+.manageForm ul li div input[type="radio"]:checked + label::before{background-position-y: calc(var(--width) * -2 );}
+.manageForm ul li div input[type="radio"] + label:not(:last-of-type){margin-right: 40px;}
+.manageForm small{display: none; font-size: 16px; font-weight: 400; line-height: 20px; color: var(--red); margin-top: 8px;}
+.manageForm .finBtn{display: flex; justify-content: flex-end; align-items: center; gap: 16px; margin-top: 48px;}
+
 
 /* 버튼 */
-[class^="btn"]{display: block; width: 127px; line-height: 48px; border-radius: 10px; font-size: 20px; font-weight: 500; text-align: center; cursor: pointer;}
-.btn-basic{border: 1px solid var(--dark-5);}
-.btn-bg{background-color: var(--purple); color: white;}
+[class^="btn"]{display: block; width: 127px; border-radius: 10px; font-size: 20px; font-weight: 500; text-align: center; cursor: pointer; box-sizing: border-box; background-color: transparent;}
+.btn-basic{line-height: 44px; border: 1px solid var(--dark-5);}
+.btn-basic:hover{border-color: var(--dark-2);}
+.btn-basic:active{background-color: var(--hover);}
+.btn-bg{line-height: 48px; background-color: var(--purple); color: white;}
 .btn-bg:hover{background-color: var(--purple-dark);}
 [class^="btn"]:disabled{background-color: var(--dark-6); color: white;}
 
@@ -25,9 +43,14 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 .signInPage{max-width: 392px;}
 
 /* 페이지 서브 타이틀 */
-[class$="Page"] h2{font-size: 32px; font-weight: 700; line-height: 36px;}
+[class$="Page"] h2{--marginBottom: 60px; font-size: 32px; font-weight: 700; line-height: 36px;}
+[class$="Page"] > h2{margin-bottom: var(--marginBottom);}
+/* 페이지 서브 타이틀 - 이전 페이지 이동 */
+[class$="Page"] h2.back{display: flex; align-items: center; cursor: pointer;}
+[class$="Page"] h2.back::before{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-back.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 100%; margin-right: 12px;}
+[class$="Page"] h2.back:hover::before{background-position-y: calc(var(--width) * -1);}
 /* 페이지 서브 타이틀 - 드랍박스 */
-[class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: 60px;}
+[class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: var(--marginBottom);}
 [class$="Page"] .titleBox .dropBox{position: relative;}
 [class$="Page"] .titleBox .dropBox > button{font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
 [class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}

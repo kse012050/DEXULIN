@@ -8,7 +8,7 @@
 .signInPage fieldset ul li{}
 .signInPage fieldset ul li:not(:last-child){margin-bottom: 16px;}
 .signInPage fieldset ul li input{font-size: 20px; height: 60px; padding-inline: 20px; border: 1px solid var(--dark-5); border-radius: 15px;}
-.signInPage fieldset ul li input.error{border: 1px solid var(--colorError);}
+.signInPage fieldset ul li input.error{border: 1px solid var(--red);}
 .signInPage fieldset ul li input.error ~ .valueDelete{display: block;}
 .signInPage fieldset ul li input.error ~ .password{display: none;}
 .signInPage fieldset ul:has(.error) + p{display: block;}
@@ -69,5 +69,5 @@
 .memberRegistPage ul li a strong{display: block; font-size: 20px; font-weight: 700; line-height: 24px; margin-bottom: 38px;}
 .memberRegistPage ul li:hover a{border-color: var(--purple);}
 .memberRegistPage ul li:hover a::before{background-position-y: 0;}
-.memberRegistPage ul li.active a{border-color: var(--purple-dark);}
-.memberRegistPage ul li.active a::before{background-position-y: calc(var(--width) * -1);}
+.memberRegistPage ul li:active a{border-color: var(--purple-dark);}
+.memberRegistPage ul li:active a::before{background-position-y: calc(var(--width) * -1);}
