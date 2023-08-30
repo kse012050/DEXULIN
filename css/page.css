@@ -40,3 +40,11 @@
 .exercisePage table tbody tr td:nth-child(2)::after{content: ''; width: var(--iconWidth); aspect-ratio: 1; background-image: url('../images/icon-upload.png'); background-position-x: left; background-position-y: top; background-size: 100%; margin-left: 8px;}
 .exercisePage table tbody tr.fail td:nth-child(2)::after{background-position-y: calc(var(--iconWidth) * -1);}
 .exercisePage > button:last-of-type{display: block; margin-top: 48px; margin-left: auto;}
+
+
+/* 회원관리 페이지 */
+[class^="member"][class$="Page"] .searchArea{margin-bottom: 40px; position: relative;}
+[class^="member"][class$="Page"] .searchArea input{font-size: 24px; font-weight: 400; width: 100%; height: 68px; padding-inline: 24px 68px; border: 1px solid var(--dark-6); border-radius: var(--borderRadius);}
+[class^="member"][class$="Page"] .searchArea input::placeholder{color: var(--dark-5);}
+[class^="member"][class$="Page"] .searchArea button{position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 36px; aspect-ratio: 1; background: url('../images/icon-search.png') no-repeat center / cover; text-indent: -9999px;}
+[class^="member"][class$="Page"] .boardBox :is(.boardTitle, ol li) > *{flex: 149px;}

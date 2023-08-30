@@ -32,11 +32,36 @@ li:has(button) > button.password.show{background-position-y: calc(var(--iconWidt
 [class$="Page"] .titleBox .dropBox > button{font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
 [class$="Page"] .titleBox .dropBox > button::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}
 [class$="Page"] .titleBox .dropBox > button::after{content: ''; width: 36px; aspect-ratio: 1; background: url('../images/icon-more.png') no-repeat center / cover; margin-left: 8px;}
-[class$="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box;}
+[class$="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box; z-index: 1;}
 [class$="Page"] .titleBox .dropBox div.active{display: block;}
-[class$="Page"] .titleBox .dropBox div button{display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left;}
-[class$="Page"] .titleBox .dropBox div button:not(:last-of-type){border-bottom: 1px solid var(--dark-6);}
-[class$="Page"] .titleBox .dropBox div button:is(.active, :hover){color: var(--purple);}
+[class$="Page"] .titleBox .dropBox div :is(button, a){display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left; padding-inline: 16px; box-sizing: border-box;}
+[class$="Page"] .titleBox .dropBox div :is(button, a):not(:last-of-type){border-bottom: 1px solid var(--dark-6);}
+[class$="Page"] .titleBox .dropBox div :is(button, a).active{color: var(--purple);}
+[class$="Page"] .titleBox .dropBox div :is(button, a):hover{background-color: var(--hover);}
+
+
+/* 게시판 */
+.boardBox{font-size: 20px; line-height: 60px; text-align: center;}
+.boardBox :is(.boardTitle, ol li){display: flex;}
+.boardBox > :is(.boardTitle, ol li) > *{}
+.boardBox .boardTitle{font-weight: 700; background-color: var(--dark-7); border-width: 1px 0; border-style: solid; border-color: var(--dark-3);}
+.boardBox ol{font-weight: 400; color: var(--dark-2);}
+.boardBox ol li{border-bottom: 1px solid var(--dark-6);}
+.boardBox ol li:hover{background-color: var(--hover);}
+.boardBox ol li div a{opacity: 0; transition: 0.5s opacity; width: 52px; line-height: 30px; font-size: 16px; background-color: white; border: 1px solid var(--dark-6); border-radius: 30px;}
+.boardBox ol li:hover div a{opacity: 1;}
+
+/* 페이저 */
+.pagerBox{--gap: 16px; display: flex; justify-content: center; align-items: center; gap: var(--gap); margin-top: 48px;}
+.pagerBox a{--width: 44px; width: var(--width); aspect-ratio: 1;}
+.pagerBox > a{background-image: url('../images/icon-pager.png'); background-position-x: left; background-position-y: calc(var(--width) * var(--styleIdx) * -1); background-size: 300%; text-indent: -9999px;}
+.pagerBox > a.active{background-position-x: calc(var(--width) * -1);}
+.pagerBox > a.active:hover{background-position-x: calc(var(--width) * -2);}
+.pagerBox ol{display: flex; gap: var(--gap);}
+.pagerBox ol li{}
+.pagerBox ol li a{font-size: 16px; font-weight: 500; color: var(--dark-3); border-radius: 5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box;}
+.pagerBox ol li:hover a{border: 1px solid var(--dark-1);}
+.pagerBox ol li.active a{background-color: var(--dark-1); color: white;}
 
 
 

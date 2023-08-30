@@ -1,6 +1,17 @@
 // import validation from "./validation";
 // import * as api from './validation';
 // import "./validation";
+// css index
+function styleIdx(){
+    const selector = $('[data-styleIdx]');
+    selector.each(function(){
+        const attrValue = $(this).attr('data-styleIdx');
+        $(this).find('>' + (attrValue ? attrValue : ' *')).each(function(i){
+            $(this).css('--styleIdx', i);
+        })
+    })
+}
+
 
 const inputValidationMap = {
     mobile() {
@@ -38,6 +49,9 @@ function dataValidation(type, value){
 }
 
 $(document).ready(function(){
+    // css index
+    $('[data-styleIdx]').length && styleIdx();
+
     $('fieldset input').length && inputFuc();
     $('.dropBox').length && dropBox();
     $('.exercisePage').length && exercisePage();
