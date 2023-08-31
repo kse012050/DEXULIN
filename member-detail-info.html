@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0, user-scalable=0">
+    <!-- Iphone 모바일 확대 방지  maximum-scale=1.0, user-scalable=0-->
+    <title>회원정보 - 상세 - 회원 - DEXULIN</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/import.css">
+    <script src="js/common.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <h1><a href="exercise.html"><img src="images/logo.png" alt="DEXULIN logo"></a></h1>
+            <nav>
+                <ul>
+                    <li><a href="exercise.html">RE 운동등록</a></li>
+                    <li class="active"><a href="member.html">회원 관리</a></li>
+                    <li><a href="download.html">기록 다운로드</a></li>
+                    <li><a href="manager.html">관리자 리스트</a></li>
+                </ul>
+            </nav>
+            <div>
+                <p>홍길동 님</p>
+                <button>로그아웃</button>
+            </div>
+        </div>
+    </header>
+    
+    <section class="memberDetailPage">
+        <div class="titleBox">
+            <h2 class="back">김리자 님</h2>
+            <p>임상군</p>
+            <div class="infoBox">
+                <span>남성</span>
+                <span>1999년 11월 24일</span>
+                <span>010-5306-0000</span>
+            </div>
+        </div>
+
+        <ul class="tabArea">
+            <li class="active"><a href="member-detail-info.html">회원정보</a></li>
+            <li><a href="member-detail-workOut.html">운동기록</a></li>
+            <li><a href="member-detail-measure.html">측정기록</a></li>
+        </ul>
+        
+        <form>
+            <fieldset class="manageForm">
+                <ul>
+                    <li>
+                        <label for="name">이름</label>
+                        <div>
+                            <input type="text" name="name" id="name" placeholder="이름을 입력해주세요." value="김리자" disabled>
+                            <button class="valueDelete">입력 값 제거</button>
+                            <button>수정</button>
+                            <button>취소</button>
+                            <button>확인</button>
+                        </div>
+                        <small>정확하게 입력해주세요!</small>
+                    </li>
+                    <li>
+                        <label for="gender">성별</label>
+                        <div>
+                            <input type="radio" name="gender" id="male" checked disabled>
+                            <label for="male">남성</label>
+                            <input type="radio" name="gender" id="female" disabled>
+                            <label for="female">여성</label>
+                        </div>
+                    </li>
+                    <li>
+                        <label for="birthday">생년월일</label>
+                        <div>
+                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" maxlength="8" value="1999.11.24" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 19901210</small>
+                    </li>
+                    <li>
+                        <label for="mobile">휴대폰 번호</label>
+                        <div>
+                            <input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요. ex 01012345678" maxlength="11" value="010-5306-0000" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 01099990000</small>
+                    </li>
+                    <li>
+                        <label for="time">가입일</label>
+                        <div>
+                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 19901210</small>
+                    </li>
+                    <li>
+                        <label for="birthday">임상 시작일</label>
+                        <div>
+                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" maxlength="8" value="1999.11.24" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 19901210</small>
+                    </li>
+                    <li>
+                        <label for="type">배정 그룹</label>
+                        <div>
+                            <input type="radio" name="type" id="clinical" checked disabled>
+                            <label for="clinical">임상군</label>
+                            <input type="radio" name="type" id="contrast" disabled>
+                            <label for="contrast">대조군</label>
+                        </div>
+                    </li>
+                    <li>
+                        <label for="">AE 운동 설정시간 (아침)</label>
+                        <div>
+                            <input type="text" name="" id="" placeholder="숫자만 입력해주세요. ex 1430" maxlength="4" value="09 : 00" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 1430</small>
+                    </li>
+                    <li>
+                        <label for="">RE 운동 설정시간</label>
+                        <div>
+                            <input type="text" name="" id="" placeholder="숫자만 입력해주세요. ex 1430" maxlength="4" value="19 : 00" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 1430</small>
+                    </li>
+                    <li>
+                        <label for="">AE 운동 설정시간 (점심)</label>
+                        <div>
+                            <input type="text" name="" id="" placeholder="숫자만 입력해주세요. ex 1430" maxlength="4" value="12 : 30" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 1430</small>
+                    </li>
+                    <li>
+                        <label for="">공복 혈당 측정시간</label>
+                        <div>
+                            <input type="text" name="" id="" placeholder="숫자만 입력해주세요. ex 1430" maxlength="4" value="07 : 00" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 1430</small>
+                    </li>
+                    <li>
+                        <label for="">AE 운동 설정시간 (저녁)</label>
+                        <div>
+                            <input type="text" name="" id="" placeholder="숫자만 입력해주세요. ex 1430" maxlength="4" value="18 : 30" disabled>
+                        </div>
+                        <small>숫자만 입력해주세요! ex 1430</small>
+                    </li>
+                </ul>
+                <div class="finBtn">
+                    <button class="btn-red">회원삭제</button>
+                </div>
+            </fieldset>
+        </form>
+    </section>
+</body>
+</html>

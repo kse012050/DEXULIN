@@ -44,20 +44,20 @@
 
 
 /* 회원관리 페이지 */
-[class^="member"][class$="Page"] .searchArea{margin-bottom: 40px; position: relative;}
-[class^="member"][class$="Page"] .searchArea input{font-size: 24px; font-weight: 400; width: 100%; height: 68px; padding-inline: 24px 68px; border: 1px solid var(--dark-6); border-radius: var(--borderRadius);}
-[class^="member"][class$="Page"] .searchArea input::placeholder{color: var(--dark-5);}
-[class^="member"][class$="Page"] .searchArea button{position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 36px; aspect-ratio: 1; background: url('../images/icon-search.png') no-repeat center / cover; text-indent: -9999px;}
-[class^="member"][class$="Page"] .searchArea div{position: absolute; top: 100%; left: 0; width: 100%; padding-block: 16px; background-color: white; border-radius: 0 0 var(--borderRadius) var(--borderRadius); box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);}
-[class^="member"][class$="Page"] .searchArea div:not(:has(ul)){display: none;}
-[class^="member"][class$="Page"] .searchArea div ul li{display: flex; align-items: center; padding: 16px 32px; cursor: pointer;}
-[class^="member"][class$="Page"] .searchArea div ul li:hover{background-color: var(--hover);}
-[class^="member"][class$="Page"] .searchArea div ul li::before{content: ''; width: 36px; aspect-ratio: 1; background: url('../images/icon-search.png') no-repeat center / cover; margin-right: 16px;}
-[class^="member"][class$="Page"] .searchArea div ul li span{font-size: 20px; line-height: 24px; display: flex; align-items: center;}
-[class^="member"][class$="Page"] .searchArea div ul li span::after{content: ''; width: 2px; height: 16px; background-color: var(--dark-6); margin-inline: 16px;}
-[class^="member"][class$="Page"] .searchArea div ul li span:first-of-type{font-weight: 500;}
-[class^="member"][class$="Page"] .searchArea div ul li span:not(:first-of-type){font-weight: 400; color: var(--dark-4);}
-[class^="member"][class$="Page"] .boardBox :is(.boardTitle, ol li) > *{flex: 149;}
+.memberPage .searchArea{margin-bottom: 40px; position: relative;}
+.memberPage .searchArea input{font-size: 24px; font-weight: 400; width: 100%; height: 68px; padding-inline: 24px 68px; border: 1px solid var(--dark-6); border-radius: var(--borderRadius);}
+.memberPage .searchArea input::placeholder{color: var(--dark-5);}
+.memberPage .searchArea button{position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 36px; aspect-ratio: 1; background: url('../images/icon-search.png') no-repeat center / cover; text-indent: -9999px;}
+.memberPage .searchArea div{position: absolute; top: 100%; left: 0; width: 100%; padding-block: 16px; background-color: white; border-radius: 0 0 var(--borderRadius) var(--borderRadius); box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);}
+.memberPage .searchArea div:not(:has(ul)){display: none;}
+.memberPage .searchArea div ul li{display: flex; align-items: center; padding: 16px 32px; cursor: pointer;}
+.memberPage .searchArea div ul li:hover{background-color: var(--hover);}
+.memberPage .searchArea div ul li::before{content: ''; width: 36px; aspect-ratio: 1; background: url('../images/icon-search.png') no-repeat center / cover; margin-right: 16px;}
+.memberPage .searchArea div ul li span{font-size: 20px; line-height: 24px; display: flex; align-items: center;}
+.memberPage .searchArea div ul li span::after{content: ''; width: 2px; height: 16px; background-color: var(--dark-6); margin-inline: 16px;}
+.memberPage .searchArea div ul li span:first-of-type{font-weight: 500;}
+.memberPage .searchArea div ul li span:not(:first-of-type){font-weight: 400; color: var(--dark-4);}
+.memberPage .boardBox :is(.boardTitle, ol li) > *{flex: 149;}
 
 
 /* 회원관리 - 신규등록 */
@@ -84,3 +84,26 @@
 .managerPage .btn-basic{margin-bottom: 24px;}
 .managerPage .boardBox :is(.boardTitle, ol li) > *:nth-child(1){width: 88px; flex-shrink: 0;}
 .managerPage .boardBox :is(.boardTitle, ol li) > *:not(:nth-child(1)){flex: 1;}
+
+
+/* 회원 상세 */
+.memberDetailPage .tabArea{display: flex; margin-bottom: 60px;}
+.memberDetailPage .tabArea li{flex: 1;}
+.memberDetailPage .tabArea li a{display: block; font-size: 20px; font-weight: 400; line-height: 64px; text-align: center; background-color: var(--dark-7); border: 1px solid var(--dark-6);}
+.memberDetailPage .tabArea li:hover a{font-weight: 700;}
+.memberDetailPage .tabArea li.active a{background-color: transparent; border: none; border-top: 3px solid var(--purple);}
+/* 운동기록, 측정기록- 회원 상세 */
+.typeArea{display: flex; align-items: center; gap: 12px; margin-bottom: 60px;}
+.typeArea li{font-size: 20px; font-weight: 500; color: var(--dark-2); /* line-height: 42px; */ padding: 11px 19px; background-color: var(--dark-7); border: 1px solid var(--dark-6); border-radius: 30px; cursor: pointer;}
+.typeArea li.active{color: var(--purple); background-color: var(--purple-lighten); border-color: var(--purple);}
+.memberDetailPage .boardBox :is(.boardTitle, ol li) > *{width: 170.28px; flex-shrink: 0;}
+.memberDetailPage .boardBox ol li [data-none]::after{content: '없음'; color: var(--dark-5);}
+.memberDetailPage .boardBox ol li [data-not]{color: var(--red);}
+/* 운동기록 - 회원 상세 */
+.memberDetailPage .boardBox.workOut ol ~ ol{border-top: 2px solid var(--dark-6);}
+.memberDetailPage .boardBox.workOut ol li div:nth-child(2){display: flex; align-items: center;}
+.memberDetailPage .boardBox.workOut ol li div:nth-child(2)::before{content: attr(data-time); height: 28px; aspect-ratio: 1; font-size: 16px; font-weight: 500; color: var(--purple); display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-left: 16px;}
+.memberDetailPage .boardBox.workOut ol li div:nth-child(2)[data-time]::before{background-color: var(--purple-lighten);}
+.memberDetailPage .boardBox.workOut ol li div:nth-child(2) span{width: 110.29px; text-align: center;}
+/* 측정기록- 회원 상세 */
+.memberDetailPage .boardBox.measure :is(.boardTitle, ol li) :last-child{margin-left: auto;}

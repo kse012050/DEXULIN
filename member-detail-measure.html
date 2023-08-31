@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0, user-scalable=0">
+    <!-- Iphone 모바일 확대 방지  maximum-scale=1.0, user-scalable=0-->
+    <title>측정기록 - 상세 - 회원 - DEXULIN</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/import.css">
+    <script src="js/common.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <h1><a href="exercise.html"><img src="images/logo.png" alt="DEXULIN logo"></a></h1>
+            <nav>
+                <ul>
+                    <li><a href="exercise.html">RE 운동등록</a></li>
+                    <li class="active"><a href="member.html">회원 관리</a></li>
+                    <li><a href="download.html">기록 다운로드</a></li>
+                    <li><a href="manager.html">관리자 리스트</a></li>
+                </ul>
+            </nav>
+            <div>
+                <p>홍길동 님</p>
+                <button>로그아웃</button>
+            </div>
+        </div>
+    </header>
+    
+    <section class="memberDetailPage">
+        <div class="titleBox">
+            <h2 class="back">김리자 님</h2>
+            <p>임상군</p>
+            <div class="infoBox">
+                <span>남성</span>
+                <span>1999년 11월 24일</span>
+                <span>010-5306-0000</span>
+            </div>
+        </div>
+
+        <ul class="tabArea">
+            <li><a href="member-detail-info.html">회원정보</a></li>
+            <li><a href="member-detail-workOut.html">운동기록</a></li>
+            <li class="active"><a href="member-detail-measure.html">측정기록</a></li>
+        </ul>
+        
+        <div class="boardBox measure">
+            <div class="boardTitle">
+                <span>측정 날짜</span>
+                <span>측정 시간</span>
+                <span>측정 값</span>
+            </div>
+            <ol>
+                <li>
+                    <span>2023. 01. 27</span>
+                    <span>20:00</span>
+                    <span>80 mg/dL</span>
+                </li>
+            </ol>
+        </div>
+    </section>
+</body>
+</html>
