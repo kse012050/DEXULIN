@@ -94,6 +94,7 @@ function signInPage() {
 
     $('input ~ button.valueDelete').click(function(){
         $(this).siblings('input').val('').focus().removeClass('error');
+        $(this).siblings('.password').removeClass('active');
     })
 
     $('input ~ button.password').click(function(e){

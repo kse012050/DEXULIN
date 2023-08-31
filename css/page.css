@@ -5,12 +5,13 @@
 .signInPage fieldset{font-weight: 500;}
 .signInPage fieldset input{width: 100%;}
 .signInPage fieldset ul{}
-.signInPage fieldset ul li{}
+.signInPage fieldset ul li{position: relative;}
 .signInPage fieldset ul li:not(:last-child){margin-bottom: 16px;}
 .signInPage fieldset ul li input{font-size: 20px; height: 60px; padding-inline: 20px; border: 1px solid var(--dark-5); border-radius: 15px;}
 .signInPage fieldset ul li input.error{border: 1px solid var(--red);}
 .signInPage fieldset ul li input.error ~ .valueDelete{display: block;}
 .signInPage fieldset ul li input.error ~ .password{display: none;}
+.signInPage fieldset ul li button{position: absolute; right: 20px; top: 50%; transform: translateY(-50%);}
 .signInPage fieldset ul:has(.error) + p{display: block;}
 .signInPage fieldset input[type="submit"]{font-size: 24px; height: 72px; border: none; border-radius: 15px; margin-top: 140px; color: white; background-color: var(--purple);}
 .signInPage fieldset input[type="submit"]:hover{background-color: var(--purple-dark);}
@@ -76,7 +77,7 @@
 /* 기록 다운로드 */
 .downloadPage{text-align: right;}
 .downloadPage h2{text-align: left;}
-.downloadPage .btn-bg{display: inline-block;}
+.downloadPage .btn-purple{display: inline-block;}
 
 
 /* 관리자 리스트 */

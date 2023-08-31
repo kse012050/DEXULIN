@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0, user-scalable=0">
     <!-- Iphone 모바일 확대 방지  maximum-scale=1.0, user-scalable=0-->
-    <title>관리자유저 - 신규등록 - 회원관리 - DEXULIN</title>
+    <title>상세 - 관리자 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
     <script src="js/common.js"></script>
@@ -17,9 +17,9 @@
             <nav>
                 <ul>
                     <li><a href="exercise.html">RE 운동등록</a></li>
-                    <li class="active"><a href="member.html">회원 관리</a></li>
+                    <li><a href="member.html">회원 관리</a></li>
                     <li><a href="download.html">기록 다운로드</a></li>
-                    <li><a href="manager.html">관리자 리스트</a></li>
+                    <li class="active"><a href="manager.html">관리자 리스트</a></li>
                 </ul>
             </nav>
             <div>
@@ -29,60 +29,72 @@
         </div>
     </header>
     
-    <section class="memberRegistUserPage">
-        <h2 class="back">관리자 등록</h2>
-        <p class="guideText">관리자 신규등록 중이에요!</p>
+    <section class="managerDetailPage">
+        <div class="titleBox">
+            <h2 class="back">관리자 리스트</h2>
+            <p>관리자</p>
+            <div class="infoBox">
+                <span>남성</span>
+                <span>1999년 11월 24일</span>
+                <span>010-5306-0000</span>
+            </div>
+        </div>
+        
         <form>
             <fieldset class="manageForm">
                 <ul>
                     <li>
                         <label for="name">이름</label>
                         <div>
-                            <input type="text" name="name" id="name" placeholder="이름을 입력해주세요.">
+                            <input type="text" name="name" id="name" placeholder="이름을 입력해주세요." value="김리자" disabled>
+                            <button class="valueDelete">입력 값 제거</button>
+                            <button>수정</button>
+                            <button>취소</button>
+                            <button>확인</button>
                         </div>
                         <small>정확하게 입력해주세요!</small>
                     </li>
                     <li>
                         <label for="gender">성별</label>
                         <div>
-                            <input type="radio" name="gender" id="male" checked>
+                            <input type="radio" name="gender" id="male" checked disabled>
                             <label for="male">남성</label>
-                            <input type="radio" name="gender" id="female">
+                            <input type="radio" name="gender" id="female" disabled>
                             <label for="female">여성</label>
                         </div>
                     </li>
                     <li>
                         <label for="birthday">생년월일</label>
                         <div>
-                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" maxlength="8">
+                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" maxlength="8" value="1999.11.24" disabled>
                         </div>
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
                         <label for="mobile">휴대폰 번호</label>
                         <div>
-                            <input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요. ex 01012345678" maxlength="11">
+                            <input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요. ex 01012345678" maxlength="11" value="010-5306-0000" disabled>
                         </div>
                         <small>숫자만 입력해주세요! ex 01099990000</small>
                     </li>
                     <li>
                         <label for="time">가입일</label>
                         <div>
-                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210">
+                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" disabled>
                         </div>
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
                         <label for="email">이메일</label>
                         <div>
-                            <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요.">
+                            <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요." value="aaaaaa@naver.com" disabled>
                         </div>
                         <small>정확하게 입력해주세요!</small>
                     </li>
                 </ul>
                 <div class="finBtn">
-                    <input type="reset" class="btn-basic">
-                    <button class="btn-purple" disabled>등록하기</button>
+                    <button class="btn-red">회원 비활성화</button>
+                    <button class="btn-purple">회원 활성화하기</button>
                 </div>
             </fieldset>
         </form>
