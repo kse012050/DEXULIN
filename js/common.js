@@ -121,9 +121,19 @@ function signInPage() {
 
 
 function dropBox(){
-    $('.dropBox').click(function(){
+    $('body').click(function(){
+        $('.dropBox div').removeClass('active');
+    })
+    $('.dropBox').click(function(e){
+        e.stopPropagation();
         $(this).find('div').toggleClass('active');
     });
+
+    $('.dropBox div button').click(function(e){
+        $('.dropBox div button').removeClass('active');
+        $(this).addClass('active');
+        $('[data-type]').html($(this).html());
+    })
 }
 
 
@@ -191,41 +201,112 @@ function exercisePage(){
     // RE 운동등록 - 업로드 버튼
     $('button[data-btn="upload"]').click(function(){
         const files = $('input[type="file"]')[0].files[0];
+        const type = $('[data-type]').html();
         console.log(files);
+        console.log(type);
     });
 }
 
 function member() {
     const testData = []
+    const testName = ['이효중', '강윤석', '정현기', '박성준', '이희준','최혜나', '김지나', '성지윤', '김은혜', '이서연', '김성은']
     for(let a = 1; a < 11; a++){
-        const randomType = Math.floor(Math.random() * 2) + 1;
-        const randomGender = Math.floor(Math.random() * 2) + 1;
+        const randomType = Math.floor(Math.random() * 10);
+        const randomName = Math.floor(Math.random() * 10);
+        const randomGender = Math.floor(Math.random() * 10);
         testData.push({
             id: a,
             type: randomType % 2 === 0 ? '임상군' : '대조군',
-            name: '김리자',
+            name: testName[randomName],
             birthday: '2001.1.5',
             gender: randomGender % 2 === 0 ? '남성' : '여성',
             subscription: '2001.1.5',
             startTime: '2001.1.5'
         })
     }
-    console.log(testData);
-    let htmlContent = '';
-    testData.forEach(function(data){
-        htmlContent += `
-        <li>
-            <span>${data.id}</span>
-            <span>${data.type}</span>
-            <span>${data.name}</span>
-            <span>${data.birthday}</span>
-            <span>${data.gender}</span>
-            <span>${data.subscription}</span>
-            <span>${data.startTime}</span>
-            <div><a href="">상세</a></div>
-        <tr>
-        `
+    let testData2 = [...testData]
+
+    if($('.boardBox.clinical').length){testData2 = testData.filter((value)=> value.type === '임상군')}
+    if($('.boardBox.contrast').length){testData2 = testData.filter((value)=> value.type === '대조군')}
+
+    $('body').click(function(){
+        $('.searchArea div').html('');
     })
 
-    $('.memberPage .boardBox ol').html(htmlContent);
+    $('.searchArea').click(function(e){
+        e.stopPropagation();
+    })
+
+    insertData(testData2)
+
+    $('.searchArea input[type="search"]').on('input', function(){
+        const firstName = $(this).val();
+        firstName === '' ? $(this).siblings('button').removeClass('active') : $(this).siblings('button').addClass('active')
+        searchEvent($(this))
+    })
+
+    $('.searchArea input[type="search"]').on('blur',function(){
+        $(this).val() === '' && $(this).siblings('button').removeClass('active');
+    })
+
+    $('.searchArea input[type="search"]').on('focus',function(){
+        if($(this).val()){
+            searchEvent($(this))
+        }
+    })
+
+    $('.searchArea button').click(function(){
+        if($(this).hasClass('active')){
+            $('.searchArea input[type="search"]').val('');
+            $('.searchArea input[type="search"]').focus();
+            $(this).siblings('div').html('')
+        }
+    })
+
+   
+    function insertData(testData2){
+        let htmlContent = '';
+        testData2.forEach(function(data){
+            htmlContent += `
+            <li>
+                <span>${data.id}</span>
+                <span>${data.type}</span>
+                <span>${data.name}</span>
+                <span>${data.birthday}</span>
+                <span>${data.gender}</span>
+                <span>${data.subscription}</span>
+                <span>${data.startTime}</span>
+                <div><a href="member-detail-info.html">상세</a></div>
+            <tr>
+            `
+        })
+    
+        $('.memberPage .boardBox ol').html(htmlContent);
+    }
+
+    function searchEvent(select){
+        const firstName = select.val();
+        const searchData = testData2.filter((value)=> value.name.startsWith(select.val()));
+        let htmlContent = '';
+        searchData.forEach(function(data){
+            htmlContent += `
+            <li data-id="${data.id}">
+                <span><mark>${firstName}</mark>${data.name.replace(firstName, '')}</span>
+                <span>${data.type}</span>
+                <span>${data.gender}</span>
+                <span>${data.birthday}</span>
+                <span>010-0000-0000</span>
+            <tr>
+            `
+        })
+        searchData.length && select.siblings('div').html(`<ul>${htmlContent}</ul>`)
+
+        $('.searchArea div ul li').click(function(){
+            const clickData = testData2.filter((value)=> value.id == $(this).attr('data-id'));
+            insertData(clickData)
+            $('.searchArea div').html('');
+        })
+        
+    }
 }
+

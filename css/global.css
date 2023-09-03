@@ -1,3 +1,6 @@
+mark{color: var(--purple);}
+
+
 
 form{width: 100%;}
 input{box-sizing: border-box; outline: none;}
@@ -41,10 +44,10 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .btn-basic:disabled{color: var(--dark-5);}
 :is(.btn-purple, .btn-red){line-height: 48px; color: white;}
 :is(.btn-purple, .btn-red):disabled{background-color: var(--dark-6); color: white;}
-.btn-purple{background-color: var(--purple)}
-.btn-red{background-color: var(--red)}
-.btn-purple:hover{background-color: var(--purple-dark);}
-.btn-red:hover{background-color: var(--red-dark);}
+.btn-purple:not(:disabled){background-color: var(--purple)}
+.btn-red:not(:disabled){background-color: var(--red)}
+.btn-purple:not(:disabled){background-color: var(--purple-dark);}
+.btn-red:not(:disabled):hover{background-color: var(--red-dark);}
 
 
 /* 페이지 가로 크기 */
