@@ -27,12 +27,12 @@ const inputValidationMap = {
         const regex = /[^a-zA-Z0-9]/g;
         return regex;
     },
-    hangle(value) {
-        const regex = /^[가-힣]*$/;
-        return regex.test(value);
-    },
     number(value) {
         const regex = /^[0-9]+$/;
+        return regex.test(value);
+    },
+    hangle(value) {
+        const regex = /^[가-힣]*$/;
         return regex.test(value);
     },
     mobile(value) {
@@ -41,6 +41,10 @@ const inputValidationMap = {
     },
     date(value) {
         const regex = /^\d{8}$/;
+        return regex.test(value);
+    },
+    email(value){
+        const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         return regex.test(value);
     }
 }
@@ -343,7 +347,7 @@ function manageForm() {
                 data[input.attr('name')] = $(this).val();
             }
         }
-        console.log(data);
+
         input.on('input', function(){
             const value = input.val()
             if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
@@ -362,6 +366,12 @@ function manageForm() {
         })
     });
     
+    $('.valueDelete').click(function(e){
+        e.preventDefault();
+        $(this).parent().removeClass('error');
+        $(this).siblings('input').val('').focus();
+    })
+
     $('input[type="reset"]').click(function(){
         $('[data-btn="fin"').attr('disabled', true)
         $('.popup').removeClass('active');
