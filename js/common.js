@@ -26,6 +26,22 @@ const inputValidationMap = {
     password() {
         const regex = /[^a-zA-Z0-9]/g;
         return regex;
+    },
+    hangle(value) {
+        const regex = /^[가-힣]*$/;
+        return regex.test(value);
+    },
+    number(value) {
+        const regex = /^[0-9]+$/;
+        return regex.test(value);
+    },
+    mobile(value) {
+        const regex = /^\d{11}$/;
+        return regex.test(value);
+    },
+    date(value) {
+        const regex = /^\d{8}$/;
+        return regex.test(value);
     }
 }
 
@@ -57,6 +73,9 @@ $(document).ready(function(){
     $('.exercisePage').length && exercisePage();
 
     $('[class^="member"][class$="Page"]').length && member();
+
+    $('.manageForm').length && manageForm();
+    $('.popup').length && popup();
 });
 
 function signInPage() {
@@ -310,3 +329,58 @@ function member() {
     }
 }
 
+
+function manageForm() {
+    const data = {};
+    $('input').each(function(){
+        const input = $(this);
+        const inputFormet = input.attr('data-formet');
+        if(!!input.attr('required')) {
+            if(input[0].type !== 'radio'){
+                data[input.attr('name')] = '';
+            }
+            if(input[0].type === 'radio' && $(this).is(':checked')) {
+                data[input.attr('name')] = $(this).val();
+            }
+        }
+        console.log(data);
+        input.on('input', function(){
+            const value = input.val()
+            if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
+                $(this).parent().removeClass('error')
+                data[input.attr('name')] = value;
+            } else {
+                $(this).parent().addClass('error');
+                data[input.attr('name')] = '';
+            }
+            input.hasClass('error') && input.removeClass('error');
+
+            const dataResult = Object.entries(data).every(function([key, value]) {
+                return !!value
+            })
+            $('[data-btn="fin"').attr('disabled', !dataResult)
+        })
+    });
+    
+    $('input[type="reset"]').click(function(){
+        $('[data-btn="fin"').attr('disabled', true)
+        $('.popup').removeClass('active');
+    })
+}
+
+
+function popup(){
+    $('[data-popupOpen]').click(function(e){
+        e.preventDefault();
+        const popupName = $(this).attr('data-popupOpen');
+        console.log(popupName);
+        $(`[data-popup="${popupName}"]`).addClass('active');
+    })
+    $('.popup, [data-popupClose]').click(function(e){
+        e.preventDefault();
+        $('.popup').removeClass('active');
+    });
+    $('.popup > div').click(function(e){
+        e.stopPropagation();
+    })
+}

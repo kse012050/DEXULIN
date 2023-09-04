@@ -20,7 +20,7 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .manageForm ul li div{--height: 52px; display: flex; align-items: center; border-bottom: 1px solid var(--dark-6);}
 .manageForm ul li div input:not(:is([type="radio"], [type="checkbox"])){flex: 1; width: 100%; height: var(--height); font-weight: 500; line-height: 28px; border: none;}
 .manageForm ul li div input:not(:is([type="radio"], [type="checkbox"])):disabled{color: var(--dark-4); background-color: transparent;}
-.manageForm ul li div:has(input:not(:disabled):focus){border-color: var(--dark-1);}
+.manageForm ul li div:not(.error):has(input:not(:disabled):focus){border-color: var(--dark-1);}
 .manageForm ul li div input[type="radio"]{display: none;}
 .manageForm ul li div input[type="radio"] + label{line-height: var(--height); display: flex; align-items: center; cursor: pointer;}
 .manageForm ul li div input[type="radio"] + label::before{--width: 24px; content: ''; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-radio.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 200%; margin-right: 8px;}
@@ -32,22 +32,35 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .manageForm ul li div button{flex-shrink: 0;}
 .manageForm ul li div button:not([class]){font-size: 16px; font-weight: 400; width: 54px; height: 32px; border: 1px solid var(--dark-6); border-radius: 30px;}
 .manageForm ul li div button:not(:last-of-type){margin-right: 8px;}
+.manageForm ul li div.error{border-bottom: 1px solid var(--red);}
+.manageForm ul li div.error + small{display: block;}
 .manageForm small{display: none; font-size: 16px; font-weight: 400; line-height: 20px; color: var(--red); margin-top: 8px;}
 .manageForm .finBtn{display: flex; justify-content: flex-end; align-items: center; gap: 16px; margin-top: 48px;}
 
 
+/* 팝업 */
+.popup{display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); justify-content: center; align-items: center; z-index: 101;}
+.popup.active{display: flex;}
+.popup > div{width: 414px; padding: 32px; box-sizing: border-box; background-color: white; border-radius: var(--borderRadius);}
+.popup > div strong{display: block; font-size: 24px; font-weight: 700; line-height: 36px; margin-bottom: 12px;}
+.popup > div p{font-size: 20px; font-weight: 400; line-height: 28px; color: var(--dark-4);}
+.popup > div p:last-of-type{margin-bottom: 64px;}
+.popup > div div{display: flex; justify-content: flex-end; align-items: center; gap: 16px;}
+
+
 /* 버튼 */
-[class^="btn"]{display: inline-block; font-size: 20px; font-weight: 500; text-align: center; padding-inline: 24px; border-radius: 10px; cursor: pointer; box-sizing: border-box; background-color: transparent;}
-.btn-basic{line-height: 44px; border: 1px solid var(--dark-5);}
+[class^="btn"]{display: inline-block; height: 48px; font-size: 20px; font-weight: 500; text-align: center; padding-inline: 24px; border-radius: 10px; cursor: pointer; box-sizing: border-box; background-color: transparent;}
+[class^="btn"]:not(input, button){display: inline-flex; justify-content: center; align-items: center;}
+.btn-basic{/* line-height: 44px; */ border: 1px solid var(--dark-5);}
 .btn-basic:not(:disabled):hover{border-color: var(--dark-2);}
 .btn-basic:not(:disabled):active{background-color: var(--hover);}
 .btn-basic:disabled{color: var(--dark-5);}
-:is(.btn-purple, .btn-red){line-height: 48px; color: white;}
+:is(.btn-purple, .btn-red){/* line-height: 48px; */ color: white;}
 :is(.btn-purple, .btn-red):disabled{background-color: var(--dark-6); color: white;}
-.btn-purple:not(:disabled){background-color: var(--purple)}
-.btn-red:not(:disabled){background-color: var(--red)}
-.btn-purple:not(:disabled){background-color: var(--purple-dark);}
-.btn-red:not(:disabled):hover{background-color: var(--red-dark);}
+.btn-purple:not(:disabled){background-color: var(--purple); border: 1px solid var(--purple);}
+.btn-red:not(:disabled){background-color: var(--red); border: 1px solid var(--red);}
+.btn-purple:not(:disabled):hover{background-color: var(--purple-dark); border: 1px solid var(--purple-dark);}
+.btn-red:not(:disabled):hover{background-color: var(--red-dark); border: 1px solid var(--red-dark);}
 
 
 /* 페이지 가로 크기 */
