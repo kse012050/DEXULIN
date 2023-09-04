@@ -78,7 +78,6 @@
 /* 기록 다운로드 */
 .downloadPage{text-align: right;}
 .downloadPage h2{text-align: left;}
-.downloadPage .btn-purple{display: inline-block;}
 
 
 /* 관리자 리스트 */
@@ -92,7 +91,7 @@
 .memberDetailPage .tabArea li{flex: 1;}
 .memberDetailPage .tabArea li a{display: block; font-size: 20px; font-weight: 400; line-height: 64px; text-align: center; background-color: var(--dark-7); border: 1px solid var(--dark-6);}
 .memberDetailPage .tabArea li:hover a{font-weight: 700;}
-.memberDetailPage .tabArea li.active a{background-color: transparent; border: none; border-top: 3px solid var(--purple);}
+.memberDetailPage .tabArea li.active a{font-weight: 700; background-color: transparent; border: none; border-top: 3px solid var(--purple);}
 /* 운동기록, 측정기록- 회원 상세 */
 .typeArea{display: flex; align-items: center; gap: 12px; margin-bottom: 60px;}
 .typeArea li{font-size: 20px; font-weight: 500; color: var(--dark-2); /* line-height: 42px; */ padding: 11px 19px; background-color: var(--dark-7); border: 1px solid var(--dark-6); border-radius: 30px; cursor: pointer;}

@@ -17,24 +17,29 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .manageForm ul{display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: 48px;}
 .manageForm ul li{width: 492px; font-size: 20px;}
 .manageForm ul li > label{display: block; font-weight: 700; line-height: 24px; color: var(--dark-4); margin-bottom: 8px;}
-.manageForm ul li div{--height: 52px; display: flex; align-items: center; border-bottom: 1px solid var(--dark-6);}
-.manageForm ul li div input:not(:is([type="radio"], [type="checkbox"])){flex: 1; width: 100%; height: var(--height); font-weight: 500; line-height: 28px; border: none;}
-.manageForm ul li div input:not(:is([type="radio"], [type="checkbox"])):disabled{color: var(--dark-4); background-color: transparent;}
-.manageForm ul li div:not(.error):has(input:not(:disabled):focus){border-color: var(--dark-1);}
-.manageForm ul li div input[type="radio"]{display: none;}
-.manageForm ul li div input[type="radio"] + label{line-height: var(--height); display: flex; align-items: center; cursor: pointer;}
-.manageForm ul li div input[type="radio"] + label::before{--width: 24px; content: ''; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-radio.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 200%; margin-right: 8px;}
-.manageForm ul li div input[type="radio"] + label:hover::before{background-position-y: calc(var(--width) * -1);}
-.manageForm ul li div input[type="radio"]:checked + label::before{background-position-y: calc(var(--width) * -2 );}
-.manageForm ul li div input[type="radio"] + label:not(:last-of-type){margin-right: 40px;}
-.manageForm ul li div input[type="radio"]:disabled + label{color: var(--dark-4);}
-.manageForm ul li div input[type="radio"]:disabled + label::before{background-position-x: calc(var(--width) * -1);}
-.manageForm ul li div button{flex-shrink: 0;}
-.manageForm ul li div button:not([class]){font-size: 16px; font-weight: 400; width: 54px; height: 32px; border: 1px solid var(--dark-6); border-radius: 30px;}
-.manageForm ul li div button:not(:last-of-type){margin-right: 8px;}
-.manageForm ul li div.error{border-bottom: 1px solid var(--red);}
-.manageForm ul li div.error + small{display: block;}
-.manageForm ul li div.error .valueDelete{display: block;}
+.manageForm ul li > div{--height: 52px; display: flex; align-items: center; border-bottom: 1px solid var(--dark-6);}
+.manageForm ul li > div input:not(:is([type="radio"], [type="checkbox"])){flex: 1; width: 100%; height: var(--height); font-weight: 500; line-height: 28px; border: none;}
+.manageForm ul li > div input:not(:is([type="radio"], [type="checkbox"])):disabled{color: var(--dark-4); background-color: transparent;}
+.manageForm ul li > div:not(.error):has(input:not(:disabled):focus){border-color: var(--dark-1);}
+.manageForm ul li > div input[type="radio"]{display: none;}
+.manageForm ul li > div input[type="radio"] + label{line-height: var(--height); display: flex; align-items: center; cursor: pointer;}
+.manageForm ul li > div input[type="radio"] + label::before{--width: 24px; content: ''; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-radio.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 200%; margin-right: 8px;}
+.manageForm ul li > div input[type="radio"] + label:hover::before{background-position-y: calc(var(--width) * -1);}
+.manageForm ul li > div input[type="radio"]:checked + label::before{background-position-y: calc(var(--width) * -2 );}
+.manageForm ul li > div input[type="radio"] + label:not(:last-of-type){margin-right: 40px;}
+.manageForm ul li > div input[type="radio"]:disabled + label{color: var(--dark-4);}
+.manageForm ul li > div input[type="radio"]:disabled + label::before{background-position-x: calc(var(--width) * -1);}
+.manageForm ul li > div .buttonArea{display: flex; align-items: center; margin-left: auto; gap: 8px;}
+.manageForm ul li > div .buttonArea button{flex-shrink: 0;}
+.manageForm ul li > div .buttonArea button:not(.valueDelete){font-size: 16px; font-weight: 400; width: 54px; height: 32px; border: 1px solid var(--dark-6); border-radius: 30px;}
+.manageForm ul li > div .buttonArea button:not(.update){display: none;}
+/* .manageForm ul li > div .buttonArea button:not(:last-of-type){margin-right: 8px;} */
+.manageForm ul li > div.error{border-bottom: 1px solid var(--red);}
+.manageForm ul li > div.error + small{display: block;}
+.manageForm ul li > div.error .buttonArea .valueDelete{display: block;}
+.manageForm ul li > div.update .buttonArea button:not(.valueDelete){display: block;}
+.manageForm ul li > div.update .buttonArea button.update{display: none;}
+.manageForm ul li > div.update.error .buttonArea .confirm{display: none;}
 .manageForm small{display: none; font-size: 16px; font-weight: 400; line-height: 20px; color: var(--red); margin-top: 8px;}
 .manageForm .finBtn{display: flex; justify-content: flex-end; align-items: center; gap: 16px; margin-top: 48px;}
 

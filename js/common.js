@@ -43,6 +43,10 @@ const inputValidationMap = {
         const regex = /^\d{8}$/;
         return regex.test(value);
     },
+    time(value) {
+        const regex = /^\d{4}$/;
+        return regex.test(value);
+    },
     email(value){
         const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         return regex.test(value);
@@ -336,18 +340,27 @@ function member() {
 
 function manageForm() {
     const data = {};
+    let currentDate;
     $('input').each(function(){
         const input = $(this);
         const inputFormet = input.attr('data-formet');
         if(!!input.attr('required')) {
             if(input[0].type !== 'radio'){
-                data[input.attr('name')] = '';
+                if(input.attr('data-formet') === 'date') {
+                    data[input.attr('name')] = input.val().replace(/\D/g, "")
+                } else if(input.attr('data-formet') === 'time') {
+                    data[input.attr('name')] = input.val().replace(/\D/g, "")
+                } else {
+                    data[input.attr('name')] = input.val() !== '' ? input.val() : '';
+                }
             }
             if(input[0].type === 'radio' && $(this).is(':checked')) {
                 data[input.attr('name')] = $(this).val();
             }
         }
 
+        currentDate = {...data}
+        console.log(currentDate);
         input.on('input', function(){
             const value = input.val()
             if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
@@ -362,18 +375,73 @@ function manageForm() {
             const dataResult = Object.entries(data).every(function([key, value]) {
                 return !!value
             })
-            $('[data-btn="fin"').attr('disabled', !dataResult)
+            $('[data-btn="fin"]').attr('disabled', !dataResult)
         })
     });
     
     $('.valueDelete').click(function(e){
         e.preventDefault();
-        $(this).parent().removeClass('error');
-        $(this).siblings('input').val('').focus();
+        $(this).parent().parent().removeClass('error');
+        $(this).parent().siblings('input').val('').focus();
+    })
+    
+    $('.update').click(function(e){
+        e.preventDefault();
+        const div = $(this).parent().parent();
+        const input = $(this).parent().siblings('input');
+        div.addClass('update');
+        input.attr('disabled', false).focus();
+        if(input.attr('data-formet') === 'date') {
+            input.val(input.val().replace(/\D/g, ""))
+        }
+        if(input.attr('data-formet') === 'time') {
+            input.val(input.val().replace(/\D/g, ""))
+        }
+    })
+    
+    $('.cancel').click(function(e){
+        e.preventDefault();
+        const input = $(this).parent().siblings('input');
+        const div = $(this).parent().parent();
+        input.attr('disabled', true)
+        div.removeClass('error').removeClass('update')
+        if(input[0].type === 'radio'){
+            input.prop("checked", false);
+            input.each(function(){
+                console.log($(this).attr('id') === currentDate[input.attr('name')]);
+                $(this).attr('id') === currentDate[input.attr('name')] && $(this).prop("checked", true);
+            })
+        }
+        if(input.attr('data-formet') === 'date') {
+            input.val(currentDate[input.attr('name')].replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3"));
+            return
+        }
+        if(input.attr('data-formet') === 'time') {
+            input.val(currentDate[input.attr('name')].replace(/(\d{2})(\d{2})/, "$1 : $2"));
+            return
+        }
+        input.val(currentDate[input.attr('name')])
+    })
+    
+    $('.confirm').click(function(e){
+        e.preventDefault();
+        const div = $(this).parent().parent();
+        const input = $(this).parent().siblings('input');
+        currentDate[input.attr('name')] = input.val();
+        div.removeClass('error').removeClass('update')
+        input.attr('disabled', true)
+        if(input.attr('data-formet') === 'date') {
+            input.val(input.val().replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3"));
+            return;
+        }
+        if(input.attr('data-formet') === 'time') {
+            input.val(input.val().replace(/(\d{2})(\d{2})/, "$1 : $2"));
+            return
+        }
     })
 
     $('input[type="reset"]').click(function(){
-        $('[data-btn="fin"').attr('disabled', true)
+        $('[data-btn="fin"]').attr('disabled', true)
         $('.popup').removeClass('active');
     })
 }
