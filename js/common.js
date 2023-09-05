@@ -138,7 +138,7 @@ function signInPage() {
         const userPW = '1234'
 
         if(data['id'] === userId && data['password'] === userPW) {
-
+            location.href = 'exercise.html'
         }else {
             // 정보가 맞지 않을 때
             $('fieldset ul li input').addClass('error');
