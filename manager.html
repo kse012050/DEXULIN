@@ -24,14 +24,26 @@
             </nav>
             <div>
                 <p>홍길동 님</p>
-                <button>로그아웃</button>
+                <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
     </header>
     
+    <div class="popup" data-popup="logout" data-popupClose>
+        <div>
+            <strong>로그아웃 하시겠어요?</strong>
+            <p>다음에 또 만나요!</p>
+            <div>
+                <button class="btn-basic" data-popupClose>취소</button>
+                <button class="btn-red">로그아웃</button>
+            </div>
+        </div>
+    </div>
+
+    
     <section class="managerPage">
         <h2>관리자 리스트</h2>
-        <button class="btn-basic" disabled>선택 비활성화</button>
+        <button class="btn-basic" data-popupOpen="disabled" disabled>선택 비활성화</button>
         <div class="boardBox">
             <div class="boardTitle">
                 <div>
@@ -55,7 +67,7 @@
                     <span>fslfjls@naver.com</span>
                     <span>010-2314-1254</span>
                     <div>
-                        <a href="">상세</a>
+                        <a href="manager-detail.html">상세</a>
                     </div>
                 </li>
                 <li>
@@ -68,7 +80,7 @@
                     <span>fslfjls@naver.com</span>
                     <span>010-2314-1254</span>
                     <div>
-                        <a href="">상세</a>
+                        <a href="manager-detail.html">상세</a>
                     </div>
                 </li>
                 <li>
@@ -81,7 +93,7 @@
                     <span>fslfjls@naver.com</span>
                     <span>010-2314-1254</span>
                     <div>
-                        <a href="">상세</a>
+                        <a href="manager-detail.html">상세</a>
                     </div>
                 </li>
                 <li>
@@ -94,7 +106,7 @@
                     <span>fslfjls@naver.com</span>
                     <span>010-2314-1254</span>
                     <div>
-                        <a href="">상세</a>
+                        <a href="manager-detail.html">상세</a>
                     </div>
                 </li>
                 <li>
@@ -107,7 +119,7 @@
                     <span>fslfjls@naver.com</span>
                     <span>010-2314-1254</span>
                     <div>
-                        <a href="">상세</a>
+                        <a href="manager-detail.html">상세</a>
                     </div>
                 </li>
             </ol>
@@ -125,6 +137,19 @@
             </ol>
             <a href="" class="active">뒷 페이지 이동</a>
             <a href="">맨 뒷 페이지 이동</a>
+        </div>
+
+        
+        <div class="popup" data-popup="disabled" data-popupClose>
+            <div>
+                <strong>회원을 비활성화 하시겠어요?</strong>
+                <p>총 3명의 회원을 선택했어요.</p>
+                <p>언제든 다시 활성화 할 수 있어요!</p>
+                <div>
+                    <button class="btn-basic" data-popupClose>취소</button>
+                    <button class="btn-red">비활성화하기</button>
+                </div>
+            </div>
         </div>
     </section>
 </body>

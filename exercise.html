@@ -24,10 +24,21 @@
             </nav>
             <div>
                 <p>홍길동 님</p>
-                <button>로그아웃</button>
+                <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
     </header>
+    
+    <div class="popup" data-popup="logout" data-popupClose>
+        <div>
+            <strong>로그아웃 하시겠어요?</strong>
+            <p>다음에 또 만나요!</p>
+            <div>
+                <button class="btn-basic" data-popupClose>취소</button>
+                <button class="btn-red">로그아웃</button>
+            </div>
+        </div>
+    </div>
 
     <section class="exercisePage">
         <div class="titleBox">
@@ -61,7 +72,27 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn-purple" disabled data-btn="upload">등록하기</button>
+        <button class="btn-purple" disabled data-popupOpen="upload">등록하기</button>
+        <div class="popup" data-popup="delete" data-popupClose>
+            <div>
+                <strong>파일을 삭제하시겠어요?</strong>
+                <p>파일 삭제 시 복구가 어려워요!</p>
+                <div>
+                    <button class="btn-basic" data-popupClose>취소</button>
+                    <button class="btn-red">삭제하기</button>
+                </div>
+            </div>
+        </div>
+        <div class="popup" data-popup="upload" data-popupClose>
+            <div>
+                <strong>회원을 활성화 하시겠어요?</strong>
+                <p>언제든 다시 비활성화 할 수 있어요!</p>
+                <div>
+                    <button class="btn-basic" data-popupClose>취소</button>
+                    <button class="btn-purple" data-btn="upload">활성화하기</button>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 </html>

@@ -81,7 +81,7 @@
 
 
 /* 관리자 리스트 */
-.managerPage .btn-basic{margin-bottom: 24px;}
+.managerPage > .btn-basic{margin-bottom: 24px;}
 .managerPage .boardBox :is(.boardTitle, ol li) > *:nth-child(1){width: 88px; flex-shrink: 0;}
 .managerPage .boardBox :is(.boardTitle, ol li) > *:not(:nth-child(1)){flex: 1;}
 

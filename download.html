@@ -24,10 +24,22 @@
             </nav>
             <div>
                 <p>홍길동 님</p>
-                <button>로그아웃</button>
+                <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
     </header>
+    
+    <div class="popup" data-popup="logout" data-popupClose>
+        <div>
+            <strong>로그아웃 하시겠어요?</strong>
+            <p>다음에 또 만나요!</p>
+            <div>
+                <button class="btn-basic" data-popupClose>취소</button>
+                <button class="btn-red">로그아웃</button>
+            </div>
+        </div>
+    </div>
+
     
     <section class="downloadPage">
         <h2>기록 다운로드</h2>

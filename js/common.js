@@ -187,11 +187,11 @@ function exercisePage(){
         if((inputFile.type.includes('sheet') && fileSize < 524288000)) {
             isUpload = true
             $('table tbody tr').removeClass('fail')
-            $('[data-btn="upload"]').attr('disabled',false)
+            $('.exercisePage > [data-popupOpen="upload"]').attr('disabled',false)
         }else {
             isUpload = false
             $('table tbody tr').addClass('fail')
-            $('[data-btn="upload"]').attr('disabled',true)
+            $('.exercisePage > [data-popupOpen="upload"]').attr('disabled',true)
         }
 
         (fileSize >= 1048576) ?
@@ -208,17 +208,18 @@ function exercisePage(){
         const date = `${year}.${month}.${day}`
 
         $('table tbody tr').html(`
-            <td><button>파일 제거</button></td>
+            <td><button data-popupOpen="delete">파일 제거</button></td>
             <td>${inputFile.name}</td>
             <td>${fileSize}</td>
             <td>${isUpload ? '완료' : '업로드 실패'}</td>
             <td>${date}</td>
         `)
 
-        $('table tbody tr td button').click(function(e){
-            $('table tbody tr').html(uploadMessage);
-            $('input[type="file"]').val('')
-        })
+        popup();
+        // $('table tbody tr td button').click(function(e){
+        //     $('table tbody tr').html(uploadMessage);
+        //     $('input[type="file"]').val('')
+        // })
     }
 
     function decimal(number){
@@ -360,7 +361,7 @@ function manageForm() {
         }
 
         currentDate = {...data}
-        console.log(currentDate);
+
         input.on('input', function(){
             const value = input.val()
             if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
@@ -444,6 +445,14 @@ function manageForm() {
         $('[data-btn="fin"]').attr('disabled', true)
         $('.popup').removeClass('active');
     })
+
+    $('.back').click(function(){
+        !$(this).attr('data-popupOpen') && history.go(-1);
+        // 값 비교
+        /* const result = Object.entries(data).every(function([key, value]) {
+            return value === currentDate[key]
+        }) */
+    })
 }
 
 
@@ -451,7 +460,6 @@ function popup(){
     $('[data-popupOpen]').click(function(e){
         e.preventDefault();
         const popupName = $(this).attr('data-popupOpen');
-        console.log(popupName);
         $(`[data-popup="${popupName}"]`).addClass('active');
     })
     $('.popup, [data-popupClose]').click(function(e){

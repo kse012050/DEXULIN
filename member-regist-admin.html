@@ -24,13 +24,37 @@
             </nav>
             <div>
                 <p>홍길동 님</p>
-                <button>로그아웃</button>
+                <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
     </header>
     
+    <div class="popup" data-popup="logout" data-popupClose>
+        <div>
+            <strong>로그아웃 하시겠어요?</strong>
+            <p>다음에 또 만나요!</p>
+            <div>
+                <button class="btn-basic" data-popupClose>취소</button>
+                <button class="btn-red">로그아웃</button>
+            </div>
+        </div>
+    </div>
+
+    
     <section class="memberRegistUserPage">
-        <h2 class="back">관리자 등록</h2>
+        <h2 class="back" data-popupOpen="back">관리자 등록</h2>
+
+        <div class="popup" data-popup="back" data-popupClose>
+            <div>
+                <strong>등록이 완료되지 않았어요!</strong>
+                <p>등록을 하지 않은 채 페이지를 이동하면, 입력중이던 내용이 사라져요!</p>
+                <div>
+                    <button class="btn-basic" data-popupClose>취소</button>
+                    <button class="btn-red back">등록하지 않고 나가기</button>
+                </div>
+            </div>
+        </div>
+        
         <p class="guideText">관리자 신규등록 중이에요!</p>
         <form>
             <fieldset class="manageForm">

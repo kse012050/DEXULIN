@@ -24,10 +24,22 @@
             </nav>
             <div>
                 <p>홍길동 님</p>
-                <button>로그아웃</button>
+                <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
     </header>
+    
+    <div class="popup" data-popup="logout" data-popupClose>
+        <div>
+            <strong>로그아웃 하시겠어요?</strong>
+            <p>다음에 또 만나요!</p>
+            <div>
+                <button class="btn-basic" data-popupClose>취소</button>
+                <button class="btn-red">로그아웃</button>
+            </div>
+        </div>
+    </div>
+
     
     <section class="managerDetailPage">
         <div class="titleBox">
@@ -46,55 +58,106 @@
                     <li>
                         <label for="name">이름</label>
                         <div>
-                            <input type="text" name="name" id="name" placeholder="이름을 입력해주세요." value="김리자" disabled>
-                            <button class="valueDelete">입력 값 제거</button>
-                            <button>수정</button>
-                            <button>취소</button>
-                            <button>확인</button>
+                            <input type="text" name="name" id="name" data-formet="hangle" value="김리자" placeholder="이름을 입력해주세요." required disabled>
+                            <div class="buttonArea">
+                                <button class="valueDelete">입력 값 제거</button>
+                                <button class="update">수정</button>
+                                <button class="cancel">취소</button>
+                                <button class="confirm">확인</button>
+                            </div>
                         </div>
                         <small>정확하게 입력해주세요!</small>
                     </li>
                     <li>
                         <label for="gender">성별</label>
                         <div>
-                            <input type="radio" name="gender" id="male" checked disabled>
+                            <input type="radio" name="gender" id="male" value="male" checked required disabled>
                             <label for="male">남성</label>
-                            <input type="radio" name="gender" id="female" disabled>
+                            <input type="radio" name="gender" id="female" value="female" required disabled>
                             <label for="female">여성</label>
+                            <div class="buttonArea">
+                                <button class="update">수정</button>
+                                <button class="cancel">취소</button>
+                                <button class="confirm">확인</button>
+                            </div>
                         </div>
                     </li>
                     <li>
                         <label for="birthday">생년월일</label>
                         <div>
-                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" maxlength="8" value="1999.11.24" disabled>
+                            <input type="text" name="birthday" id="birthday" placeholder="숫자만 입력해주세요. ex 19901210" value="1999.11.24" data-formet="date" minlength="8" maxlength="8" required disabled>
+                            <div class="buttonArea">
+                                <button class="valueDelete">입력 값 제거</button>
+                                <button class="update">수정</button>
+                                <button class="cancel">취소</button>
+                                <button class="confirm">확인</button>
+                            </div>
                         </div>
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
                         <label for="mobile">휴대폰 번호</label>
                         <div>
-                            <input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요. ex 01012345678" maxlength="11" value="010-5306-0000" disabled>
+                            <input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요. ex 01012345678" value="01053060000" data-formet="mobile" minlength="10" maxlength="11" required  disabled>
+                            <div class="buttonArea">
+                                <button class="valueDelete">입력 값 제거</button>
+                                <button class="update">수정</button>
+                                <button class="cancel">취소</button>
+                                <button class="confirm">확인</button>
+                            </div>
                         </div>
                         <small>숫자만 입력해주세요! ex 01099990000</small>
                     </li>
                     <li>
-                        <label for="time">가입일</label>
+                        <label for="joinDate">가입일</label>
                         <div>
-                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" disabled>
+                            <input type="text" name="joinDate" id="joinDate" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" data-formet="date" minlength="8" maxlength="8" required disabled>
+                            <div class="buttonArea">
+                                <button class="valueDelete">입력 값 제거</button>
+                                <button class="update">수정</button>
+                                <button class="cancel">취소</button>
+                                <button class="confirm">확인</button>
+                            </div>
                         </div>
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
                         <label for="email">이메일</label>
                         <div>
-                            <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요." value="aaaaaa@naver.com" disabled>
+                            <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요." value="aaaaaa@naver.com" data-formet="email" required disabled>
+                            <div class="buttonArea">
+                                <button class="valueDelete">입력 값 제거</button>
+                                <button class="update">수정</button>
+                                <button class="cancel">취소</button>
+                                <button class="confirm">확인</button>
+                            </div>
                         </div>
                         <small>정확하게 입력해주세요!</small>
                     </li>
                 </ul>
                 <div class="finBtn">
-                    <button class="btn-red">회원 비활성화</button>
-                    <button class="btn-purple">회원 활성화하기</button>
+                    <button class="btn-red" data-popupOpen="disabled">회원 비활성화</button>
+                    <button class="btn-purple" data-popupOpen="active">회원 활성화하기</button>
+                </div>
+                <div class="popup" data-popup="disabled" data-popupClose>
+                    <div>
+                        <strong>회원을 비활성화 하시겠어요?</strong>
+                        <p>언제든 다시 활성화 할 수 있어요!</p>
+                        <div>
+                            <button class="btn-basic" data-popupClose>취소</button>
+                            <button class="btn-red">비활성화하기</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup" data-popup="active" data-popupClose>
+                    <div>
+                        <strong>회원을 활성화 하시겠어요?</strong>
+                        <p>언제든 다시 비활성화 할 수 있어요!</p>
+                        <div>
+                            <button class="btn-basic" data-popupClose>취소</button>
+                            <button class="btn-purple">활성화하기</button>
+                        </div>
+                    </div>
                 </div>
             </fieldset>
         </form>
