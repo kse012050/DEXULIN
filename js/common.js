@@ -81,6 +81,7 @@ $(document).ready(function(){
     $('.exercisePage').length && exercisePage();
 
     $('[class^="member"][class$="Page"]').length && member();
+    $('[class^="manager"][class$="Page"]').length && manager();
 
     $('.manageForm').length && manageForm();
     $('.popup').length && popup();
@@ -173,7 +174,6 @@ function dropBox(){
     })
 }
 
-
 function exercisePage(){
     let isUpload = false;
     $('table tbody tr').on("drop",function(e){
@@ -246,27 +246,6 @@ function exercisePage(){
 }
 
 function member() {
-    const testData = []
-    const testName = ['이효중', '강윤석', '정현기', '박성준', '이희준','최혜나', '김지나', '성지윤', '김은혜', '이서연', '김성은']
-    for(let a = 1; a < 11; a++){
-        const randomType = Math.floor(Math.random() * 10);
-        const randomName = Math.floor(Math.random() * 10);
-        const randomGender = Math.floor(Math.random() * 10);
-        testData.push({
-            id: a,
-            type: randomType % 2 === 0 ? '임상군' : '대조군',
-            name: testName[randomName],
-            birthday: '2001.1.5',
-            gender: randomGender % 2 === 0 ? '남성' : '여성',
-            subscription: '2001.1.5',
-            startTime: '2001.1.5'
-        })
-    }
-    let testData2 = [...testData]
-
-    if($('.boardBox.clinical').length){testData2 = testData.filter((value)=> value.type === '임상군')}
-    if($('.boardBox.contrast').length){testData2 = testData.filter((value)=> value.type === '대조군')}
-
     $('body').click(function(){
         $('.searchArea div').html('');
     })
@@ -275,7 +254,15 @@ function member() {
         e.stopPropagation();
     })
 
-    insertData(testData2)
+    if($('.boardBox').length) {
+        let data = {admin_yn: 'n', limit: 10}
+        const boardAttr = $('.boardBox').attr('data-board');
+        boardAttr && (data = {...data, assign_group: boardAttr})
+        api('list', data).then(function(data){
+            insertData(data.list)
+            $('.loading').removeClass('active');
+        })
+    }
 
     $('.searchArea input[type="search"]').on('input', function(){
         const firstName = $(this).val();
@@ -302,19 +289,26 @@ function member() {
     })
 
    
-    function insertData(testData2){
+    function insertData(data){
         let htmlContent = '';
-        testData2.forEach(function(data){
+        data.forEach(function(data, i){
             htmlContent += `
             <li>
-                <span>${data.id}</span>
-                <span>${data.type}</span>
+                <span>${i + 1}</span>
+                <span>
+                    ${data.assign_group === 'clinical' ? '임상군' : ''}
+                    ${data.assign_group === 'control' ? '대조군' : ''}
+                </span>
                 <span>${data.name}</span>
-                <span>${data.birthday}</span>
-                <span>${data.gender}</span>
-                <span>${data.subscription}</span>
-                <span>${data.startTime}</span>
-                <div><a href="member-detail-info.html">상세</a></div>
+                <span>${data.birthday.replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")}</span>
+                <span>
+                    ${data.gender === 'male' ? '남성' : ''}
+                    ${data.gender === 'm' ? '남성' : ''}
+                    ${data.gender === 'f' ? '여성' : ''}
+                </span>
+                <span>${data.clinical_start_date.replaceAll('-', '.')}</span>
+                <span>${data.clinical_start_date.replaceAll('-', '.')}</span>
+                <div><a href="member-detail-info.html?userId=${data.user_id}">상세</a></div>
             <tr>
             `
         })
@@ -345,6 +339,40 @@ function member() {
             $('.searchArea div').html('');
         })
         
+    }
+}
+
+function manager(){
+    if($('.boardBox').length) {
+        let data = {admin_yn: 'y', limit: 10}
+        api('list', data).then(function(data){
+            insertData(data.list)
+            $('.loading').removeClass('active');
+        })
+    }
+
+    function insertData(data){
+        let htmlContent = '';
+        console.log(data);
+        data.forEach(function(data, i){
+            htmlContent += `
+            <li>
+                <div>
+                    <input type="checkbox" id="chk${i}">
+                    <label for="chk${i}"></label>
+                </div>
+                <span>${data.name}</span>
+                <span>${data.birthday.replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")}</span>
+                <span>${data.email !== null ? data.email : ''}</span>
+                <span>${data.mobile}</span>
+                <div>
+                    <a href="manager-detail.html">상세</a>
+                </div>
+            <tr>
+            `
+        })
+    
+        $('.managerPage .boardBox ol').html(htmlContent);
     }
 }
 
@@ -492,38 +520,4 @@ function popup(){
     $('.popup > div').click(function(e){
         e.stopPropagation();
     })
-}
-
-
-
-function test() {
-    var form = new FormData();
-    form.append("func_type", "valid_token");
-    form.append("token", "4e67bf46a9e08e9e8a464f97d0320fecf1988620");
-    var settings = {
-        "url": "http://52.78.57.176/api/admin/profile",
-        'func_type': 'login',
-        "method": "POST",
-        "processData": false,
-        "contentType": false,
-        "data": form
-    };
-    
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-    });
-
-    // return new Promise(function(resolve, reject) {
-    //     $.ajax({
-    //         url: `http://52.78.57.176/api/admin/profile`,
-    //         'func_type': 'login',
-    //         "method": "POST",
-    //         success: function(data) {
-    //             resolve(data.list);
-    //         },
-    //         error: function(request, status, error) {
-    //             reject(new Error(status));
-    //         }
-    //     });
-    // });
 }

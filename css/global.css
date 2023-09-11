@@ -150,3 +150,15 @@ header > div div p::after{content: ' 님';}
 header > div div *:not(:first-child){position: relative;}
 header > div div *:not(:first-child)::before{content: ''; position: absolute; left: -0.5px; top: 50%; transform: translateY(-50%); width: 1px; height: 0.75em; background-color: var(--dark-5);}
 header > div div button{color: var(--red);}
+
+
+/* 로딩 */
+.loading{display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.4); z-index: 101; flex-direction: column; justify-content: center; align-items: center;}
+body:has(.loading.active){overflow: hidden;}
+.loading.active{display: flex;}
+.loading svg{fill: var(--purple); width: 100px; aspect-ratio: 1; animation-name: loadingAni; animation-duration: 1s; animation-timing-function: linear; animation-iteration-count: infinite;}
+@keyframes loadingAni {
+    0%{transform: rotate(0deg);}
+    100%{transform: rotate(360deg);}
+}
+.loading p{font-size: 20px; line-height: 28px; font-weight: 500; color: white;}

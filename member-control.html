@@ -8,7 +8,7 @@
     <title>대조군 목록 - 회원관리 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
-    <script src="js/common.js"></script>
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
                 </ul>
             </nav>
             <div>
-                <p>홍길동 님</p>
+                <p title="name"></p>
                 <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
@@ -49,7 +49,7 @@
                 <div>
                     <a href="member.html">전체 목록</a>
                     <a href="member-clinical.html">임상군 목록</a>
-                    <a href="member-contrast.html" class="active">대조군 목록</a>
+                    <a href="member-control.html" class="active">대조군 목록</a>
                     <a href="member-regist.html">신규 등록</a>
                 </div>
             </div>
@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <div class="boardBox contrast">
+        <div class="boardBox" data-board="control">
             <div class="boardTitle">
                 <span>번호</span>
                 <span>분류</span>
