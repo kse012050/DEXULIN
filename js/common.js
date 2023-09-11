@@ -1,7 +1,6 @@
-// import validation from "./validation";
-// import * as api from './validation';
-// import "./validation";
-// css index
+import api from './api.js'
+import {inputValidation, dataValidation} from './validation.js'
+
 function styleIdx(){
     const selector = $('[data-styleIdx]');
     selector.each(function(){
@@ -13,70 +12,70 @@ function styleIdx(){
 }
 
 
-const inputValidationMap = {
-    mobile() {
-        const regex = /^\d{0,11}$/;
-        // return regex.test(value);
-        return regex;
-    },
-    number() {
-        const regex = /[^0-9]/g;
-        return regex;
-    },
-    password() {
-        const regex = /[^a-zA-Z0-9]/g;
-        return regex;
-    },
-    number(value) {
-        const regex = /^[0-9]+$/;
-        return regex.test(value);
-    },
-    hangle(value) {
-        const regex = /^[가-힣]*$/;
-        return regex.test(value);
-    },
-    mobile(value) {
-        const regex = /^\d{11}$/;
-        return regex.test(value);
-    },
-    date(value) {
-        const regex = /^\d{8}$/;
-        return regex.test(value);
-    },
-    time(value) {
-        const regex = /^\d{4}$/;
-        return regex.test(value);
-    },
-    email(value){
-        const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-        return regex.test(value);
-    }
-}
+// const inputValidationMap = {
+//     mobile() {
+//         const regex = /^\d{0,11}$/;
+//         return regex;
+//     },
+//     number() {
+//         const regex = /[^0-9]/g;
+//         return regex;
+//     },
+//     password() {
+//         const regex = /[^a-zA-Z0-9]/g;
+//         return regex;
+//     },
+//     number(value) {
+//         const regex = /^[0-9]+$/;
+//         return regex.test(value);
+//     },
+//     hangle(value) {
+//         const regex = /^[가-힣]*$/;
+//         return regex.test(value);
+//     },
+//     mobile(value) {
+//         const regex = /^\d{11}$/;
+//         return regex.test(value);
+//     },
+//     date(value) {
+//         const regex = /^\d{8}$/;
+//         return regex.test(value);
+//     },
+//     time(value) {
+//         const regex = /^\d{4}$/;
+//         return regex.test(value);
+//     },
+//     email(value){
+//         const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+//         return regex.test(value);
+//     }
+// }
 
-function inputValidation(type, value){
-    return Object.keys(inputValidationMap).includes(type) && inputValidationMap[type](value);
-}
+// function inputValidation(type, value){
+//     return Object.keys(inputValidationMap).includes(type) && inputValidationMap[type](value);
+// }
 
-const dataValidationMap = {
-    id(value) {
-        const regex = /^\d{11}$/;
-        return regex.test(value);
-    },
-    password(value) {
-        const regex = /.{4,15}/;
-        return regex.test(value);
-    }
-}
+// const dataValidationMap = {
+//     id(value) {
+//         const regex = /^\d{11}$/;
+//         return regex.test(value);
+//     },
+//     password(value) {
+//         const regex = /.{4,15}/;
+//         return regex.test(value);
+//     }
+// }
 
-function dataValidation(type, value){
-    return Object.keys(dataValidationMap).includes(type) && dataValidationMap[type](value);
-}
+// function dataValidation(type, value){
+//     return Object.keys(dataValidationMap).includes(type) && dataValidationMap[type](value);
+// }
 
 $(document).ready(function(){
     // css index
     $('[data-styleIdx]').length && styleIdx();
 
-    $('.signInPage fieldset input').length && signInPage();
+    $('.signInPage').length && signInPage();
+    $('.signInPage').length || isToken();
     $('.dropBox').length && dropBox();
     $('.exercisePage').length && exercisePage();
 
@@ -85,6 +84,18 @@ $(document).ready(function(){
     $('.manageForm').length && manageForm();
     $('.popup').length && popup();
 });
+
+function isToken(){
+    api('valid_token').then(function(data){
+        if(data.result) {
+            api('select').then(function(data){
+                $('[title="name"]').html(data.data.name)
+            })
+        } else {
+            location.href = 'index.html';
+        }
+    })
+}
 
 function signInPage() {
     const data = {};
@@ -133,16 +144,14 @@ function signInPage() {
 
     // 로그인 submit
     $('input[type="submit"]').click(function(e){
-        // 임시 아이디, 임시 비밀번호
-        const userId = '01012345678'
-        const userPW = '1234'
-
-        if(data['id'] === userId && data['password'] === userPW) {
-            location.href = 'exercise.html'
-        }else {
-            // 정보가 맞지 않을 때
-            $('fieldset ul li input').addClass('error');
-        }
+        api('login', data).then(function(data){
+            if(data.result) {
+                sessionStorage.setItem("token", data.data.token);
+                location.href = 'exercise.html';
+            }else {
+                $('fieldset ul li input').addClass('error');
+            }
+        })
     })
 }
 
@@ -469,4 +478,38 @@ function popup(){
     $('.popup > div').click(function(e){
         e.stopPropagation();
     })
+}
+
+
+
+function test() {
+    var form = new FormData();
+    form.append("func_type", "valid_token");
+    form.append("token", "4e67bf46a9e08e9e8a464f97d0320fecf1988620");
+    var settings = {
+        "url": "http://52.78.57.176/api/admin/profile",
+        'func_type': 'login',
+        "method": "POST",
+        "processData": false,
+        "contentType": false,
+        "data": form
+    };
+    
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+    // return new Promise(function(resolve, reject) {
+    //     $.ajax({
+    //         url: `http://52.78.57.176/api/admin/profile`,
+    //         'func_type': 'login',
+    //         "method": "POST",
+    //         success: function(data) {
+    //             resolve(data.list);
+    //         },
+    //         error: function(request, status, error) {
+    //             reject(new Error(status));
+    //         }
+    //     });
+    // });
 }
