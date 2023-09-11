@@ -76,6 +76,7 @@ $(document).ready(function(){
 
     $('.signInPage').length && signInPage();
     $('.signInPage').length || isToken();
+    
     $('.dropBox').length && dropBox();
     $('.exercisePage').length && exercisePage();
 
@@ -349,7 +350,7 @@ function member() {
 
 
 function manageForm() {
-    const data = {};
+    let data = {};
     let currentDate;
     $('input').each(function(){
         const input = $(this);
@@ -461,6 +462,19 @@ function manageForm() {
         /* const result = Object.entries(data).every(function([key, value]) {
             return value === currentDate[key]
         }) */
+    })
+
+    $('input[type="submit"]').click(function(e){
+        e.preventDefault();
+    });
+
+    // 일반회원 등록
+    $('input[type="submit"][data-regist="user"]').click(function(){
+        data = {...data, 'admin_yn': 'n'};
+        api('insert', data).then(function(data){
+            console.log(data);
+            data.result && (location.href = 'member.html');
+        })
     })
 }
 

@@ -8,7 +8,7 @@
     <title>일반유저 - 신규등록 - 회원관리 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
-    <script src="js/common.js"></script>
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
                 </ul>
             </nav>
             <div>
-                <p>홍길동 님</p>
+                <p title="name"></p>
                 <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
@@ -93,20 +93,20 @@
                         <small>숫자만 입력해주세요! ex 01099990000</small>
                     </li>
                     <li>
-                        <label for="time">가입일</label>
+                        <label for="join_date">가입일</label>
                         <div>
-                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210" data-formet="date" minlength="8" maxlength="8" required>
+                            <input type="text" name="join_date" id="join_date" placeholder="숫자만 입력해주세요. ex 19901210" data-formet="date" minlength="8" maxlength="8" required>
                             <button class="valueDelete">입력 값 제거</button>
                         </div>
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
-                        <label for="type">배정 그룹</label>
+                        <label for="assign_group">배정 그룹</label>
                         <div>
-                            <input type="radio" name="type" id="clinical" value="임상군" checked required>
+                            <input type="radio" name="assign_group" id="clinical" value="clinical" checked required>
                             <label for="clinical">임상군</label>
-                            <input type="radio" name="type" id="contrast" value="대조군" required>
-                            <label for="contrast">대조군</label>
+                            <input type="radio" name="assign_group" id="control" value="control" required>
+                            <label for="control">대조군</label>
                         </div>
                         <small>정확하게 입력해주세요!</small>
                     </li>
@@ -121,7 +121,7 @@
                         <p>회원 정보는 언제든지 수정할 수 있어요!</p>
                         <div>
                             <button class="btn-basic" data-popupClose>취소</button>
-                            <input type="submit" value="등록하기" class="btn-purple">
+                            <input type="submit" value="등록하기" class="btn-purple" data-regist="user">
                         </div>
                     </div>
                 </div>
