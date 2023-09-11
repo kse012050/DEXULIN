@@ -8,7 +8,7 @@
     <title>관리자유저 - 신규등록 - 회원관리 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
-    <script src="js/common.js"></script>
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
                 </ul>
             </nav>
             <div>
-                <p>홍길동 님</p>
+                <p title="name"></p>
                 <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
@@ -57,7 +57,7 @@
         
         <p class="guideText">관리자 신규등록 중이에요!</p>
         <form>
-            <fieldset class="manageForm">
+            <fieldset class="manageForm" data-type="regist">
                 <ul>
                     <li>
                         <label for="name">이름</label>
@@ -70,9 +70,9 @@
                     <li>
                         <label for="gender">성별</label>
                         <div>
-                            <input type="radio" name="gender" id="male" value="male" checked required>
+                            <input type="radio" name="gender" id="male" value="m" checked required>
                             <label for="male">남성</label>
-                            <input type="radio" name="gender" id="female" value="female" required>
+                            <input type="radio" name="gender" id="female" value="f" required>
                             <label for="female">여성</label>
                         </div>
                     </li>
@@ -93,9 +93,9 @@
                         <small>숫자만 입력해주세요! ex 01099990000</small>
                     </li>
                     <li>
-                        <label for="time">가입일</label>
+                        <label for="join_date">가입일</label>
                         <div>
-                            <input type="text" name="time" id="time" placeholder="숫자만 입력해주세요. ex 19901210" data-formet="date" minlength="8" maxlength="8" required>
+                            <input type="text" name="join_date" id="join_date" placeholder="숫자만 입력해주세요. ex 19901210" data-formet="date" minlength="8" maxlength="8" required>
                             <button class="valueDelete">입력 값 제거</button>
                         </div>
                         <small>숫자만 입력해주세요! ex 19901210</small>
@@ -118,7 +118,7 @@
                         <p>회원 정보는 언제든지 수정할 수 있어요!</p>
                         <div>
                             <button class="btn-basic" data-popupClose>취소</button>
-                            <input type="submit" value="등록하기" class="btn-purple">
+                            <input type="submit" value="등록하기" class="btn-purple" data-regist="admin">
                         </div>
                     </div>
                 </div>

@@ -11,82 +11,33 @@ function styleIdx(){
     })
 }
 
-
-// const inputValidationMap = {
-//     mobile() {
-//         const regex = /^\d{0,11}$/;
-//         return regex;
-//     },
-//     number() {
-//         const regex = /[^0-9]/g;
-//         return regex;
-//     },
-//     password() {
-//         const regex = /[^a-zA-Z0-9]/g;
-//         return regex;
-//     },
-//     number(value) {
-//         const regex = /^[0-9]+$/;
-//         return regex.test(value);
-//     },
-//     hangle(value) {
-//         const regex = /^[가-힣]*$/;
-//         return regex.test(value);
-//     },
-//     mobile(value) {
-//         const regex = /^\d{11}$/;
-//         return regex.test(value);
-//     },
-//     date(value) {
-//         const regex = /^\d{8}$/;
-//         return regex.test(value);
-//     },
-//     time(value) {
-//         const regex = /^\d{4}$/;
-//         return regex.test(value);
-//     },
-//     email(value){
-//         const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-//         return regex.test(value);
-//     }
-// }
-
-// function inputValidation(type, value){
-//     return Object.keys(inputValidationMap).includes(type) && inputValidationMap[type](value);
-// }
-
-// const dataValidationMap = {
-//     id(value) {
-//         const regex = /^\d{11}$/;
-//         return regex.test(value);
-//     },
-//     password(value) {
-//         const regex = /.{4,15}/;
-//         return regex.test(value);
-//     }
-// }
-
-// function dataValidation(type, value){
-//     return Object.keys(dataValidationMap).includes(type) && dataValidationMap[type](value);
-// }
-
 $(document).ready(function(){
     // css index
     $('[data-styleIdx]').length && styleIdx();
 
-    $('.signInPage').length && signInPage();
+    // 토큰 검사
     $('.signInPage').length || isToken();
+
+    // 로그인
+    $('.signInPage').length && signInPage();
     
+    // 드랍 박스 이벤트
     $('.dropBox').length && dropBox();
+
+    // 파일 업로드
     $('.exercisePage').length && exercisePage();
 
+    // 회원 페이지
     $('[class^="member"][class$="Page"]').length && member();
+    // 관리자 페이지
     $('[class^="manager"][class$="Page"]').length && manager();
 
-    $('.manageForm').length && manageForm();
+    $('.manageForm[data-type="update"]').length && manageUpdateForm();
+    $('.manageForm[data-type="regist"]').length && manageRegistForm();
     $('.popup').length && popup();
 });
 
+// 토큰 검사
 function isToken(){
     api('valid_token').then(function(data){
         if(data.result) {
@@ -99,6 +50,7 @@ function isToken(){
     })
 }
 
+// 로그인
 function signInPage() {
     const data = {};
     let dataResult = false;
@@ -157,7 +109,7 @@ function signInPage() {
     })
 }
 
-
+// 드랍 박스 이벤트
 function dropBox(){
     $('body').click(function(){
         $('.dropBox div').removeClass('active');
@@ -174,6 +126,7 @@ function dropBox(){
     })
 }
 
+// 파일 업로드
 function exercisePage(){
     let isUpload = false;
     $('table tbody tr').on("drop",function(e){
@@ -245,6 +198,7 @@ function exercisePage(){
     });
 }
 
+// 회원 페이지
 function member() {
     $('body').click(function(){
         $('.searchArea div').html('');
@@ -342,6 +296,7 @@ function member() {
     }
 }
 
+// 관리자 페이지
 function manager(){
     if($('.boardBox').length) {
         let data = {admin_yn: 'y', limit: 10}
@@ -353,7 +308,6 @@ function manager(){
 
     function insertData(data){
         let htmlContent = '';
-        console.log(data);
         data.forEach(function(data, i){
             htmlContent += `
             <li>
@@ -364,7 +318,7 @@ function manager(){
                 <span>${data.name}</span>
                 <span>${data.birthday.replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")}</span>
                 <span>${data.email !== null ? data.email : ''}</span>
-                <span>${data.mobile}</span>
+                <span>${data.mobile.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}</span>
                 <div>
                     <a href="manager-detail.html">상세</a>
                 </div>
@@ -376,29 +330,20 @@ function manager(){
     }
 }
 
-
-function manageForm() {
+function manageRegistForm() {
     let data = {};
-    let currentDate;
     $('input').each(function(){
         const input = $(this);
         const inputFormet = input.attr('data-formet');
+        const inputName = input.attr('name');
         if(!!input.attr('required')) {
             if(input[0].type !== 'radio'){
-                if(input.attr('data-formet') === 'date') {
-                    data[input.attr('name')] = input.val().replace(/\D/g, "")
-                } else if(input.attr('data-formet') === 'time') {
-                    data[input.attr('name')] = input.val().replace(/\D/g, "")
-                } else {
-                    data[input.attr('name')] = input.val() !== '' ? input.val() : '';
-                }
+                data[inputName] = undefined;
             }
             if(input[0].type === 'radio' && $(this).is(':checked')) {
                 data[input.attr('name')] = $(this).val();
             }
         }
-
-        currentDate = {...data}
 
         input.on('input', function(){
             const value = input.val()
@@ -417,6 +362,85 @@ function manageForm() {
             $('[data-btn="fin"]').attr('disabled', !dataResult)
         })
     });
+
+    $('input[type="submit"]').click(function(e){
+        e.preventDefault();
+    });
+
+    // 일반회원 등록
+    $('input[type="submit"]').click(function(){
+        // [data-regist="user"]
+        const type = $(this).attr('data-regist')
+        type === 'user' && (data = {...data, 'admin_yn': 'n'});
+        type === 'admin' && (data = {...data, 'admin_yn': 'y'});
+        console.log(data);
+        // data = {...data, 'admin_yn': 'n'};
+        api('insert', data).then(function(data){
+            (data.result && type === 'user') && (location.href = 'member.html');
+            (data.result && type === 'admin') && (location.href = 'manager.html');
+        })
+    })
+}
+
+
+function manageUpdateForm() {
+    const urlParams = new URL(location.href).searchParams;
+    const id = urlParams.get("userId");
+    // !id && window.history.back().back();
+
+    let userData = {};
+    let currentDate;
+    api('detail', {'u_id': id}).then(function(data){
+        console.log(data);
+        const gender = data.data.gender === 'm' ? '남성' : '여성';
+        const year = data.data.birthday.substring(0, 4);
+        const month = data.data.birthday.substring(4, 6);
+        const day = data.data.birthday.substring(6, 8);
+        const birthday = `${year}년 ${month}월 ${day}일`;
+        $('[title="userName"]').html(data.data.name)
+        $('[title="gender"]').html(gender)
+        $('[title="birthday"]').html(birthday)
+        $('[title="join_date"]').html(data.data.mobile.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"))
+
+        $('input').each(function(){
+            const input = $(this);
+            const inputFormet = input.attr('data-formet');
+            const inputName = input.attr('name');
+            const apiData = (inputFormet !== 'time' ? {...data.data} : {...data.data.measurement_info})
+            if(!!input.attr('required')) {
+                userData[inputName] = apiData[inputName] !== null ?
+                                        apiData[inputName].replaceAll('-','').replaceAll(':','') :
+                                        undefined;
+                if(input[0].type !== 'radio'){
+                    $(`input[name="${inputName}"]`).val(
+                        apiData[inputName] ? apiData[inputName].replaceAll('-','.').replaceAll(':',' : ') : '');
+                }
+                if(input[0].type === 'radio') {
+                    $(`input[name="${inputName}"]#${data.data[inputName]}`).prop("checked", true);
+                }
+            }
+            
+            currentDate = {...userData}
+    
+            input.on('input', function(){
+                const value = input.val()
+                if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
+                    $(this).parent().removeClass('error')
+                    data[input.attr('name')] = value;
+                } else {
+                    $(this).parent().addClass('error');
+                    data[input.attr('name')] = '';
+                }
+                input.hasClass('error') && input.removeClass('error');
+    
+                const dataResult = Object.entries(data).every(function([key, value]) {
+                    return !!value
+                })
+                $('[data-btn="fin"]').attr('disabled', !dataResult)
+            })
+        });
+    })
+   
     
     $('.valueDelete').click(function(e){
         e.preventDefault();
@@ -456,6 +480,7 @@ function manageForm() {
             return
         }
         if(input.attr('data-formet') === 'time') {
+            console.log(currentDate[input.attr('name')]);
             input.val(currentDate[input.attr('name')].replace(/(\d{2})(\d{2})/, "$1 : $2"));
             return
         }
@@ -491,21 +516,7 @@ function manageForm() {
             return value === currentDate[key]
         }) */
     })
-
-    $('input[type="submit"]').click(function(e){
-        e.preventDefault();
-    });
-
-    // 일반회원 등록
-    $('input[type="submit"][data-regist="user"]').click(function(){
-        data = {...data, 'admin_yn': 'n'};
-        api('insert', data).then(function(data){
-            console.log(data);
-            data.result && (location.href = 'member.html');
-        })
-    })
 }
-
 
 function popup(){
     $('[data-popupOpen]').click(function(e){

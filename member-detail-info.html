@@ -8,7 +8,7 @@
     <title>회원정보 - 상세 - 회원 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
-    <script src="js/common.js"></script>
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
                 </ul>
             </nav>
             <div>
-                <p>홍길동 님</p>
+                <p title="name"></p>
                 <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
@@ -43,12 +43,12 @@
     
     <section class="memberDetailPage">
         <div class="titleBox">
-            <h2 class="back">김리자 님</h2>
+            <h2 class="back" title="userName">김리자 님</h2>
             <p>임상군</p>
             <div class="infoBox">
-                <span>남성</span>
-                <span>1999년 11월 24일</span>
-                <span>010-5306-0000</span>
+                <span title="gender">남성</span>
+                <span title="birthday">1999년 11월 24일</span>
+                <span title="join_date">010-5306-0000</span>
             </div>
         </div>
 
@@ -59,12 +59,12 @@
         </ul>
         
         <form>
-            <fieldset class="manageForm">
+            <fieldset class="manageForm" data-type="update">
                 <ul>
                     <li>
                         <label for="name">이름</label>
                         <div>
-                            <input type="text" name="name" id="name" data-formet="hangle" value="김리자" placeholder="이름을 입력해주세요." required disabled>
+                            <input type="text" name="name" id="name" data-formet="hangle" placeholder="이름을 입력해주세요." required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -77,9 +77,9 @@
                     <li>
                         <label for="gender">성별</label>
                         <div>
-                            <input type="radio" name="gender" id="male" value="male" checked required disabled>
+                            <input type="radio" name="gender" id="m" value="m" required disabled>
                             <label for="male">남성</label>
-                            <input type="radio" name="gender" id="female" value="female" required disabled>
+                            <input type="radio" name="gender" id="f" value="f" required disabled>
                             <label for="female">여성</label>
                             <div class="buttonArea">
                                 <button class="update">수정</button>
@@ -115,9 +115,9 @@
                         <small>숫자만 입력해주세요! ex 01099990000</small>
                     </li>
                     <li>
-                        <label for="joinDate">가입일</label>
+                        <label for="join_date">가입일</label>
                         <div>
-                            <input type="text" name="joinDate" id="joinDate" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" data-formet="date" minlength="8" maxlength="8" required disabled>
+                            <input type="text" name="join_date" id="join_date" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" data-formet="date" minlength="8" maxlength="8" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -128,9 +128,9 @@
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
-                        <label for="startDate">임상 시작일</label>
+                        <label for="clinical_start_date">임상 시작일</label>
                         <div>
-                            <input type="text" name="startDate" id="startDate" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" data-formet="date" minlength="8" maxlength="8" required disabled>
+                            <input type="text" name="clinical_start_date" id="clinical_start_date" placeholder="숫자만 입력해주세요. ex 19901210" value="2023.07.11" data-formet="date" minlength="8" maxlength="8" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -141,12 +141,12 @@
                         <small>숫자만 입력해주세요! ex 19901210</small>
                     </li>
                     <li>
-                        <label for="type">배정 그룹</label>
+                        <label for="assign_group">배정 그룹</label>
                         <div>
-                            <input type="radio" name="type" id="clinical" value="clinical" checked required disabled>
+                            <input type="radio" name="assign_group" id="clinical" value="clinical" required disabled>
                             <label for="clinical">임상군</label>
-                            <input type="radio" name="type" id="contrast" value="contrast" required disabled>
-                            <label for="contrast">대조군</label>
+                            <input type="radio" name="assign_group" id="control" value="control" required disabled>
+                            <label for="control">대조군</label>
                             <div class="buttonArea">
                                 <button class="update">수정</button>
                                 <button class="cancel">취소</button>
@@ -156,9 +156,9 @@
                         <small>정확하게 입력해주세요!</small>
                     </li>
                     <li>
-                        <label for="AE_morning">AE 운동 설정시간 (아침)</label>
+                        <label for="breakfast_time">AE 운동 설정시간 (아침)</label>
                         <div>
-                            <input type="text" name="AE_morning" id="AE_morning" placeholder="숫자만 입력해주세요. ex 1430" value="09 : 00" data-formet="time" maxlength="4" required disabled>
+                            <input type="text" name="breakfast_time" id="breakfast_time" placeholder="숫자만 입력해주세요. ex 1430" value="09 : 00" data-formet="time" maxlength="4" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -169,9 +169,9 @@
                         <small>숫자만 입력해주세요! ex 1430</small>
                     </li>
                     <li>
-                        <label for="RE">RE 운동 설정시간</label>
+                        <label for="exercise_time">RE 운동 설정시간</label>
                         <div>
-                            <input type="text" name="RE" id="RE" placeholder="숫자만 입력해주세요. ex 1430" value="19 : 00" data-formet="time" maxlength="4" required disabled>
+                            <input type="text" name="exercise_time" id="exercise_time" placeholder="숫자만 입력해주세요. ex 1430" value="19 : 00" data-formet="time" maxlength="4" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -182,9 +182,9 @@
                         <small>숫자만 입력해주세요! ex 1430</small>
                     </li>
                     <li>
-                        <label for="AE_lunch">AE 운동 설정시간 (점심)</label>
+                        <label for="lunch_time">AE 운동 설정시간 (점심)</label>
                         <div>
-                            <input type="text" name="AE_lunch" id="AE_lunch" placeholder="숫자만 입력해주세요. ex 1430" value="12 : 30" data-formet="time" maxlength="4" required disabled>
+                            <input type="text" name="lunch_time" id="lunch_time" placeholder="숫자만 입력해주세요. ex 1430" value="12 : 30" data-formet="time" maxlength="4" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -195,9 +195,9 @@
                         <small>숫자만 입력해주세요! ex 1430</small>
                     </li>
                     <li>
-                        <label for="spandrel_time">공복 혈당 측정시간</label>
+                        <label for="blood_sugar_measurement_time">공복 혈당 측정시간</label>
                         <div>
-                            <input type="text" name="spandrel_time" id="spandrel_time" placeholder="숫자만 입력해주세요. ex 1430" value="07 : 00" data-formet="time" maxlength="4" required disabled>
+                            <input type="text" name="blood_sugar_measurement_time" id="blood_sugar_measurement_time" placeholder="숫자만 입력해주세요. ex 1430" value="07 : 00" data-formet="time" maxlength="4" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
@@ -208,9 +208,9 @@
                         <small>숫자만 입력해주세요! ex 1430</small>
                     </li>
                     <li>
-                        <label for="AE_dinner">AE 운동 설정시간 (저녁)</label>
+                        <label for="dinner_time">AE 운동 설정시간 (저녁)</label>
                         <div>
-                            <input type="text" name="AE_dinner" id="AE_dinner" placeholder="숫자만 입력해주세요. ex 1430" value="18 : 30" data-formet="time" maxlength="4" required disabled>
+                            <input type="text" name="dinner_time" id="dinner_time" placeholder="숫자만 입력해주세요. ex 1430" value="18 : 30" data-formet="time" maxlength="4" required disabled>
                             <div class="buttonArea">
                                 <button class="valueDelete">입력 값 제거</button>
                                 <button class="update">수정</button>
