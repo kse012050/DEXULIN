@@ -33,10 +33,12 @@ $(document).ready(function(){
     $('.exercisePage').length && exercisePage();
 
     // 회원 페이지
-    $('[class^="member"][class$="Page"]').length && member();
+    $('.memberPage').length && member();
     // 관리자 페이지
     $('[class^="manager"][class$="Page"]').length && manager();
 
+    // 회원, 관리자 상세 상단 정보
+    $('[class*="Detail"]').length && detailTopInfo();
     // 회원, 관리자 상세 등록
     $('.manageForm[data-type="regist"]').length && manageRegistForm();
     // 회원, 관리자 상세 수정
@@ -153,11 +155,10 @@ function dropBox(){
 
 // 템 이벤트
 function tab() {
-    const urlParams = new URL(location.href).searchParams;
-    const id = urlParams.get("userId");
-    id || (location.href = 'member.html');
+    const {userId} = urlParam();
+    userId || (location.href = 'member.html');
     $('.tabArea li a').each(function(){
-        $(this).attr('href', $(this).attr('href') + '?userId=' + id);
+        $(this).attr('href', $(this).attr('href') + '?userId=' + userId);
     })
 }
 
@@ -235,6 +236,9 @@ function exercisePage(){
 
 // 회원 페이지
 function member() {
+    let { page } = urlParam()
+    page || (page = 1)
+
     $('body').click(function(){
         $('.searchArea div').html('');
     })
@@ -244,13 +248,14 @@ function member() {
     })
 
     if($('.boardBox').length) {
-        let data = {admin_yn: 'n', limit: 10}
+        let data = {admin_yn: 'n', page}
         const boardAttr = $('.boardBox').attr('data-board');
         boardAttr && (data = {...data, assign_group: boardAttr})
         $('.loading').addClass('active');
         api('list', data).then(function(data){
             if(data.result) {
                 insertData(data.list)
+                addPager(data.data.current_page, data.data.total_page)
                 $('.loading').removeClass('active');
             }
         })
@@ -286,7 +291,7 @@ function member() {
         data.forEach(function(data, i){
             htmlContent += `
             <li>
-                <span>${i + 1}</span>
+                <span>${(i + 1) + ((page - 1) * 10)}</span>
                 <span>
                     ${data.assign_group === 'clinical' ? '임상군' : ''}
                     ${data.assign_group === 'control' ? '대조군' : ''}
@@ -336,12 +341,16 @@ function member() {
 
 // 관리자 페이지
 function manager(){
+    let { page } = urlParam()
+    page || (page = 1)
+
     if($('.boardBox').length) {
         let data = {admin_yn: 'y', limit: 10}
         $('.loading').addClass('active');
         api('list', data).then(function(data){
             if(data.result) {
                 insertData(data.list)
+                addPager(data.data.current_page, data.data.total_page)
                 $('.loading').removeClass('active');
             }
         })
@@ -415,13 +424,31 @@ function manageRegistForm() {
         const type = $(this).attr('data-regist')
         type === 'user' && (data = {...data, 'admin_yn': 'n'});
         type === 'admin' && (data = {...data, 'admin_yn': 'y'});
-        console.log(data);
         // data = {...data, 'admin_yn': 'n'};
         api('insert', data).then(function(data){
             (data.result && type === 'user') && (location.href = 'member.html');
             (data.result && type === 'admin') && (location.href = 'manager.html');
         })
     })
+}
+
+// 회원, 관리자 상세 상단 정보
+function detailTopInfo(){
+    const {userId} = urlParam();
+    api('detail', {'u_id': userId}).then(function(data){
+        if(data.result) {
+            const gender = data.data.gender === 'm' ? '남성' : '여성';
+            const year = data.data.birthday.substring(0, 4);
+            const month = data.data.birthday.substring(4, 6);
+            const day = data.data.birthday.substring(6, 8);
+            const birthday = `${year}년 ${month}월 ${day}일`;
+            $('[title="userName"]').html(data.data.name)
+            $('[title="assign"]').html(data.data.assign_group === 'clinical' ? '임상군' : '대조군')
+            $('[title="gender"]').html(gender)
+            $('[title="birthday"]').html(birthday)
+            $('[title="join_date"]').html(dataChange('mobile', data.data.mobile))
+        }
+    });
 }
 
 // 회원, 관리자 상세 수정
@@ -437,19 +464,7 @@ function manageUpdateForm() {
     let currentDate;
     $('.loading').addClass('active');
     api('detail', {'u_id': id}).then(function(data){
-
         if(data.result) {
-            const gender = data.data.gender === 'm' ? '남성' : '여성';
-            const year = data.data.birthday.substring(0, 4);
-            const month = data.data.birthday.substring(4, 6);
-            const day = data.data.birthday.substring(6, 8);
-            const birthday = `${year}년 ${month}월 ${day}일`;
-            $('[title="userName"]').html(data.data.name)
-            $('[title="assign"]').html(data.data.assign_group === 'clinical' ? '임상군' : '대조군')
-            $('[title="gender"]').html(gender)
-            $('[title="birthday"]').html(birthday)
-            $('[title="join_date"]').html(dataChange('mobile', data.data.mobile))
-
             $('input').each(function(){
                 const input = $(this);
                 const inputFormet = input.attr('data-formet');
@@ -485,13 +500,14 @@ function manageUpdateForm() {
         }
     })
    
-    
+    // 인풋 텍스트 삭제
     $('.valueDelete').click(function(e){
         e.preventDefault();
         $(this).parent().parent().removeClass('error');
         $(this).parent().siblings('input').val('').focus();
     })
     
+    // 수정 버튼
     $('.update').click(function(e){
         e.preventDefault();
         const div = $(this).parent().parent();
@@ -504,6 +520,7 @@ function manageUpdateForm() {
         }
     })
     
+    // 취소버튼
     $('.cancel').click(function(e){
         e.preventDefault();
         const div = $(this).parent().parent();
@@ -518,7 +535,8 @@ function manageUpdateForm() {
             $(`input[name="${inputName}"]`).val(dataChange(inputFormet, currentDate[inputName]));
         }
     })
-    
+
+    // 확인버튼
     $('.confirm').click(function(e){
         e.preventDefault();
         const div = $(this).parent().parent();
@@ -539,26 +557,36 @@ function manageUpdateForm() {
         })
     })
 
+    // 초기화 버튼
     $('input[type="reset"]').click(function(){
         $('[data-btn="fin"]').attr('disabled', true)
         $('.popup').removeClass('active');
     })
+
+    $('[data-delete]').click(function(e){
+        e.preventDefault();
+        api('delete', {u_id: id}).then(function(data){
+            data.result && (location.href = 'member.html');
+            $('.popup').removeClass('active');
+        })
+    })
 }
 
+// 회원 상세 - 측정기록
 function memberDetailMeasure() {
-    const urlParams = new URL(location.href).searchParams;
-    const id = urlParams.get("userId");
+    let {userId, page} = urlParam();
+    page || (page = 1)
     $('.loading').addClass('active');
-    api('measurement_recording', {u_id: id}).then(function(data){
+    api('measurement_recording', {u_id: userId, page}).then(function(data){
         console.log(data);
         if(data.result) {
             insertData(data.list)
+            addPager(data.data.current_page, data.data.total_page)
             $('.loading').removeClass('active');
         }
     })
 
     function insertData(data){
-        console.log(data);
         let htmlContent = '';
         data.forEach(function(data, i){
             htmlContent += `
@@ -599,5 +627,40 @@ function popup(){
         /* const result = Object.entries(data).every(function([key, value]) {
             return value === currentDate[key]
         }) */
+    })
+}
+
+function urlParam(){
+    const obj = {}
+    location.search.slice(1).split('?').forEach((value)=>{
+        value = value.split('=')
+        obj[value[0]] = value[1];
+    })
+    return obj;
+}
+
+// 페이저 추가
+function addPager(currentPage, totalPage) {
+    const {userId, page} = urlParam();
+    if(!totalPage){return}
+    let pageName = location.pathname.slice(1);
+    userId && (pageName += `?userId=${userId}`)
+    let htmlContent = '';
+    htmlContent += `<div class="pagerBox" data-styleIdx="a">
+                        <a href="${pageName}?page=${1}" ${currentPage !== 1 ? 'class="active"' : ''}>맨 앞 페이지로 이동</a>
+                        <a href="${pageName}?page=${currentPage - 1}" ${currentPage !== 1 ? 'class="active"' : ''}>앞 페이지로 이동</a>
+                        <ol>`;
+    for(let a = 1; a < totalPage + 1; a++){
+        htmlContent += `<li ${currentPage === a ? 'class="active"' : ''}><a href="${pageName}?page=${a}">${a}</a></li>`
+    }
+    htmlContent += `</ol>
+                    <a href="${pageName}?page=${currentPage + 1}" ${currentPage !== totalPage ? 'class="active"' : ''}>뒷 페이지 이동</a>
+                    <a href="${pageName}?page=${totalPage}" ${currentPage !== totalPage ? 'class="active"' : ''}>맨 뒷 페이지 이동</a>
+                </div>`;
+    $('.boardBox').after(htmlContent)
+    styleIdx();
+
+    $('.pagerBox > a:not(.active)').click(function(e){
+        e.preventDefault();
     })
 }
