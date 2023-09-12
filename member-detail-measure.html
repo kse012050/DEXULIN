@@ -8,9 +8,16 @@
     <title>측정기록 - 상세 - 회원 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
-    <script src="js/common.js"></script>
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
+    <div class="loading">
+        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+            <path d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z"></path>
+        </svg>
+        <p>회원 측정기록을 불러오는 중입니다!</p>
+    </div>
     <header>
         <div>
             <h1><a href="exercise.html"><img src="images/logo.png" alt="DEXULIN logo"></a></h1>
@@ -23,7 +30,7 @@
                 </ul>
             </nav>
             <div>
-                <p>홍길동 님</p>
+                <p title="name"></p>
                 <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
@@ -43,12 +50,12 @@
     
     <section class="memberDetailPage">
         <div class="titleBox">
-            <h2 class="back">김리자 님</h2>
-            <p>임상군</p>
+            <h2 class="back" title="userName">김리자 님</h2>
+            <p title="assign">임상군</p>
             <div class="infoBox">
-                <span>남성</span>
-                <span>1999년 11월 24일</span>
-                <span>010-5306-0000</span>
+                <span title="gender">남성</span>
+                <span title="birthday">1999년 11월 24일</span>
+                <span title="join_date">010-5306-0000</span>
             </div>
         </div>
 

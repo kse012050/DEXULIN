@@ -97,7 +97,7 @@
 .typeArea li{font-size: 20px; font-weight: 500; color: var(--dark-2); /* line-height: 42px; */ padding: 11px 19px; background-color: var(--dark-7); border: 1px solid var(--dark-6); border-radius: 30px; cursor: pointer;}
 .typeArea li.active{color: var(--purple); background-color: var(--purple-lighten); border-color: var(--purple);}
 .memberDetailPage .boardBox :is(.boardTitle, ol li) > *{width: 170.28px; flex-shrink: 0;}
-.memberDetailPage .boardBox ol li [data-none]::after{content: '없음'; color: var(--dark-5);}
+.memberDetailPage .boardBox ol li [data-none]::after{content: '없음'; color: var(--dark-5); text-indent: 0;}
 .memberDetailPage .boardBox ol li [data-not]{color: var(--red);}
 /* 운동기록 - 회원 상세 */
 .memberDetailPage .boardBox.workOut ol ~ ol{border-top: 2px solid var(--dark-6);}

@@ -41,6 +41,8 @@ $(document).ready(function(){
     $('.manageForm[data-type="regist"]').length && manageRegistForm();
     // 회원, 관리자 상세 수정
     $('.manageForm[data-type="update"]').length && manageUpdateForm();
+    // 회원 상세 측정기록
+    $('.memberDetailPage .boardBox.measure').length && memberDetailMeasure();
 
     // 팝업
     $('.popup').length && popup();
@@ -153,6 +155,7 @@ function dropBox(){
 function tab() {
     const urlParams = new URL(location.href).searchParams;
     const id = urlParams.get("userId");
+    id || (location.href = 'member.html');
     $('.tabArea li a').each(function(){
         $(this).attr('href', $(this).attr('href') + '?userId=' + id);
     })
@@ -298,7 +301,7 @@ function member() {
                 <span>${data.clinical_start_date.replaceAll('-', '.')}</span>
                 <span>${data.clinical_start_date.replaceAll('-', '.')}</span>
                 <div><a href="member-detail-info.html?userId=${data.user_id}">상세</a></div>
-            <tr>
+            </li>
             `
         })
     
@@ -317,7 +320,7 @@ function member() {
                 <span>${data.gender}</span>
                 <span>${data.birthday}</span>
                 <span>010-0000-0000</span>
-            <tr>
+            </li>
             `
         })
         searchData.length && select.siblings('div').html(`<ul>${htmlContent}</ul>`)
@@ -360,7 +363,7 @@ function manager(){
                 <div>
                     <a href="manager-detail.html?userId=${data.user_id}">상세</a>
                 </div>
-            <tr>
+            </li>
             `
         })
     
@@ -442,6 +445,7 @@ function manageUpdateForm() {
             const day = data.data.birthday.substring(6, 8);
             const birthday = `${year}년 ${month}월 ${day}일`;
             $('[title="userName"]').html(data.data.name)
+            $('[title="assign"]').html(data.data.assign_group === 'clinical' ? '임상군' : '대조군')
             $('[title="gender"]').html(gender)
             $('[title="birthday"]').html(birthday)
             $('[title="join_date"]').html(dataChange('mobile', data.data.mobile))
@@ -539,6 +543,35 @@ function manageUpdateForm() {
         $('[data-btn="fin"]').attr('disabled', true)
         $('.popup').removeClass('active');
     })
+}
+
+function memberDetailMeasure() {
+    const urlParams = new URL(location.href).searchParams;
+    const id = urlParams.get("userId");
+    $('.loading').addClass('active');
+    api('measurement_recording', {u_id: id}).then(function(data){
+        console.log(data);
+        if(data.result) {
+            insertData(data.list)
+            $('.loading').removeClass('active');
+        }
+    })
+
+    function insertData(data){
+        console.log(data);
+        let htmlContent = '';
+        data.forEach(function(data, i){
+            htmlContent += `
+            <li>
+                <span>${data.measurement_date.replaceAll('-', '.')}</span>
+                <span ${data.measurement_time === null ? 'data-none' : ''}>${data.measurement_time !== null ? data.measurement_time : ''}</span>
+                <span ${data.measurement_value === null ? 'data-none' : ''}>${data.measurement_value !== null ? data.measurement_value : ''}</span>
+            </li>
+            `
+        })
+    
+        $('.boardBox.measure ol').html(htmlContent);
+    }
 }
 
 // 팝업

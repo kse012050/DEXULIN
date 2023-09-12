@@ -8,7 +8,7 @@
     <title>운동기록 - 상세 - 회원 - DEXULIN</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/import.css">
-    <script src="js/common.js"></script>
+    <script src="js/common.js" type="module"></script>
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
                 </ul>
             </nav>
             <div>
-                <p>홍길동 님</p>
+                <p title="name"></p>
                 <button data-popupOpen="logout">로그아웃</button>
             </div>
         </div>
@@ -43,12 +43,12 @@
     
     <section class="memberDetailPage">
         <div class="titleBox">
-            <h2 class="back">김리자 님</h2>
-            <p>임상군</p>
+            <h2 class="back" title="userName">김리자 님</h2>
+            <p title="assign">임상군</p>
             <div class="infoBox">
-                <span>남성</span>
-                <span>1999년 11월 24일</span>
-                <span>010-5306-0000</span>
+                <span title="gender">남성</span>
+                <span title="birthday">1999년 11월 24일</span>
+                <span title="join_date">010-5306-0000</span>
             </div>
         </div>
 
