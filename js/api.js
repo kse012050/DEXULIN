@@ -11,8 +11,7 @@ function dataToform(type, data){
 
 export default function api(type, data) {
     const formData = dataToform(type, data);
-
-    return fetch(`http://52.78.57.176/api/admin/profile`, {
+    return fetch(`http://52.78.57.176/api/admin/${type !== 'record_download' ? 'profile' : 'record'}`, {
         "method": "POST",
         body: formData
     }).then((res)=>res.json())

@@ -32,6 +32,8 @@ $(document).ready(function(){
     // 파일 업로드
     $('.exercisePage').length && exercisePage();
 
+    $('.downloadPage').length && downloadPage();
+
     // 회원 페이지
     $('.memberPage').length && member();
     // 관리자 페이지
@@ -232,6 +234,12 @@ function exercisePage(){
         console.log(files);
         console.log(type);
     });
+}
+
+function downloadPage(){
+    api('record_download').then(function(data){
+        data.result && $('[data-download]').attr('href', data.data.file_url)
+    })
 }
 
 // 회원 페이지
@@ -630,6 +638,7 @@ function popup(){
     })
 }
 
+// url 파라미터
 function urlParam(){
     const obj = {}
     location.search.slice(1).split('?').forEach((value)=>{
