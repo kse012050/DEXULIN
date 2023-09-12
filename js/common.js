@@ -20,6 +20,9 @@ $(document).ready(function(){
 
     // 로그인
     $('.signInPage').length && signInPage();
+
+    // 로그아웃
+    $('[data-logout]').length && logout();
     
     // 드랍 박스 이벤트
     $('.dropBox').length && dropBox();
@@ -32,8 +35,12 @@ $(document).ready(function(){
     // 관리자 페이지
     $('[class^="manager"][class$="Page"]').length && manager();
 
-    $('.manageForm[data-type="update"]').length && manageUpdateForm();
+    // 회원, 관리자 상세 등록
     $('.manageForm[data-type="regist"]').length && manageRegistForm();
+    // 회원, 관리자 상세 수정
+    $('.manageForm[data-type="update"]').length && manageUpdateForm();
+
+    // 팝업
     $('.popup').length && popup();
 });
 
@@ -104,6 +111,18 @@ function signInPage() {
                 location.href = 'exercise.html';
             }else {
                 $('fieldset ul li input').addClass('error');
+            }
+        })
+    })
+}
+
+// 로그아웃
+function logout() {
+    $('[data-logout]').click(function(){
+        api('logout').then(function(data){
+            if(data.result){
+                sessionStorage.removeItem('token');
+                location.href = 'index.html'
             }
         })
     })
@@ -330,6 +349,7 @@ function manager(){
     }
 }
 
+// 회원, 관리자 상세 등록
 function manageRegistForm() {
     let data = {};
     $('input').each(function(){
@@ -382,6 +402,7 @@ function manageRegistForm() {
     })
 }
 
+// 회원, 관리자 상세 수정
 function manageUpdateForm() {  
     const urlParams = new URL(location.href).searchParams;
     const id = urlParams.get("userId");
@@ -483,7 +504,7 @@ function manageUpdateForm() {
             $(`input[name="${inputName}"]`).val(dataChange(inputFormet, currentDate[inputName]));
         }
         const isAdmin = location.href.includes('member') ? 'n' : (location.href.includes('manager') && 'y')
-        api('update',{admin_yn: isAdmin, [inputName]: dataChange('time', currentDate[inputName]), u_id: id}).then(function(data){
+        api('update',{admin_yn: isAdmin, [inputName]: currentDate[inputName], u_id: id}).then(function(data){
             // console.log(data);
         })
     })
@@ -494,6 +515,7 @@ function manageUpdateForm() {
     })
 }
 
+// 팝업
 function popup(){
     $('[data-popupOpen]').click(function(e){
         e.preventDefault();
