@@ -107,3 +107,8 @@
 .memberDetailPage .boardBox.workOut ol li div:nth-child(2) span{width: 110.29px; text-align: center;}
 /* 측정기록- 회원 상세 */
 .memberDetailPage .boardBox.measure :is(.boardTitle, ol li) :last-child{margin-left: auto;}
+
+
+/* 관리자 상세 */
+.managerDetailPage .manageForm .finBtn button{display: none;}
+.managerDetailPage .manageForm .finBtn button.active{display: block;}

@@ -26,6 +26,8 @@ $(document).ready(function(){
     
     // 드랍 박스 이벤트
     $('.dropBox').length && dropBox();
+    // 템 이벤트
+    $('.tabArea').length && tab();
 
     // 파일 업로드
     $('.exercisePage').length && exercisePage();
@@ -106,10 +108,12 @@ function signInPage() {
     // 로그인 submit
     $('input[type="submit"]').click(function(e){
         api('login', data).then(function(data){
+            $('.loading').addClass('active')
             if(data.result) {
                 sessionStorage.setItem("token", data.data.token);
                 location.href = 'exercise.html';
             }else {
+                $('.loading').removeClass('active')
                 $('fieldset ul li input').addClass('error');
             }
         })
@@ -142,6 +146,15 @@ function dropBox(){
         $('.dropBox div button').removeClass('active');
         $(this).addClass('active');
         $('[data-type]').html($(this).html());
+    })
+}
+
+// 템 이벤트
+function tab() {
+    const urlParams = new URL(location.href).searchParams;
+    const id = urlParams.get("userId");
+    $('.tabArea li a').each(function(){
+        $(this).attr('href', $(this).attr('href') + '?userId=' + id);
     })
 }
 
@@ -231,9 +244,12 @@ function member() {
         let data = {admin_yn: 'n', limit: 10}
         const boardAttr = $('.boardBox').attr('data-board');
         boardAttr && (data = {...data, assign_group: boardAttr})
+        $('.loading').addClass('active');
         api('list', data).then(function(data){
-            insertData(data.list)
-            $('.loading').removeClass('active');
+            if(data.result) {
+                insertData(data.list)
+                $('.loading').removeClass('active');
+            }
         })
     }
 
@@ -319,9 +335,12 @@ function member() {
 function manager(){
     if($('.boardBox').length) {
         let data = {admin_yn: 'y', limit: 10}
+        $('.loading').addClass('active');
         api('list', data).then(function(data){
-            insertData(data.list)
-            $('.loading').removeClass('active');
+            if(data.result) {
+                insertData(data.list)
+                $('.loading').removeClass('active');
+            }
         })
     }
 
@@ -406,53 +425,60 @@ function manageRegistForm() {
 function manageUpdateForm() {  
     const urlParams = new URL(location.href).searchParams;
     const id = urlParams.get("userId");
-    // !id && window.history.back().back();
+    const isAdmin = location.href.includes('member') ? 'n' : (location.href.includes('manager') && 'y');
+
+    (!id && isAdmin === 'n') && (location.href = 'member.html');
+    (!id && isAdmin === 'y') && (location.href = 'manager.html');
 
     let userData = {};
     let currentDate;
+    $('.loading').addClass('active');
     api('detail', {'u_id': id}).then(function(data){
-        console.log(data);
-        const gender = data.data.gender === 'm' ? '남성' : '여성';
-        const year = data.data.birthday.substring(0, 4);
-        const month = data.data.birthday.substring(4, 6);
-        const day = data.data.birthday.substring(6, 8);
-        const birthday = `${year}년 ${month}월 ${day}일`;
-        $('[title="userName"]').html(data.data.name)
-        $('[title="gender"]').html(gender)
-        $('[title="birthday"]').html(birthday)
-        $('[title="join_date"]').html(dataChange('mobile', data.data.mobile))
 
-        $('input').each(function(){
-            const input = $(this);
-            const inputFormet = input.attr('data-formet');
-            const inputName = input.attr('name');
-            const apiData = (inputFormet !== 'time' ? {...data.data} : {...data.data.measurement_info})
-            if(!!input.attr('required')) {
-                userData[inputName] = apiData[inputName] !== null ?
-                                        apiData[inputName].replaceAll('-','').replaceAll(':','') :
-                                        '';
-                if(input[0].type !== 'radio'){
-                    $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));
+        if(data.result) {
+            const gender = data.data.gender === 'm' ? '남성' : '여성';
+            const year = data.data.birthday.substring(0, 4);
+            const month = data.data.birthday.substring(4, 6);
+            const day = data.data.birthday.substring(6, 8);
+            const birthday = `${year}년 ${month}월 ${day}일`;
+            $('[title="userName"]').html(data.data.name)
+            $('[title="gender"]').html(gender)
+            $('[title="birthday"]').html(birthday)
+            $('[title="join_date"]').html(dataChange('mobile', data.data.mobile))
+
+            $('input').each(function(){
+                const input = $(this);
+                const inputFormet = input.attr('data-formet');
+                const inputName = input.attr('name');
+                const apiData = (inputFormet !== 'time' ? {...data.data} : {...data.data.measurement_info})
+                if(!!input.attr('required')) {
+                    userData[inputName] = apiData[inputName] !== null ?
+                                            apiData[inputName].replaceAll('-','').replaceAll(':','') :
+                                            '';
+                    if(input[0].type !== 'radio'){
+                        $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));
+                    }
+                    if(input[0].type === 'radio') {
+                        $(`input[name="${inputName}"]#${data.data[inputName]}`).prop("checked", true);
+                    }
                 }
-                if(input[0].type === 'radio') {
-                    $(`input[name="${inputName}"]#${data.data[inputName]}`).prop("checked", true);
-                }
-            }
-            
-            currentDate = {...userData}
-    
-            input.on('input', function(){
-                const value = input.val()
-                if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
-                    $(this).parent().removeClass('error')
-                    userData[inputName] = value;
-                } else {
-                    $(this).parent().addClass('error');
-                    userData[inputName] = '';
-                }
-                input.hasClass('error') && input.removeClass('error');
-            })
-        });
+                
+                currentDate = {...userData}
+        
+                input.on('input', function(){
+                    const value = input.val()
+                    if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
+                        $(this).parent().removeClass('error')
+                        userData[inputName] = value;
+                    } else {
+                        $(this).parent().addClass('error');
+                        userData[inputName] = '';
+                    }
+                    input.hasClass('error') && input.removeClass('error');
+                })
+            });
+            $('.loading').removeClass('active');
+        }
     })
    
     
@@ -503,7 +529,7 @@ function manageUpdateForm() {
         } else {
             $(`input[name="${inputName}"]`).val(dataChange(inputFormet, currentDate[inputName]));
         }
-        const isAdmin = location.href.includes('member') ? 'n' : (location.href.includes('manager') && 'y')
+        
         api('update',{admin_yn: isAdmin, [inputName]: currentDate[inputName], u_id: id}).then(function(data){
             // console.log(data);
         })
