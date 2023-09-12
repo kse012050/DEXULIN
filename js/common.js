@@ -1,5 +1,5 @@
 import api from './api.js'
-import {inputValidation, dataValidation} from './validation.js'
+import {inputValidation, dataValidation, dataChange} from './validation.js'
 
 function styleIdx(){
     const selector = $('[data-styleIdx]');
@@ -316,11 +316,11 @@ function manager(){
                     <label for="chk${i}"></label>
                 </div>
                 <span>${data.name}</span>
-                <span>${data.birthday.replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")}</span>
+                <span>${dataChange('date', data.birthday)}</span>
                 <span>${data.email !== null ? data.email : ''}</span>
-                <span>${data.mobile.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}</span>
+                <span>${dataChange('mobile', data.mobile)}</span>
                 <div>
-                    <a href="manager-detail.html">상세</a>
+                    <a href="manager-detail.html?userId=${data.user_id}">상세</a>
                 </div>
             <tr>
             `
@@ -382,8 +382,7 @@ function manageRegistForm() {
     })
 }
 
-
-function manageUpdateForm() {
+function manageUpdateForm() {  
     const urlParams = new URL(location.href).searchParams;
     const id = urlParams.get("userId");
     // !id && window.history.back().back();
@@ -400,7 +399,7 @@ function manageUpdateForm() {
         $('[title="userName"]').html(data.data.name)
         $('[title="gender"]').html(gender)
         $('[title="birthday"]').html(birthday)
-        $('[title="join_date"]').html(data.data.mobile.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"))
+        $('[title="join_date"]').html(dataChange('mobile', data.data.mobile))
 
         $('input').each(function(){
             const input = $(this);
@@ -410,10 +409,9 @@ function manageUpdateForm() {
             if(!!input.attr('required')) {
                 userData[inputName] = apiData[inputName] !== null ?
                                         apiData[inputName].replaceAll('-','').replaceAll(':','') :
-                                        undefined;
+                                        '';
                 if(input[0].type !== 'radio'){
-                    $(`input[name="${inputName}"]`).val(
-                        apiData[inputName] ? apiData[inputName].replaceAll('-','.').replaceAll(':',' : ') : '');
+                    $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));
                 }
                 if(input[0].type === 'radio') {
                     $(`input[name="${inputName}"]#${data.data[inputName]}`).prop("checked", true);
@@ -426,17 +424,12 @@ function manageUpdateForm() {
                 const value = input.val()
                 if(inputValidation(inputFormet, value) || input[0].type === 'radio') {
                     $(this).parent().removeClass('error')
-                    data[input.attr('name')] = value;
+                    userData[inputName] = value;
                 } else {
                     $(this).parent().addClass('error');
-                    data[input.attr('name')] = '';
+                    userData[inputName] = '';
                 }
                 input.hasClass('error') && input.removeClass('error');
-    
-                const dataResult = Object.entries(data).every(function([key, value]) {
-                    return !!value
-                })
-                $('[data-btn="fin"]').attr('disabled', !dataResult)
             })
         });
     })
@@ -452,69 +445,52 @@ function manageUpdateForm() {
         e.preventDefault();
         const div = $(this).parent().parent();
         const input = $(this).parent().siblings('input');
+        const inputFormet = input.attr('data-formet')
         div.addClass('update');
         input.attr('disabled', false).focus();
-        if(input.attr('data-formet') === 'date') {
-            input.val(input.val().replace(/\D/g, ""))
-        }
-        if(input.attr('data-formet') === 'time') {
+        if(inputFormet === 'date' || inputFormet === 'time' || inputFormet === 'mobile') {
             input.val(input.val().replace(/\D/g, ""))
         }
     })
     
     $('.cancel').click(function(e){
         e.preventDefault();
-        const input = $(this).parent().siblings('input');
         const div = $(this).parent().parent();
+        const input = $(this).parent().siblings('input');
+        const inputFormet = input.attr('data-formet');
+        const inputName = input.attr('name');
         input.attr('disabled', true)
         div.removeClass('error').removeClass('update')
         if(input[0].type === 'radio'){
-            input.prop("checked", false);
-            input.each(function(){
-                console.log($(this).attr('id') === currentDate[input.attr('name')]);
-                $(this).attr('id') === currentDate[input.attr('name')] && $(this).prop("checked", true);
-            })
+            input.siblings(`#${currentDate[inputName]}`).prop("checked", true)
+        } else {
+            $(`input[name="${inputName}"]`).val(dataChange(inputFormet, currentDate[inputName]));
         }
-        if(input.attr('data-formet') === 'date') {
-            input.val(currentDate[input.attr('name')].replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3"));
-            return
-        }
-        if(input.attr('data-formet') === 'time') {
-            console.log(currentDate[input.attr('name')]);
-            input.val(currentDate[input.attr('name')].replace(/(\d{2})(\d{2})/, "$1 : $2"));
-            return
-        }
-        input.val(currentDate[input.attr('name')])
     })
     
     $('.confirm').click(function(e){
         e.preventDefault();
         const div = $(this).parent().parent();
         const input = $(this).parent().siblings('input');
-        currentDate[input.attr('name')] = input.val();
+        const inputFormet = input.attr('data-formet');
+        const inputName = input.attr('name');
+        currentDate[inputName] = input.val();
         div.removeClass('error').removeClass('update')
         input.attr('disabled', true)
-        if(input.attr('data-formet') === 'date') {
-            input.val(input.val().replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3"));
-            return;
+        if(input[0].type === 'radio'){
+            input.siblings(`#${currentDate[inputName]}`).prop("checked", true)
+        } else {
+            $(`input[name="${inputName}"]`).val(dataChange(inputFormet, currentDate[inputName]));
         }
-        if(input.attr('data-formet') === 'time') {
-            input.val(input.val().replace(/(\d{2})(\d{2})/, "$1 : $2"));
-            return
-        }
+        const isAdmin = location.href.includes('member') ? 'n' : (location.href.includes('manager') && 'y')
+        api('update',{admin_yn: isAdmin, [inputName]: dataChange('time', currentDate[inputName]), u_id: id}).then(function(data){
+            // console.log(data);
+        })
     })
 
     $('input[type="reset"]').click(function(){
         $('[data-btn="fin"]').attr('disabled', true)
         $('.popup').removeClass('active');
-    })
-
-    $('.back').click(function(){
-        !$(this).attr('data-popupOpen') && history.go(-1);
-        // 값 비교
-        /* const result = Object.entries(data).every(function([key, value]) {
-            return value === currentDate[key]
-        }) */
     })
 }
 
@@ -530,5 +506,17 @@ function popup(){
     });
     $('.popup > div').click(function(e){
         e.stopPropagation();
+    })
+    $('input[type="reset"]').click(function(){
+        $('.popup').removeClass('active');
+        $('.manageForm ul li div').removeClass('error')
+    })
+
+    $('.back').click(function(){
+        !$(this).attr('data-popupOpen') && history.go(-1);
+        // 값 비교
+        /* const result = Object.entries(data).every(function([key, value]) {
+            return value === currentDate[key]
+        }) */
     })
 }

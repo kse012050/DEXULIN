@@ -57,7 +57,20 @@ function dataValidation(type, value){
     return Object.keys(dataValidationMap).includes(type) && dataValidationMap[type](value);
 }
 
-function a(){console.log('a');}
-function b(){console.log('b');}
+const dataChangeMap = {
+    mobile(value) {
+        return value.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+    },
+    date(value) { 
+        return value.replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")
+    },
+    time(value) { 
+        return value.replace(/(\d{2})(\d{2})/, "$1 : $2")
+    }
+}
 
-export {inputValidation, dataValidation}
+function dataChange(type, value) {
+    return dataChangeMap[type] ? dataChangeMap[type](value) : value;
+}
+
+export {inputValidation, dataValidation, dataChange}
