@@ -94,19 +94,20 @@
 .memberDetailPage .tabArea li.active a{font-weight: 700; background-color: transparent; border: none; border-top: 3px solid var(--purple);}
 /* 운동기록, 측정기록- 회원 상세 */
 .typeArea{display: flex; align-items: center; gap: 12px; margin-bottom: 60px;}
-.typeArea li{font-size: 20px; font-weight: 500; color: var(--dark-2); /* line-height: 42px; */ padding: 11px 19px; background-color: var(--dark-7); border: 1px solid var(--dark-6); border-radius: 30px; cursor: pointer;}
-.typeArea li.active{color: var(--purple); background-color: var(--purple-lighten); border-color: var(--purple);}
-.memberDetailPage .boardBox :is(.boardTitle, ol li) > *{width: 170.28px; flex-shrink: 0;}
+.typeArea li a{font-size: 20px; font-weight: 500; color: var(--dark-2); /* line-height: 42px; */ padding: 11px 19px; background-color: var(--dark-7); border: 1px solid var(--dark-6); border-radius: 30px; cursor: pointer;}
+.typeArea li.active a{color: var(--purple); background-color: var(--purple-lighten); border-color: var(--purple);}
 .memberDetailPage .boardBox ol li [data-none]::after{content: '없음'; color: var(--dark-5); text-indent: 0;}
 .memberDetailPage .boardBox ol li [data-not]{color: var(--red);}
 /* 운동기록 - 회원 상세 */
+.memberDetailPage .boardBox.workOut :is(.boardTitle, ol li) > *{flex: 1; flex-shrink: 0;}
 .memberDetailPage .boardBox.workOut ol ~ ol{border-top: 2px solid var(--dark-6);}
 .memberDetailPage .boardBox.workOut ol li div:nth-child(2){display: flex; align-items: center;}
 .memberDetailPage .boardBox.workOut ol li div:nth-child(2)::before{content: attr(data-time); height: 28px; aspect-ratio: 1; font-size: 16px; font-weight: 500; color: var(--purple); display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-left: 16px;}
 .memberDetailPage .boardBox.workOut ol li div:nth-child(2)[data-time]::before{background-color: var(--purple-lighten);}
-.memberDetailPage .boardBox.workOut ol li div:nth-child(2) span{width: 110.29px; text-align: center;}
+.memberDetailPage .boardBox.workOut ol li div:nth-child(2) > *{width: 110.29px; text-align: center;}
 /* 측정기록- 회원 상세 */
 .memberDetailPage .boardBox.measure :is(.boardTitle, ol li) :last-child{margin-left: auto;}
+.memberDetailPage .boardBox.measure :is(.boardTitle, ol li) > *{width: 170.28px; flex-shrink: 0;}
 
 
 /* 관리자 상세 */

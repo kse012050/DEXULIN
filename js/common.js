@@ -32,6 +32,7 @@ $(document).ready(function(){
     // 파일 업로드
     $('.exercisePage').length && exercisePage();
 
+    // 기록 다운로드
     $('.downloadPage').length && downloadPage();
 
     // 회원 페이지
@@ -45,7 +46,9 @@ $(document).ready(function(){
     $('.manageForm[data-type="regist"]').length && manageRegistForm();
     // 회원, 관리자 상세 수정
     $('.manageForm[data-type="update"]').length && manageUpdateForm();
-    // 회원 상세 측정기록
+    // 회원 상세 - 운동기록
+    $('.memberDetailPage .boardBox.workOut').length && memberDetailWorkOut();
+    // 회원 상세 - 측정기록
     $('.memberDetailPage .boardBox.measure').length && memberDetailMeasure();
 
     // 팝업
@@ -236,6 +239,7 @@ function exercisePage(){
     });
 }
 
+// 기록 다운로드
 function downloadPage(){
     api('record_download').then(function(data){
         data.result && $('[data-download]').attr('href', data.data.file_url)
@@ -580,13 +584,73 @@ function manageUpdateForm() {
     })
 }
 
+// 회원 상세 - 운동기록
+function memberDetailWorkOut(){
+    let {userId, page, filters} = urlParam()
+    page || (page = 1);
+    filters || (filters = 'yyyyy')
+
+    $('.loading').addClass('active');
+    typeLink(userId, filters);
+    Api_workOut(filters);
+
+    function insertData(data){
+        let htmlContent = '';
+        let currentDate = '';
+        data.forEach(function(data){
+            (currentDate && currentDate !== data.measurement_date) && (htmlContent += `</ol>`);
+            currentDate !== data.measurement_date &&(htmlContent += `<ol>`);
+            htmlContent += `<li>
+                                <span>${currentDate !== data.measurement_date ? data.measurement_date : ''}</span>
+                                <div ${data.measurement_type.includes('ae') ? 
+                                        (data.measurement_type === 'ae_m' ? 'data-time="아"' :
+                                            (data.measurement_type === 'ae_a' ? 'data-time="점"' : 'data-time="저"')
+                                            ) : ''}>
+                                    <span>식사시간</span>
+                                </div>
+                                <span>${data.start_date_time ? data.start_date_time : ''}</span>
+                                <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
+                                <span>진행시간</span>
+                                <span>${data.accuracy_value}</span>
+                                <span>${data.goal_value}</span>
+                                <span>${data.measurement_value}</span>
+                            </li>`;
+            (!currentDate || currentDate !== data.measurement_dat) && (currentDate = data.measurement_date);
+        })
+        htmlContent += '</ol>';
+        $('.boardBox.workOut ol').remove();
+        $('.boardBox.workOut .boardTitle').after(htmlContent);
+    }
+
+    function Api_workOut(filters) {
+        let Obj_filters = {}
+        for (var i = 0; i < filters.length; i++) {
+            var key = 'filter' + (i + 1);
+            Obj_filters[key] = filters[i];
+        }
+        api('exercise_recording', {u_id: userId, page, ...Obj_filters}).then(function(data){
+            if(data.result) {
+                insertData(data.list)
+                addPager(data.data.current_page, data.data.total_page)
+                $('.loading').removeClass('active');
+            }
+        })
+    }
+}
+
 // 회원 상세 - 측정기록
 function memberDetailMeasure() {
-    let {userId, page} = urlParam();
+    let {userId, page, filters} = urlParam();
+    let measurement_yn;
     page || (page = 1)
+    filters || (filters = 'yy')
     $('.loading').addClass('active');
-    api('measurement_recording', {u_id: userId, page}).then(function(data){
-        console.log(data);
+    typeLink(userId, filters);
+    measurement_yn = filters === 'yy' ? undefined : (filters === 'yn' ? 'y' : 'n');
+    $('.typeArea li a[href *= "filters=nn"]').click(function(e){
+        e.preventDefault();
+    })
+    api('measurement_recording', {u_id: userId, page, measurement_yn}).then(function(data){
         if(data.result) {
             insertData(data.list)
             addPager(data.data.current_page, data.data.total_page)
@@ -650,10 +714,12 @@ function urlParam(){
 
 // 페이저 추가
 function addPager(currentPage, totalPage) {
-    const {userId, page} = urlParam();
+    const {userId, page, filters} = urlParam();
+    $('.pagerBox').remove();
     if(!totalPage){return}
     let pageName = location.pathname.slice(1);
     userId && (pageName += `?userId=${userId}`)
+    filters && (pageName += `?filters=${filters}`)
     let htmlContent = '';
     htmlContent += `<div class="pagerBox" data-styleIdx="a">
                         <a href="${pageName}?page=${1}" ${currentPage !== 1 ? 'class="active"' : ''}>맨 앞 페이지로 이동</a>
@@ -671,5 +737,17 @@ function addPager(currentPage, totalPage) {
 
     $('.pagerBox > a:not(.active)').click(function(e){
         e.preventDefault();
+    })
+}
+
+function typeLink(userId, filters){
+    $('.typeArea li').each(function(i){
+        filters[i] === 'y' && $(this).addClass('active');
+        let addFilters = filters.split('')
+        addFilters[i] = addFilters[i] !== 'y' ? 'y' : 'n';
+        addFilters = addFilters.join('')
+        
+        const link = location.pathname.slice(1) + `?userId=${userId}?filters=${addFilters}`;
+        $(this).children('a').attr('href', link)
     })
 }
