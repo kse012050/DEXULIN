@@ -70,6 +70,8 @@ function isToken(){
 
 // 로그인
 function signInPage() {
+    sessionStorage.removeItem('token');
+
     const data = {};
     let dataResult = false;
     $('input').each(function(){
@@ -248,8 +250,8 @@ function downloadPage(){
 
 // 회원 페이지
 function member() {
-    let { page } = urlParam()
-    page || (page = 1)
+    let { page, search} = urlParam();
+    page || (page = 1);
 
     $('body').click(function(){
         $('.searchArea div').html('');
@@ -260,20 +262,10 @@ function member() {
     })
 
     if($('.boardBox').length) {
-        let data = {admin_yn: 'n', page}
-        const boardAttr = $('.boardBox').attr('data-board');
-        boardAttr && (data = {...data, assign_group: boardAttr})
-        $('.loading').addClass('active');
-        api('list', data).then(function(data){
-            if(data.result) {
-                insertData(data.list)
-                addPager(data.data.current_page, data.data.total_page)
-                $('.loading').removeClass('active');
-            }
-        })
+        api_list(page, search);
     }
 
-    $('.searchArea input[type="search"]').on('input', function(){
+    $('.searchArea input[type="search"]').on('input', function(e){
         const firstName = $(this).val();
         firstName === '' ? $(this).siblings('button').removeClass('active') : $(this).siblings('button').addClass('active')
         searchEvent($(this))
@@ -289,14 +281,40 @@ function member() {
         }
     })
 
-    $('.searchArea button').click(function(){
+    $('.searchArea input[type="search"]').on('keydown',function(e){
+        if(e.keyCode === 13){
+            const searchValue = $(this).val();
+            let link = location.href;
+            link.includes('?search=') ? 
+                (link = link.replace(`?search=${search}`,`?search=${searchValue}`)) :
+                link += `?search=${searchValue}`;
+            link.includes('?page=') && (link = link.replace(`?page=${page}`, ''));
+            location.href = link;
+        }
+    })
+
+    $('.searchArea button').click(function(e){
         if($(this).hasClass('active')){
             $('.searchArea input[type="search"]').val('');
             $('.searchArea input[type="search"]').focus();
             $(this).siblings('div').html('')
         }
     })
-
+    
+    function api_list(page, search){
+        let data = {admin_yn: 'n', page}
+        const boardAttr = $('.boardBox').attr('data-board');
+        boardAttr && (data = {...data, assign_group: boardAttr})
+        search && (data = {...data, search: decodeURIComponent(search)});
+        $('.loading').addClass('active');
+        api('list', data).then(function(data){
+            if(data.result) {
+                insertData(data.list)
+                addPager(data.data.current_page, data.data.total_page)
+                $('.loading').removeClass('active');
+            }
+        })
+    }
    
     function insertData(data){
         let htmlContent = '';
@@ -326,8 +344,31 @@ function member() {
     }
 
     function searchEvent(select){
-        const firstName = select.val();
-        const searchData = testData2.filter((value)=> value.name.startsWith(select.val()));
+        const searchValue = select.val();
+        api('list_search', {admin_yn: 'n', search: searchValue}).then(function(data){
+            if(!data.result){
+                $(this).siblings('div').html('')
+                return
+            }
+            const searchData = data.list;
+            let htmlContent = '';
+            searchData.forEach(function(data){
+                const userName = data.name;
+                const nameFirstIdx = data.name.indexOf(searchValue);
+                const nameLastIdx = nameFirstIdx + searchValue.length;
+                htmlContent += `
+                <li data-id="${data.id}">
+                    <span>${userName.slice(0, nameFirstIdx)}<mark>${searchValue}</mark>${userName.slice(nameLastIdx)}</span>
+                    <span>${data.assign_group === 'clinical' ? '인조군' : '대조군'}</span>
+                    <span>${data.gender === 'm' ? '남성' : '여성'}</span>
+                    <span>${dataChange('date', data.birthday)}</span>
+                    <span>${dataChange('mobile', data.mobile)}</span>
+                </li>
+                `
+            })
+            searchData.length && select.siblings('div').html(`<ul>${htmlContent}</ul>`)
+        })
+       /*  const searchData = testData2.filter((value)=> value.name.startsWith(select.val()));
         let htmlContent = '';
         searchData.forEach(function(data){
             htmlContent += `
@@ -346,7 +387,7 @@ function member() {
             const clickData = testData2.filter((value)=> value.id == $(this).attr('data-id'));
             insertData(clickData)
             $('.searchArea div').html('');
-        })
+        }) */
         
     }
 }
@@ -660,7 +701,7 @@ function memberDetailMeasure() {
 
     function insertData(data){
         let htmlContent = '';
-        data.forEach(function(data, i){
+        data.forEach(function(data){
             htmlContent += `
             <li>
                 <span>${data.measurement_date.replaceAll('-', '.')}</span>
@@ -714,12 +755,13 @@ function urlParam(){
 
 // 페이저 추가
 function addPager(currentPage, totalPage) {
-    const {userId, page, filters} = urlParam();
+    const {userId, page, filters, search} = urlParam();
     $('.pagerBox').remove();
     if(!totalPage){return}
-    let pageName = location.pathname.slice(1);
+    let pageName = location.pathname.split('/').at(-1);
     userId && (pageName += `?userId=${userId}`)
     filters && (pageName += `?filters=${filters}`)
+    search && (pageName += `?search=${search}`)
     let htmlContent = '';
     htmlContent += `<div class="pagerBox" data-styleIdx="a">
                         <a href="${pageName}?page=${1}" ${currentPage !== 1 ? 'class="active"' : ''}>맨 앞 페이지로 이동</a>
@@ -740,6 +782,7 @@ function addPager(currentPage, totalPage) {
     })
 }
 
+// 타입 링크 - 회원 상세 - 운동 기록, 측정 기록 페이지 사용
 function typeLink(userId, filters){
     $('.typeArea li').each(function(i){
         filters[i] === 'y' && $(this).addClass('active');
@@ -747,7 +790,7 @@ function typeLink(userId, filters){
         addFilters[i] = addFilters[i] !== 'y' ? 'y' : 'n';
         addFilters = addFilters.join('')
         
-        const link = location.pathname.slice(1) + `?userId=${userId}?filters=${addFilters}`;
+        const link = location.pathname.split('/').at(-1) + `?userId=${userId}?filters=${addFilters}`;
         $(this).children('a').attr('href', link)
     })
 }
