@@ -14,6 +14,7 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .errorMessage{display: none; font-size: 16px; font-weight: 500; color: var(--red); margin-top: 16px;}
 
 .manageForm{}
+.manageForm legend{font-size: 32px; line-height: 36px; font-weight: 700; margin-bottom: 60px;}
 .manageForm ul{display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: 48px;}
 .manageForm ul li{width: 492px; font-size: 20px;}
 .manageForm ul li > label{display: block; font-weight: 700; line-height: 24px; color: var(--dark-4); margin-bottom: 8px;}
@@ -45,14 +46,15 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 
 
 /* 팝업 */
-body:has(.popup.active){overflow: hidden;}
-.popup{display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); justify-content: center; align-items: center; z-index: 101;}
-.popup.active{display: flex;}
+body:has([class*="popup"].active){overflow: hidden;}
+[class*="popup"]{display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); justify-content: center; align-items: center; z-index: 101;}
+[class*="popup"].active{display: flex;}
 .popup > div{width: 414px; padding: 32px; box-sizing: border-box; background-color: white; border-radius: var(--borderRadius);}
 .popup > div strong{display: block; font-size: 24px; font-weight: 700; line-height: 36px; margin-bottom: 12px;}
 .popup > div p{font-size: 20px; font-weight: 400; line-height: 28px; color: var(--dark-4);}
 .popup > div p:last-of-type{margin-bottom: 64px;}
 .popup > div div{display: flex; justify-content: flex-end; align-items: center; gap: 16px;}
+.popup-regist > div{background-color: white; width: 1112px; padding: 40px; box-sizing: border-box; border-radius: 20px;}
 
 
 /* 버튼 */
@@ -71,7 +73,7 @@ body:has(.popup.active){overflow: hidden;}
 
 
 /* 페이지 가로 크기 */
-[class$="Page"]{width: var(--contentWidth); margin-inline: auto; padding-block: 60px;}
+[class$="Page"]{width: var(--contentWidth); margin-inline: auto; margin-block: 60px;}
 /* 로그인 페이지 */
 .signInPage{max-width: 392px;}
 
@@ -109,7 +111,7 @@ body:has(.popup.active){overflow: hidden;}
 .boardBox{font-size: 20px; line-height: 60px; text-align: center;}
 .boardBox :is(.boardTitle, ol li){display: flex;}
 .boardBox :is(.boardTitle, ol li) div input[type="checkbox"]{display: none;}
-.boardBox > :is(.boardTitle, ol li) > *{}
+.boardBox > ol li > *{white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 .boardBox .boardTitle{font-weight: 700; background-color: var(--dark-7); border-width: 1px 0; border-style: solid; border-color: var(--dark-3);}
 .boardBox ol{font-weight: 400; color: var(--dark-2);}
 .boardBox ol li{border-bottom: 1px solid var(--dark-6);}

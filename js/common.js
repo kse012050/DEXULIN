@@ -649,12 +649,12 @@ function memberDetailWorkOut(){
                                             ) : ''}>
                                     <span>식사시간</span>
                                 </div>
-                                <span>${data.start_date_time ? data.start_date_time : ''}</span>
+                                <span ${data.start_date_time === null ? 'data-none' : ''}>${data.start_date_time ? data.start_date_time : ''}</span>
                                 <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
-                                <span>진행시간</span>
-                                <span>${data.accuracy_value}</span>
-                                <span>${data.goal_value}</span>
-                                <span>${data.measurement_value}</span>
+                                <span>${!data.measurement_type.includes('ae') ? '진행시간' : ''}</span>
+                                <span ${(data.accuracy_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.accuracy_value && !data.measurement_type.includes('ae')) ? data.accuracy_value : ''}</span>
+                                <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value : ''}</span>
+                                <span ${data.measurement_value === null ? 'data-none' : ''}>${data.measurement_value ? data.measurement_value : ''}</span>
                             </li>`;
             (!currentDate || currentDate !== data.measurement_dat) && (currentDate = data.measurement_date);
         })
@@ -726,7 +726,11 @@ function popup(){
         e.preventDefault();
         $('.popup').removeClass('active');
     });
-    $('.popup > div').click(function(e){
+    $('.popup-regist').click(function(e){
+        e.preventDefault();
+        $('.popup-regist').removeClass('active');
+    });
+    $('[class*="popup"] > div').click(function(e){
         e.stopPropagation();
     })
     $('input[type="reset"]').click(function(){
