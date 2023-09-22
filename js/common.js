@@ -243,8 +243,12 @@ function exercisePage(){
 
 // 기록 다운로드
 function downloadPage(){
+    $('.loading').addClass('active');
     api('record_download').then(function(data){
-        data.result && $('[data-download]').attr('href', data.data.file_url)
+        if(data.result) {
+            $('[data-download]').attr('href', data.data.file_url)
+            $('.loading').removeClass('active');
+        }
     })
 }
 
@@ -726,7 +730,7 @@ function popup(){
         e.preventDefault();
         $('.popup').removeClass('active');
     });
-    $('.popup-regist').click(function(e){
+    $('.popup-regist, [data-popupRegistClose]').click(function(e){
         e.preventDefault();
         $('.popup-regist').removeClass('active');
     });

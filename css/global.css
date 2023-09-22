@@ -54,7 +54,8 @@ body:has([class*="popup"].active){overflow: hidden;}
 .popup > div p{font-size: 20px; font-weight: 400; line-height: 28px; color: var(--dark-4);}
 .popup > div p:last-of-type{margin-bottom: 64px;}
 .popup > div div{display: flex; justify-content: flex-end; align-items: center; gap: 16px;}
-.popup-regist > div{background-color: white; width: 1112px; padding: 40px; box-sizing: border-box; border-radius: 20px;}
+.popup-regist > div{background-color: white; width: 1112px; padding: 40px; box-sizing: border-box; border-radius: 20px; position: relative;}
+.popup-regist > div > button[data-popupRegistClose]{position: absolute; right: 40px; top: 40px; width: 36px; aspect-ratio: 1; background: url('../images/icon-x.png') no-repeat center / cover; text-indent: -9999px;}
 
 
 /* 버튼 */
