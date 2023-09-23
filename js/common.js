@@ -38,7 +38,7 @@ $(document).ready(function(){
     // 회원 페이지
     $('.memberPage').length && member();
     // 관리자 페이지
-    $('[class^="manager"][class$="Page"]').length && manager();
+    $('.managerPage').length && manager();
 
     // 회원, 관리자 상세 상단 정보
     $('[class*="Detail"]').length && detailTopInfo();
@@ -246,8 +246,13 @@ function downloadPage(){
     $('.loading').addClass('active');
     api('record_download').then(function(data){
         if(data.result) {
-            $('[data-download]').attr('href', data.data.file_url)
-            $('.loading').removeClass('active');
+            $('[data-download="xlsx"]').attr('href', data.data.file_url)
+            api('measurement_download').then(function(data){
+                if(data.result) {
+                    $('[data-download="record"]').attr('href', data.data.file_url)
+                    $('.loading').removeClass('active');
+                }
+            })
         }
     })
 }
@@ -398,11 +403,12 @@ function member() {
 
 // 관리자 페이지
 function manager(){
+    let activeArray = []
     let { page } = urlParam()
     page || (page = 1)
 
     if($('.boardBox').length) {
-        let data = {admin_yn: 'y', limit: 10}
+        let data = {admin_yn: 'y', page}
         $('.loading').addClass('active');
         api('list', data).then(function(data){
             if(data.result) {
@@ -419,8 +425,8 @@ function manager(){
             htmlContent += `
             <li>
                 <div>
-                    <input type="checkbox" id="chk${i}">
-                    <label for="chk${i}"></label>
+                    <input type="checkbox" id="${data.user_id}" ${data.activie_yn === 'n' ? 'disabled' : ''}>
+                    <label for="${data.user_id}"></label>
                 </div>
                 <span>${data.name}</span>
                 <span>${dataChange('date', data.birthday)}</span>
@@ -434,7 +440,42 @@ function manager(){
         })
     
         $('.managerPage .boardBox ol').html(htmlContent);
+        $('.boardBox ol input[type="checkbox"]').on('change',function(){
+            if($(this).is(':checked')){
+                activeArray.push({u_id: $(this).attr('id'), activie_yn: 'n', admin_yn: 'y'})
+            }else{
+                activeArray = activeArray.filter((value)=>value.u_id !== $(this).attr('id'))
+            }
+            isCheckAll();
+        })
+        !$('.boardBox ol input[type="checkbox"]:not(:disabled)').length && $('[data-check="all"]').prop("disabled", true);
+        $('[data-check="all"]').on('change',function(){
+            $('.boardBox ol input[type="checkbox"]').prop("checked", $(this).is(':checked'));
+            activeArray = [];
+            if($(this).is(':checked')){
+                $('.boardBox ol input[type="checkbox"]:not(:disabled)').each(function(){
+                    activeArray.push({u_id: $(this).attr('id'), activie_yn: 'n', admin_yn: 'y'})
+                })
+            }
+            isCheckAll();
+        })
     }
+
+    function isCheckAll(){
+        activeArray.length ? 
+            $('[data-popupOpen="disabled"]').prop("disabled", false) :
+            $('[data-popupOpen="disabled"]').prop("disabled", true);
+        $('[data-check="all"]').prop("checked", activeArray.length === $('.boardBox ol input[type="checkbox"]:not(:disabled)').length);
+        $('[data-totalPeople]').html(activeArray.length)
+    }
+
+    $('[data-disabled]').click(function(){
+        activeArray.forEach((value)=>{
+            api('update',value).then(function(data){
+                location.reload();
+            })
+        })
+    })
 }
 
 // 회원, 관리자 상세 등록
@@ -463,6 +504,7 @@ function manageRegistForm() {
                 data[input.attr('name')] = '';
             }
             input.hasClass('error') && input.removeClass('error');
+            $(`[data-error="${input.attr('name')}"]`).removeClass('active');
 
             const dataResult = Object.entries(data).every(function([key, value]) {
                 return !!value
@@ -483,6 +525,11 @@ function manageRegistForm() {
         type === 'admin' && (data = {...data, 'admin_yn': 'y'});
         // data = {...data, 'admin_yn': 'n'};
         api('insert', data).then(function(data){
+            if(!data.result){
+                $('[data-error="mobile"]').addClass('active');
+                $('.popup').removeClass('active');
+                $('[name="mobile"]').val('').focus();
+            }
             (data.result && type === 'user') && (location.href = 'member.html');
             (data.result && type === 'admin') && (location.href = 'manager.html');
         })
@@ -522,6 +569,10 @@ function manageUpdateForm() {
     $('.loading').addClass('active');
     api('detail', {'u_id': id}).then(function(data){
         if(data.result) {
+            if($('.managerDetailPage').length){
+                data.data.activie_yn === 'y' && $('.finBtn .btn-red').addClass('active')
+                data.data.activie_yn === 'n' && $('.finBtn .btn-purple').addClass('active')
+            }
             $('input').each(function(){
                 const input = $(this);
                 const inputFormet = input.attr('data-formet');
@@ -625,6 +676,22 @@ function manageUpdateForm() {
         api('delete', {u_id: id}).then(function(data){
             data.result && (location.href = 'member.html');
             $('.popup').removeClass('active');
+        })
+    })
+
+    // 비활성화 버튼
+    $('[data-disabled]').click(function(e){
+        e.preventDefault();
+        api('update',{u_id: id, activie_yn: 'n', admin_yn: 'y'}).then(function(data){
+            data.result && location.reload();
+        })
+    })
+    
+    // 활성화 버튼
+    $('[data-active]').click(function(e){
+        e.preventDefault();
+        api('update',{u_id: id, activie_yn: 'y', admin_yn: 'y'}).then(function(data){
+            data.result && location.reload();
         })
     })
 }
@@ -733,14 +800,26 @@ function popup(){
         const popupName = $(this).attr('data-popupOpen');
         $(`[data-popup="${popupName}"]`).addClass('active');
     })
+
+    // 팝업
     $('.popup, [data-popupClose]').click(function(e){
         e.preventDefault();
         $('.popup').removeClass('active');
     });
+
+    // 등록 팝업
     $('.popup-regist, [data-popupRegistClose]').click(function(e){
         e.preventDefault();
         $('.popup-regist').removeClass('active');
     });
+
+    // 등록 팝업 닫기
+    $('[data-popupCloseAll]').click(function(){
+        $('.popup, .popup-regist').removeClass('active');
+        $('.manageForm ul li div').removeClass('error')
+        $('.manageForm ul li div input[type="text"]').val('');
+        $('[data-error]').removeClass('active');
+    })
     $('[class*="popup"] > div').click(function(e){
         e.stopPropagation();
     })

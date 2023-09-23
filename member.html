@@ -173,6 +173,7 @@
                                     <button class="valueDelete">입력 값 제거</button>
                                 </div>
                                 <small>숫자만 입력해주세요! ex 01099990000</small>
+                                <small data-error="mobile">이미 등록되어 있는 휴대폰 번호입니다.</small>
                             </li>
                             <li>
                                 <label for="join_date">가입일</label>
@@ -220,7 +221,17 @@
                         </div>
                     </fieldset>
                 </form>
-                <button data-popupRegistClose>팝업 닫기</button>
+                <button data-popupOpen="close">팝업 닫기</button>
+                <div class="popup" data-popup="close" data-popupClose>
+                    <div>
+                        <strong>등록을 취소하시겠습니까?</strong>
+                        <p>등록이 완료되지 않았어요!</p>
+                        <div>
+                            <button class="btn-basic" data-popupClose>취소</button>
+                            <button class="btn-red" data-popupCloseAll>닫기</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

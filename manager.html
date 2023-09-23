@@ -51,10 +51,23 @@
     <section class="managerPage">
         <h2>관리자 리스트</h2>
         <button class="btn-basic" data-popupOpen="disabled" disabled>선택 비활성화</button>
+
+        <div class="popup" data-popup="disabled" data-popupClose>
+            <div>
+                <strong>회원을 비활성화 하시겠어요?</strong>
+                <p>총 <span data-totalPeople></span>명의 회원을 선택했어요.</p>
+                <p>언제든 다시 활성화 할 수 있어요!</p>
+                <div>
+                    <button class="btn-basic" data-popupClose>취소</button>
+                    <button class="btn-red" data-disabled>비활성화하기</button>
+                </div>
+            </div>
+        </div>
+
         <div class="boardBox">
             <div class="boardTitle">
                 <div>
-                    <input type="checkbox" id="chk01">
+                    <input type="checkbox" id="chk01" data-check="all">
                     <label for="chk01"></label>
                 </div>
                 <span>이름</span>
@@ -185,6 +198,7 @@
                                     <button class="valueDelete">입력 값 제거</button>
                                 </div>
                                 <small>숫자만 입력해주세요! ex 01099990000</small>
+                                <small data-error="mobile">이미 등록되어 있는 휴대폰 번호입니다.</small>
                             </li>
                             <li>
                                 <label for="join_date">가입일</label>
@@ -229,19 +243,16 @@
                         </div>
                     </fieldset>
                 </form>
-                <button data-popupRegistClose>팝업 닫기</button>
-            </div>
-        </div>
-
-        
-        <div class="popup" data-popup="disabled" data-popupClose>
-            <div>
-                <strong>회원을 비활성화 하시겠어요?</strong>
-                <p>총 3명의 회원을 선택했어요.</p>
-                <p>언제든 다시 활성화 할 수 있어요!</p>
-                <div>
-                    <button class="btn-basic" data-popupClose>취소</button>
-                    <button class="btn-red">비활성화하기</button>
+                <button data-popupOpen="close">팝업 닫기</button>
+                <div class="popup" data-popup="close" data-popupClose>
+                    <div>
+                        <strong>등록을 취소하시겠습니까?</strong>
+                        <p>등록이 완료되지 않았어요!</p>
+                        <div>
+                            <button class="btn-basic" data-popupClose>취소</button>
+                            <button class="btn-red" data-popupCloseAll>닫기</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
