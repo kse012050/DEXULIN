@@ -651,14 +651,17 @@ function memberDetailWorkOut(){
                                         (data.measurement_type === 'ae_m' ? 'data-time="아"' :
                                             (data.measurement_type === 'ae_a' ? 'data-time="점"' : 'data-time="저"')
                                             ) : ''}>
-                                    <span>식사시간</span>
+                                    <span ${data.eat_time === null ? 'data-none' : ''}>${data.eat_time ? data.eat_time : ''}</span>
                                 </div>
                                 <span ${data.start_date_time === null ? 'data-none' : ''}>${data.start_date_time ? data.start_date_time : ''}</span>
                                 <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
                                 <span>${!data.measurement_type.includes('ae') ? '진행시간' : ''}</span>
                                 <span ${(data.accuracy_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.accuracy_value && !data.measurement_type.includes('ae')) ? data.accuracy_value : ''}</span>
                                 <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value : ''}</span>
-                                <span ${data.measurement_value === null ? 'data-none' : ''}>${data.measurement_value ? data.measurement_value : ''}</span>
+                                <span ${data.measurement_value === null ? 'data-none' : ''}
+                                        ${(!data.measurement_type.includes('ae') && data.goal_value > data.measurement_value) ? 'data-not' : ''}>
+                                    ${data.measurement_value ? data.measurement_value + (data.measurement_type.includes('ae') ? '걸음' : '횟수'): ''}
+                                </span>
                             </li>`;
             (!currentDate || currentDate !== data.measurement_dat) && (currentDate = data.measurement_date);
         })
@@ -705,14 +708,18 @@ function memberDetailMeasure() {
 
     function insertData(data){
         let htmlContent = '';
+        let currentData = '';
         data.forEach(function(data){
             htmlContent += `
             <li>
-                <span>${data.measurement_date.replaceAll('-', '.')}</span>
+                <span>${(currentData !== data.measurement_date) ? data.measurement_date.replaceAll('-', '.') : ''}</span>
                 <span ${data.measurement_time === null ? 'data-none' : ''}>${data.measurement_time !== null ? data.measurement_time : ''}</span>
                 <span ${data.measurement_value === null ? 'data-none' : ''}>${data.measurement_value !== null ? data.measurement_value : ''}</span>
             </li>
             `
+            if((currentData !== data.measurement_date)){
+                currentData = data.measurement_date;
+            }
         })
     
         $('.boardBox.measure ol').html(htmlContent);
