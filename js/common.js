@@ -282,6 +282,7 @@ function downloadPage(){
 function member() {
     let { page, search} = urlParam();
     page || (page = 1);
+    const boardAttr = $('.boardBox').attr('data-board');
 
     $('body').click(function(){
         $('.searchArea div').html('');
@@ -293,6 +294,12 @@ function member() {
 
     if($('.boardBox').length) {
         api_list(page, search);
+    }
+
+    // 검색어가 있을 때
+    if(search){
+        $('.searchArea input[type="search"]').val(decodeURIComponent(search))
+        $('.searchArea button').addClass('active')
     }
 
     $('.searchArea input[type="search"]').on('input', function(e){
@@ -314,7 +321,8 @@ function member() {
     $('.searchArea input[type="search"]').on('keydown',function(e){
         if(e.keyCode === 13){
             const searchValue = $(this).val();
-            let link = location.href;
+            // let link = location.href;
+            let link = 'member.html';
             link.includes('?search=') ? 
                 (link = link.replace(`?search=${search}`,`?search=${searchValue}`)) :
                 link += `?search=${searchValue}`;
@@ -325,15 +333,18 @@ function member() {
 
     $('.searchArea button').click(function(e){
         if($(this).hasClass('active')){
-            $('.searchArea input[type="search"]').val('');
-            $('.searchArea input[type="search"]').focus();
-            $(this).siblings('div').html('')
+            const link = location.pathname.split('/').at(-1);
+            console.log(link);
+            location.href = link;
+            // $('.searchArea input[type="search"]').val('');
+            // $('.searchArea input[type="search"]').focus();
+            // $(this).removeClass('active');
+            // $(this).siblings('div').html('')
         }
     })
     
     function api_list(page, search){
         let data = {admin_yn: 'n', page}
-        const boardAttr = $('.boardBox').attr('data-board');
         boardAttr && (data = {...data, assign_group: boardAttr})
         search && (data = {...data, search: decodeURIComponent(search)});
         $('.loading').addClass('active');
@@ -377,26 +388,38 @@ function member() {
         const searchValue = select.val();
         api('list_search', {admin_yn: 'n', search: searchValue}).then(function(data){
             if(!data.result){
-                $(this).siblings('div').html('')
+                select.siblings('div').html('')
                 return
             }
             const searchData = data.list;
+            // console.log(searchData.length);
+            // searchData.length || select.siblings('div').html(`<p>검색 결과 없음</p>`)
             let htmlContent = '';
             searchData.forEach(function(data){
                 const userName = data.name;
                 const nameFirstIdx = data.name.indexOf(searchValue);
                 const nameLastIdx = nameFirstIdx + searchValue.length;
+                let link = boardAttr === data.assign_group ? 
+                            `member-detail-info.html?userId=${data.user_id}` : 
+                            `member-${data.assign_group}.html?search=${data.name}`
                 htmlContent += `
-                <li data-id="${data.id}">
-                    <span>${userName.slice(0, nameFirstIdx)}<mark>${searchValue}</mark>${userName.slice(nameLastIdx)}</span>
-                    <span>${data.assign_group === 'clinical' ? '인조군' : '대조군'}</span>
-                    <span>${data.gender === 'm' ? '남성' : '여성'}</span>
-                    <span>${dataChange('date', data.birthday)}</span>
-                    <span>${dataChange('mobile', data.mobile)}</span>
+                <li data-id="${data.user_id}">
+                    <a href="${link}">
+                        <span>${userName.slice(0, nameFirstIdx)}<mark>${searchValue}</mark>${userName.slice(nameLastIdx)}</span>
+                        <span>
+                            ${data.assign_group === 'clinical' ? '인상군' : '대조군'}
+                            ${boardAttr === data.assign_group ? '바로가기' : ''}
+                        </span>
+                        <span>${data.gender === 'm' ? '남성' : '여성'}</span>
+                        <span>${dataChange('date', data.birthday)}</span>
+                        <span>${dataChange('mobile', data.mobile)}</span>
+                    </a>
                 </li>
                 `
             })
-            searchData.length && select.siblings('div').html(`<ul>${htmlContent}</ul>`)
+            searchData.length ? 
+                select.siblings('div').html(`<ul>${htmlContent}</ul>`) :
+                select.siblings('div').html(`<p>입력하신 내용과 일치하는 리스트가 없어요!</p>`);
         })
        /*  const searchData = testData2.filter((value)=> value.name.startsWith(select.val()));
         let htmlContent = '';
@@ -532,6 +555,11 @@ function manageRegistForm() {
             $('[data-btn="fin"]').attr('disabled', !dataResult)
         })
     });
+
+    $('input ~ button.valueDelete').click(function(e){
+        e.preventDefault();
+        $(this).siblings('input').val('').focus().parent().removeClass('error');
+    })
 
     $('input[type="submit"]').click(function(e){
         e.preventDefault();
@@ -671,16 +699,16 @@ function manageUpdateForm() {
         const input = $(this).parent().siblings('input');
         const inputFormet = input.attr('data-formet');
         const inputName = input.attr('name');
-        currentDate[inputName] = input.val();
         div.removeClass('error').removeClass('update')
         input.attr('disabled', true)
         if(input[0].type === 'radio'){
-            input.siblings(`#${currentDate[inputName]}`).prop("checked", true)
+            userData[inputName] = input.siblings(':checked').val();
+            // console.log(inputName, userData[inputName]);
         } else {
-            $(`input[name="${inputName}"]`).val(dataChange(inputFormet, currentDate[inputName]));
+            userData[inputName] = input.val();
+            $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));
         }
-        
-        api('update',{admin_yn: isAdmin, [inputName]: currentDate[inputName], u_id: id}).then(function(data){
+        api('update',{admin_yn: isAdmin, [inputName]: userData[inputName], u_id: id}).then(function(data){
             // console.log(data);
         })
     })
@@ -846,10 +874,11 @@ function popup(){
     $('input[type="reset"]').click(function(){
         $('.popup').removeClass('active');
         $('.manageForm ul li div').removeClass('error')
+        $('[data-btn="fin"]').prop('disabled',true);
     })
 
     $('.back').click(function(){
-        !$(this).attr('data-popupOpen') && history.go(-1);
+        // !$(this).attr('data-popupOpen') && history.go(-1);
         // 값 비교
         /* const result = Object.entries(data).every(function([key, value]) {
             return value === currentDate[key]

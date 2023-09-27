@@ -219,7 +219,17 @@
                         </div>
                     </fieldset>
                 </form>
-                <button data-popupRegistClose>팝업 닫기</button>
+                <button data-popupOpen="close">팝업 닫기</button>
+                <div class="popup" data-popup="close">
+                    <div>
+                        <strong>등록을 취소하시겠습니까?</strong>
+                        <p>등록이 완료되지 않았어요!</p>
+                        <div>
+                            <button class="btn-basic" data-popupClose>취소</button>
+                            <button class="btn-red" data-popupCloseAll>닫기</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

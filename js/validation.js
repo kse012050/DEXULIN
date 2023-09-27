@@ -17,7 +17,7 @@ const inputValidationMap = {
         return regex.test(value);
     },
     hangle(value) {
-        const regex = /^[가-힣]*$/;
+        const regex = /^[가-힣0-9]+$/;
         return regex.test(value);
     },
     mobile(value) {
