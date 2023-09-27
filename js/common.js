@@ -116,6 +116,20 @@ function signInPage() {
             $(this).siblings('input').attr('type', 'password')
     })
 
+    $('input[type="text"]').on('keydown',function(e){
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $(this).val().length === 11 && $('input[type="password"]').focus();
+        }
+    })
+
+    $('input[type="password"]').on('keydown',function(e){
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $('input[type="submit"]').click();
+        }
+    })
+
     // 로그인 submit
     $('input[type="submit"]').click(function(e){
         api('login', data).then(function(data){
@@ -231,6 +245,13 @@ function exercisePage(){
     function decimal(number){
         return number.toFixed(2);
     }
+
+    $('button[data-btn="delete"]').click(function(e){
+        $('table tbody tr').html(uploadMessage);
+        $('input[type="file"]').val('')
+        $('[data-popup="delete"]').removeClass('active')
+        $('.exercisePage > [data-popupOpen="upload"]').attr('disabled',true)
+    })
 
     // RE 운동등록 - 업로드 버튼
     $('button[data-btn="upload"]').click(function(){
@@ -442,9 +463,9 @@ function manager(){
         $('.managerPage .boardBox ol').html(htmlContent);
         $('.boardBox ol input[type="checkbox"]').on('change',function(){
             if($(this).is(':checked')){
-                activeArray.push({u_id: $(this).attr('id'), activie_yn: 'n', admin_yn: 'y'})
+                activeArray.push($(this).attr('id'))
             }else{
-                activeArray = activeArray.filter((value)=>value.u_id !== $(this).attr('id'))
+                activeArray = activeArray.filter((value)=>value !== $(this).attr('id'))
             }
             isCheckAll();
         })
@@ -454,7 +475,7 @@ function manager(){
             activeArray = [];
             if($(this).is(':checked')){
                 $('.boardBox ol input[type="checkbox"]:not(:disabled)').each(function(){
-                    activeArray.push({u_id: $(this).attr('id'), activie_yn: 'n', admin_yn: 'y'})
+                    activeArray.push($(this).attr('id'))
                 })
             }
             isCheckAll();
@@ -470,10 +491,9 @@ function manager(){
     }
 
     $('[data-disabled]').click(function(){
-        activeArray.forEach((value)=>{
-            api('update',value).then(function(data){
-                location.reload();
-            })
+        console.log(activeArray.join(','));
+        api('admin_unactivie_update',{u_ids: activeArray.join(',')}).then(function(data){
+            data.result && location.reload();
         })
     })
 }
@@ -802,13 +822,13 @@ function popup(){
     })
 
     // 팝업
-    $('.popup, [data-popupClose]').click(function(e){
+    $('[data-popupClose]').click(function(e){
         e.preventDefault();
         $('.popup').removeClass('active');
     });
 
     // 등록 팝업
-    $('.popup-regist, [data-popupRegistClose]').click(function(e){
+    $('[data-popupRegistClose]').click(function(e){
         e.preventDefault();
         $('.popup-regist').removeClass('active');
     });
