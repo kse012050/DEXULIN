@@ -617,9 +617,11 @@ function manageUpdateForm() {
     $('.loading').addClass('active');
     api('detail', {'u_id': id}).then(function(data){
         if(data.result) {
-            if($('.managerDetailPage').length){
-                data.data.activie_yn === 'y' && $('.finBtn .btn-red').addClass('active')
-                data.data.activie_yn === 'n' && $('.finBtn .btn-purple').addClass('active')
+            if($('.managerDetailPage').length && data.data.activie_yn === 'n'){
+                // data.data.activie_yn === 'y' && $('.finBtn .btn-red').addClass('active')
+                // data.data.activie_yn === 'n' && $('.finBtn .btn-purple').addClass('active')
+                $('.managerDetailPage').addClass('disabled');
+                $('.manageForm ul li > div .buttonArea').remove();
             }
             $('input').each(function(){
                 const input = $(this);
@@ -628,7 +630,10 @@ function manageUpdateForm() {
                 const apiData = (inputFormet !== 'time' ? {...data.data} : {...data.data.measurement_info})
                 if(!!input.attr('required')) {
                     userData[inputName] = apiData[inputName] !== null ?
-                                            apiData[inputName].replaceAll('-','').replaceAll(':','') :
+                                            (inputName !== 'email' ? 
+                                                apiData[inputName].replaceAll('-','').replaceAll(':','') :
+                                                apiData[inputName]
+                                                ) :
                                             '';
                     if(input[0].type !== 'radio'){
                         $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));

@@ -122,5 +122,7 @@
 /* 관리자 상세 */
 .managerDetailPage{position: relative;}
 .managerDetailPage .manageForm .finBtn{position: absolute; right: 0; top: 0; margin-top: 0;}
-.managerDetailPage .manageForm .finBtn button{display: none;}
-.managerDetailPage .manageForm .finBtn button.active{display: block;}
+.managerDetailPage.disabled .manageForm .finBtn button[data-popupOpen="disabled"]{display: none;}
+.managerDetailPage:not(.disabled) .manageForm .finBtn button[data-popupOpen="active"]{display: none;}
+.managerDetailPage:not(.disabled) .guideText{display: none;}
+.managerDetailPage.disabled .manageForm ul li > div .buttonArea button{display: none;}

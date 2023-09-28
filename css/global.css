@@ -34,6 +34,8 @@ button.password.show{background-position-y: calc(var(--iconWidth) * -1);}
 .manageForm ul li > div .buttonArea button{flex-shrink: 0;}
 .manageForm ul li > div .buttonArea button:not(.valueDelete){font-size: 16px; font-weight: 400; width: 54px; height: 32px; border: 1px solid var(--dark-6); border-radius: 30px;}
 .manageForm ul li > div .buttonArea button:not(.update){display: none;}
+.manageForm ul li > div .buttonArea button:hover{border-color: var(--dark-2);}
+.manageForm ul li > div .buttonArea button:active{background-color: var(--hover);}
 /* .manageForm ul li > div .buttonArea button:not(:last-of-type){margin-right: 8px;} */
 .manageForm ul li > div.error{border-bottom: 1px solid var(--red);}
 .manageForm ul li > div.error + small{display: block;}
@@ -75,36 +77,36 @@ body:has([class*="popup"].active){overflow: hidden;}
 
 
 /* 페이지 가로 크기 */
-[class$="Page"]{width: var(--contentWidth); margin-inline: auto; margin-block: 60px;}
+[class*="Page"]{width: var(--contentWidth); margin-inline: auto; margin-block: 60px;}
 /* 로그인 페이지 */
 .signInPage{max-width: 392px;}
 
 /* 페이지 서브 타이틀 */
-[class$="Page"]{--titleMarginBottom: 60px;}
-[class$="Page"] h2{ font-size: 32px; font-weight: 700; line-height: 36px;}
-[class$="Page"] > h2{margin-bottom: var(--titleMarginBottom);}
+[class*="Page"]{--titleMarginBottom: 60px;}
+[class*="Page"] h2{ font-size: 32px; font-weight: 700; line-height: 36px;}
+[class*="Page"] > h2{margin-bottom: var(--titleMarginBottom);}
 /* 페이지 서브 타이틀 - 이전 페이지 이동 */
-[class$="Page"] h2.back{display: flex; align-items: center; cursor: pointer;}
-[class$="Page"] h2.back::before{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-back.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 100%; margin-right: 12px;}
-[class$="Page"] h2.back:hover::before{background-position-y: calc(var(--width) * -1);}
+[class*="Page"] h2.back{display: flex; align-items: center; cursor: pointer;}
+[class*="Page"] h2.back::before{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-back.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 100%; margin-right: 12px;}
+[class*="Page"] h2.back:hover::before{background-position-y: calc(var(--width) * -1);}
 /* 페이지 서브 타이틀 - 드랍박스 */
-[class$="Page"] .titleBox{display: flex; align-items: center; margin-bottom: var(--titleMarginBottom);}
-[class$="Page"] .titleBox .dropBox{position: relative;}
-[class$="Page"] .titleBox :is(.dropBox > button , p){font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
-[class$="Page"] .titleBox :is(.dropBox > button , p)::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}
-[class$="Page"] .titleBox .dropBox > button::after{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-more.png'); background-repeat: no-repeat; background-position-x: left; background-position-y: 0; background-size: 100%; margin-left: 8px;}
-[class$="Page"] .titleBox .dropBox:has( div.active ) button::after,
-[class$="Page"] .titleBox .dropBox button:hover::after{background-position-y: calc(var(--width) * -1);}
-[class$="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box; z-index: 1;}
-[class$="Page"] .titleBox .dropBox div.active{display: block;}
-[class$="Page"] .titleBox .dropBox div :is(button, a){display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left; padding-inline: 16px; box-sizing: border-box;}
-[class$="Page"] .titleBox .dropBox div :is(button, a):not(:last-of-type){border-bottom: 1px solid var(--dark-6);}
-[class$="Page"] .titleBox .dropBox div :is(button, a).active{color: var(--purple);}
-[class$="Page"] .titleBox .dropBox div :is(button, a):hover{background-color: var(--hover);}
-[class$="Page"] .titleBox:has(.infoBox){flex-wrap: wrap;}
-[class$="Page"] .titleBox .infoBox{width: 100%; display: flex; align-items: center; margin-top: 20px;}
-[class$="Page"] .titleBox .infoBox span{font-size: 20px; font-weight: 400; line-height: 20px; color: var(--dark-4); display: flex; align-items: center;}
-[class$="Page"] .titleBox .infoBox span:not(:last-child)::after{content: ''; width: 2px; height: 12px; background-color: var(--dark-6); margin-inline: 12px;}
+[class*="Page"] .titleBox{display: flex; align-items: center; margin-bottom: var(--titleMarginBottom);}
+[class*="Page"] .titleBox .dropBox{position: relative;}
+[class*="Page"] .titleBox :is(.dropBox > button , p){font-size: 32px; font-weight: 400; line-height: 36px; display: flex; align-items: center;}
+[class*="Page"] .titleBox :is(.dropBox > button , p)::before{content: ''; width: 1px; height: 20px; background-color: var(--dark-5); margin-inline: 12px;}
+[class*="Page"] .titleBox .dropBox > button::after{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-more.png'); background-repeat: no-repeat; background-position-x: left; background-position-y: 0; background-size: 100%; margin-left: 8px;}
+[class*="Page"] .titleBox .dropBox:has( div.active ) button::after,
+[class*="Page"] .titleBox .dropBox button:hover::after{background-position-y: calc(var(--width) * -1);}
+[class*="Page"] .titleBox .dropBox div{display: none; position: absolute; left: 12px; top: calc(100% + 10px); width: 261px; background-color: white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); padding: 12px 20px; border-radius: var(--borderRadius); box-sizing: border-box; z-index: 1;}
+[class*="Page"] .titleBox .dropBox div.active{display: block;}
+[class*="Page"] .titleBox .dropBox div :is(button, a){display: block; width: 100%; font-size: 20px; font-weight: 400; line-height: 68px; text-align: left; padding-inline: 16px; box-sizing: border-box;}
+[class*="Page"] .titleBox .dropBox div :is(button, a):not(:last-of-type){border-bottom: 1px solid var(--dark-6);}
+[class*="Page"] .titleBox .dropBox div :is(button, a).active{color: var(--purple);}
+[class*="Page"] .titleBox .dropBox div :is(button, a):hover{background-color: var(--hover);}
+[class*="Page"] .titleBox:has(.infoBox){flex-wrap: wrap;}
+[class*="Page"] .titleBox .infoBox{width: 100%; display: flex; align-items: center; margin-top: 20px;}
+[class*="Page"] .titleBox .infoBox span{font-size: 20px; font-weight: 400; line-height: 20px; color: var(--dark-4); display: flex; align-items: center;}
+[class*="Page"] .titleBox .infoBox span:not(:last-child)::after{content: ''; width: 2px; height: 12px; background-color: var(--dark-6); margin-inline: 12px;}
 
 /* 안내 텍스트 */
 .guideText{font-size: 20px; font-weight: 500; line-height: 76px; color: var(--dark-4); text-align: center; background-color: var(--dark-7); border-radius: var(--borderRadius); margin-bottom: 60px;}
@@ -120,6 +122,8 @@ body:has([class*="popup"].active){overflow: hidden;}
 .boardBox ol li:hover{background-color: var(--hover);}
 .boardBox ol li div a{opacity: 0; transition: 0.5s opacity; width: 52px; line-height: 30px; font-size: 16px; background-color: white; border: 1px solid var(--dark-6); border-radius: 30px;}
 .boardBox ol li:hover div a{opacity: 1;}
+.boardBox ol li:hover div a:hover{border-color: var(--dark-2);}
+.boardBox ol li:hover div a:active{background-color: var(--hover);}
 .boardBox :is(.boardTitle, ol li) div:has(input[type="checkbox"]){display: flex; justify-content: center; align-items: center;}
 .boardBox :is(.boardTitle, ol li) div input[type="checkbox"] + label{ --width: 24px; width: var(--width); aspect-ratio: 1; background-image: url('../images/icon-checkbox.png'); background-repeat: no-repeat; background-position-x: 0; background-position-y: 0; background-size: 300%;}
 .boardBox :is(.boardTitle, ol li) div input[type="checkbox"] + label:hover{background-position-y: calc(var(--width) * -1);}
