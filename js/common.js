@@ -257,8 +257,9 @@ function exercisePage(){
     $('button[data-btn="upload"]').click(function(){
         const files = $('input[type="file"]')[0].files[0];
         const type = $('[data-type]').html();
-        console.log(files);
-        console.log(type);
+        api('upload_exercise', {upload_file: files}).then(function(data){
+            data.result && location.reload();
+        })
     });
 }
 
