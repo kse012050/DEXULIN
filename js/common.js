@@ -257,8 +257,12 @@ function exercisePage(){
     $('button[data-btn="upload"]').click(function(){
         const files = $('input[type="file"]')[0].files[0];
         const type = $('[data-type]').html();
+        $('.loading').addClass('active');
         api('upload_exercise', {upload_file: files}).then(function(data){
-            data.result && location.reload();
+            if(data.result){
+                $('.loading').removeClass('active');
+                location.reload();
+            }
         })
     });
 }
@@ -334,13 +338,9 @@ function member() {
 
     $('.searchArea button').click(function(e){
         if($(this).hasClass('active')){
+            sessionStorage.setItem('search','delete');
             const link = location.pathname.split('/').at(-1);
-            console.log(link);
             location.href = link;
-            // $('.searchArea input[type="search"]').val('');
-            // $('.searchArea input[type="search"]').focus();
-            // $(this).removeClass('active');
-            // $(this).siblings('div').html('')
         }
     })
     
@@ -348,12 +348,23 @@ function member() {
         let data = {admin_yn: 'n', page}
         boardAttr && (data = {...data, assign_group: boardAttr})
         search && (data = {...data, search: decodeURIComponent(search)});
+
+        if(sessionStorage.getItem('move') === 'true'){
+            const pageName = $('[data-board]').attr('data-board') === 'clinical' ? '임상군' : '대조군'
+            $('.loading p').html(`${pageName}으로 이동중이에요! 잠시만 기다려주세요`);
+            sessionStorage.removeItem('move');
+        }
+
         $('.loading').addClass('active');
         api('list', data).then(function(data){
             if(data.result) {
                 insertData(data.list)
                 addPager(data.data.current_page, data.data.total_page)
                 $('.loading').removeClass('active');
+                if(sessionStorage.getItem('search') === 'delete'){
+                    $('.memberPage .searchArea input').focus();
+                    sessionStorage.removeItem('search');
+                }
             }
         })
     }
@@ -405,11 +416,11 @@ function member() {
                             `member-${data.assign_group}.html?search=${data.name}`
                 htmlContent += `
                 <li data-id="${data.user_id}">
-                    <a href="${link}">
+                    <a href="${link}" ${boardAttr !== data.assign_group ? 'data-move' : ''}>
                         <span>${userName.slice(0, nameFirstIdx)}<mark>${searchValue}</mark>${userName.slice(nameLastIdx)}</span>
                         <span>
                             ${data.assign_group === 'clinical' ? '인상군' : '대조군'}
-                            ${boardAttr === data.assign_group ? '바로가기' : ''}
+                            ${boardAttr !== data.assign_group ? '바로가기' : ''}
                         </span>
                         <span>${data.gender === 'm' ? '남성' : '여성'}</span>
                         <span>${dataChange('date', data.birthday)}</span>
@@ -421,6 +432,10 @@ function member() {
             searchData.length ? 
                 select.siblings('div').html(`<ul>${htmlContent}</ul>`) :
                 select.siblings('div').html(`<p>입력하신 내용과 일치하는 리스트가 없어요!</p>`);
+
+            $('[data-move]').click(function(){
+                sessionStorage.setItem('move', 'true');
+            })
         })
        /*  const searchData = testData2.filter((value)=> value.name.startsWith(select.val()));
         let htmlContent = '';
