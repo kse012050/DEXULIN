@@ -55,7 +55,7 @@
 .memberPage .searchArea div ul li:hover{background-color: var(--hover);}
 .memberPage .searchArea div ul li a{display: flex; align-items: center; padding: 16px 32px; cursor: pointer;}
 .memberPage .searchArea div ul li a::before{content: ''; --width: 36px; width: var(--width); aspect-ratio: 1; background: url('../images/icon-search.png') no-repeat center top / cover; margin-right: 16px;}
-.memberPage .searchArea div ul li a[href*="detail"]::before{background-position-y: calc(var(--width) * -1);}
+.memberPage .searchArea div ul li a[data-move]::before{background-position-y: calc(var(--width) * -1);}
 .memberPage .searchArea div ul li a span{font-size: 20px; line-height: 24px; display: flex; align-items: center;}
 .memberPage .searchArea div ul li a span:not(:last-child):after{content: ''; width: 2px; height: 16px; background-color: var(--dark-6); margin-inline: 16px;}
 .memberPage .searchArea div ul li a span:first-of-type{font-weight: 500;}

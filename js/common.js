@@ -327,7 +327,8 @@ function member() {
         if(e.keyCode === 13){
             const searchValue = $(this).val();
             // let link = location.href;
-            let link = 'member.html';
+            let link = location.pathname.split('/').at(-1);
+            // let link = 'member.html';
             link.includes('?search=') ? 
                 (link = link.replace(`?search=${search}`,`?search=${searchValue}`)) :
                 link += `?search=${searchValue}`;
@@ -411,15 +412,16 @@ function member() {
                 const userName = data.name;
                 const nameFirstIdx = data.name.indexOf(searchValue);
                 const nameLastIdx = nameFirstIdx + searchValue.length;
-                let link = boardAttr === data.assign_group ? 
-                            `member-detail-info.html?userId=${data.user_id}` : 
-                            `member-${data.assign_group}.html?search=${data.name}`
+                // let link = boardAttr === data.assign_group ? 
+                //             `member-detail-info.html?userId=${data.user_id}` : 
+                //             `member-${data.assign_group}.html?search=${data.name}`;
+                let link = `member-${data.assign_group}.html?search=${data.name}`;
                 htmlContent += `
                 <li data-id="${data.user_id}">
                     <a href="${link}" ${boardAttr !== data.assign_group ? 'data-move' : ''}>
                         <span>${userName.slice(0, nameFirstIdx)}<mark>${searchValue}</mark>${userName.slice(nameLastIdx)}</span>
                         <span>
-                            ${data.assign_group === 'clinical' ? '인상군' : '대조군'}
+                            ${data.assign_group === 'clinical' ? '임상군' : '대조군'}
                             ${boardAttr !== data.assign_group ? '바로가기' : ''}
                         </span>
                         <span>${data.gender === 'm' ? '남성' : '여성'}</span>
@@ -778,6 +780,7 @@ function memberDetailWorkOut(){
     function insertData(data){
         let htmlContent = '';
         let currentDate = '';
+        console.log(data);
         data.forEach(function(data){
             (currentDate && currentDate !== data.measurement_date) && (htmlContent += `</ol>`);
             currentDate !== data.measurement_date &&(htmlContent += `<ol>`);
@@ -793,10 +796,10 @@ function memberDetailWorkOut(){
                                 <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
                                 <span>${!data.measurement_type.includes('ae') ? '진행시간' : ''}</span>
                                 <span ${(data.accuracy_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.accuracy_value && !data.measurement_type.includes('ae')) ? data.accuracy_value : ''}</span>
-                                <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value : ''}</span>
+                                <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value + '회': ''}</span>
                                 <span ${data.measurement_value === null ? 'data-none' : ''}
                                         ${(!data.measurement_type.includes('ae') && data.goal_value > data.measurement_value) ? 'data-not' : ''}>
-                                    ${data.measurement_value ? data.measurement_value + (data.measurement_type.includes('ae') ? '걸음' : '횟수'): ''}
+                                    ${data.measurement_value ? data.measurement_value + (data.measurement_type.includes('ae') ? '걸음' : '회'): ''}
                                 </span>
                             </li>`;
             (!currentDate || currentDate !== data.measurement_dat) && (currentDate = data.measurement_date);
