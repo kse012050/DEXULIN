@@ -780,10 +780,19 @@ function memberDetailWorkOut(){
     function insertData(data){
         let htmlContent = '';
         let currentDate = '';
-        console.log(data);
         data.forEach(function(data){
             (currentDate && currentDate !== data.measurement_date) && (htmlContent += `</ol>`);
             currentDate !== data.measurement_date &&(htmlContent += `<ol>`);
+            // 진행 시간
+            let totalSeconds = data.progress_value;
+            let hours = Math.floor(totalSeconds / 3600);
+            let minutes = Math.floor((totalSeconds % 3600) / 60);
+            let seconds = totalSeconds % 60;
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            // 진행 시간 fin
+            let formattedTime = hours + ':' + minutes + ':' + seconds;
             htmlContent += `<li>
                                 <span>${currentDate !== data.measurement_date ? data.measurement_date : ''}</span>
                                 <div ${data.measurement_type.includes('ae') ? 
@@ -794,7 +803,9 @@ function memberDetailWorkOut(){
                                 </div>
                                 <span ${data.start_date_time === null ? 'data-none' : ''}>${data.start_date_time ? data.start_date_time : ''}</span>
                                 <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
-                                <span>${!data.measurement_type.includes('ae') ? '진행시간' : ''}</span>
+                                <span ${data.progress_value === null && !data.measurement_type.includes('ae')? 'data-none' : ''}>
+                                    ${!data.measurement_type.includes('ae') && data.progress_value !== null ? formattedTime : ''}
+                                </span>
                                 <span ${(data.accuracy_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.accuracy_value && !data.measurement_type.includes('ae')) ? data.accuracy_value : ''}</span>
                                 <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value + '회': ''}</span>
                                 <span ${data.measurement_value === null ? 'data-none' : ''}
