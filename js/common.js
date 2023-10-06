@@ -857,21 +857,30 @@ function memberDetailMeasure() {
     })
 
     function insertData(data){
-        let htmlContent = '';
-        let currentData = '';
-        data.forEach(function(data){
-            htmlContent += `
-            <li>
-                <span>${(currentData !== data.measurement_date) ? data.measurement_date.replaceAll('-', '.') : ''}</span>
-                <span ${data.measurement_time === null ? 'data-none' : ''}>${data.measurement_time !== null ? data.measurement_time : ''}</span>
-                <span ${data.measurement_value === null ? 'data-none' : ''}>${data.measurement_value !== null ? data.measurement_value : ''}</span>
-            </li>
-            `
-            if((currentData !== data.measurement_date)){
-                currentData = data.measurement_date;
-            }
+        let dataArray = [];
+        data.forEach(function(current, idx, prev){
+            prev[idx - 1]?.measurement_date !== current.measurement_date &&dataArray.push([]);
+            dataArray[dataArray.length - 1].push(current)
         })
-    
+        dataArray = dataArray.map((arr) =>
+            arr.sort((a , b) =>
+                Number(a.measurement_time.split(':').join('')) - Number(b.measurement_time.split(':').join(''))
+            )
+        )
+
+        let htmlContent = '';
+        dataArray.forEach(function(arr){
+            arr.forEach(function(data, idx){
+                htmlContent += `
+                <li>
+                    <span>${!idx ? data.measurement_date.replaceAll('-', '.') : ''}</span>
+                    <span ${data.measurement_time === null ? 'data-none' : ''}>${data.measurement_time !== null ? data.measurement_time : ''}</span>
+                    <span ${data.measurement_value === null ? 'data-none' : ''}>${data.measurement_value !== null ? data.measurement_value : ''}</span>
+                </li>
+                `
+            })
+        })
+
         $('.boardBox.measure ol').html(htmlContent);
     }
 }
