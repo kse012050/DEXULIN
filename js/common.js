@@ -272,10 +272,10 @@ function downloadPage(){
     $('.loading').addClass('active');
     api('record_download').then(function(data){
         if(data.result) {
-            $('[data-download="xlsx"]').attr('href', data.data.file_url)
+            $('[data-download="record"]').attr('href', data.data.file_url)
             api('measurement_download').then(function(data){
                 if(data.result) {
-                    $('[data-download="record"]').attr('href', data.data.file_url)
+                    $('[data-download="xlsx"]').attr('href', data.data.file_url)
                     $('.loading').removeClass('active');
                 }
             })
@@ -288,6 +288,8 @@ function member() {
     let { page, search} = urlParam();
     page || (page = 1);
     const boardAttr = $('.boardBox').attr('data-board');
+
+    paramSave();
 
     $('body').click(function(){
         $('.searchArea div').html('');
@@ -359,7 +361,7 @@ function member() {
         $('.loading').addClass('active');
         api('list', data).then(function(data){
             if(data.result) {
-                insertData(data.list)
+                insertData(data.list, data.data.total_count)
                 addPager(data.data.current_page, data.data.total_page)
                 $('.loading').removeClass('active');
                 if(sessionStorage.getItem('search') === 'delete'){
@@ -370,12 +372,12 @@ function member() {
         })
     }
    
-    function insertData(data){
+    function insertData(data, total){
         let htmlContent = '';
         data.forEach(function(data, i){
             htmlContent += `
             <li>
-                <span>${(i + 1) + ((page - 1) * 10)}</span>
+                <span>${(total + 1) - ((i + 1) + ((page - 1) * 10))}</span>
                 <span>
                     ${data.assign_group === 'clinical' ? '임상군' : ''}
                     ${data.assign_group === 'control' ? '대조군' : ''}
@@ -469,6 +471,8 @@ function manager(){
     let { page } = urlParam()
     page || (page = 1)
 
+    paramSave();
+
     if($('.boardBox').length) {
         let data = {admin_yn: 'y', page}
         $('.loading').addClass('active');
@@ -537,6 +541,12 @@ function manager(){
             data.result && location.reload();
         })
     })
+}
+
+// 회원, 관리자 페이지 파라미터 섹션 저장
+function paramSave(){
+    sessionStorage.removeItem('linkParam');
+    sessionStorage.setItem('linkParam',JSON.stringify(urlParam()))
 }
 
 // 회원, 관리자 상세 등록
@@ -698,6 +708,14 @@ function manageUpdateForm() {
             input.val(input.val().replace(/\D/g, ""))
         }
     })
+
+    $('input').on('keydown', function(e){
+        if(e.keyCode === 13){
+            e.preventDefault();
+            $(this).siblings('div').find('.confirm').click();
+        }
+    })
+
     
     // 취소버튼
     $('.cancel').click(function(e){
@@ -793,13 +811,14 @@ function memberDetailWorkOut(){
             seconds = seconds < 10 ? '0' + seconds : seconds;
             // 진행 시간 fin
             let formattedTime = hours + ':' + minutes + ':' + seconds;
+            // console.log(data.goal_value > data.measurement_value);
             htmlContent += `<li>
                                 <span>${currentDate !== data.measurement_date ? data.measurement_date : ''}</span>
                                 <div ${data.measurement_type.includes('ae') ? 
                                         (data.measurement_type === 'ae_m' ? 'data-time="아"' :
                                             (data.measurement_type === 'ae_a' ? 'data-time="점"' : 'data-time="저"')
                                             ) : ''}>
-                                    <span ${data.eat_time === null ? 'data-none' : ''}>${data.eat_time ? data.eat_time : ''}</span>
+                                    <span ${(data.measurement_type.includes('ae') && data.eat_time === null) ? 'data-none' : ''}>${data.eat_time ? data.eat_time : ''}</span>
                                 </div>
                                 <span ${data.start_date_time === null ? 'data-none' : ''}>${data.start_date_time ? data.start_date_time : ''}</span>
                                 <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
@@ -809,7 +828,7 @@ function memberDetailWorkOut(){
                                 <span ${(data.accuracy_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.accuracy_value && !data.measurement_type.includes('ae')) ? data.accuracy_value : ''}</span>
                                 <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value + '회': ''}</span>
                                 <span ${data.measurement_value === null ? 'data-none' : ''}
-                                        ${(!data.measurement_type.includes('ae') && data.goal_value > data.measurement_value) ? 'data-not' : ''}>
+                                        ${(!data.measurement_type.includes('ae') && (data.goal_value < data.measurement_value ? 'data-not' : ''))}>
                                     ${data.measurement_value ? data.measurement_value + (data.measurement_type.includes('ae') ? '걸음' : '회'): ''}
                                 </span>
                             </li>`;
@@ -922,11 +941,13 @@ function popup(){
     })
 
     $('.back').click(function(){
-        // !$(this).attr('data-popupOpen') && history.go(-1);
-        // 값 비교
-        /* const result = Object.entries(data).every(function([key, value]) {
-            return value === currentDate[key]
-        }) */
+        let linkParam = JSON.parse(sessionStorage.getItem('linkParam'));
+        linkParam.search && (linkParam.search = decodeURIComponent(linkParam.search))
+        let link = $(this).children('a').attr('href');
+        Object.entries(linkParam).forEach(function([key, value]){
+            link += `?${key}=${value}`;
+        })
+        $(this).children('a').attr('href', link)
     })
 }
 
