@@ -546,7 +546,9 @@ function manager(){
 // 회원, 관리자 페이지 파라미터 섹션 저장
 function paramSave(){
     sessionStorage.removeItem('linkParam');
+    sessionStorage.removeItem('prevLink');
     sessionStorage.setItem('linkParam',JSON.stringify(urlParam()))
+    sessionStorage.setItem('prevLink',location.pathname.split('/').at(-1))
 }
 
 // 회원, 관리자 상세 등록
@@ -712,7 +714,7 @@ function manageUpdateForm() {
     $('input').on('keydown', function(e){
         if(e.keyCode === 13){
             e.preventDefault();
-            $(this).siblings('div').find('.confirm').click();
+            !$(this).parent().hasClass('error') && $(this).siblings('div').find('.confirm').click();
         }
     })
 
@@ -811,7 +813,6 @@ function memberDetailWorkOut(){
             seconds = seconds < 10 ? '0' + seconds : seconds;
             // 진행 시간 fin
             let formattedTime = hours + ':' + minutes + ':' + seconds;
-            // console.log(data.goal_value > data.measurement_value);
             htmlContent += `<li>
                                 <span>${currentDate !== data.measurement_date ? data.measurement_date : ''}</span>
                                 <div ${data.measurement_type.includes('ae') ? 
@@ -828,7 +829,7 @@ function memberDetailWorkOut(){
                                 <span ${(data.accuracy_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.accuracy_value && !data.measurement_type.includes('ae')) ? data.accuracy_value : ''}</span>
                                 <span ${(data.goal_value === null && !data.measurement_type.includes('ae')) ? 'data-none' : ''}>${(data.goal_value && !data.measurement_type.includes('ae')) ? data.goal_value + '회': ''}</span>
                                 <span ${data.measurement_value === null ? 'data-none' : ''}
-                                        ${(!data.measurement_type.includes('ae') && (data.goal_value < data.measurement_value ? 'data-not' : ''))}>
+                                        ${(!data.measurement_type.includes('ae') && (Number(data.goal_value) > Number(data.measurement_value) ? 'data-not' : ''))}>
                                     ${data.measurement_value ? data.measurement_value + (data.measurement_type.includes('ae') ? '걸음' : '회'): ''}
                                 </span>
                             </li>`;
@@ -940,10 +941,11 @@ function popup(){
         $('[data-btn="fin"]').prop('disabled',true);
     })
 
-    $('.back').click(function(){
+    $('.back').click(function(e){
         let linkParam = JSON.parse(sessionStorage.getItem('linkParam'));
         linkParam.search && (linkParam.search = decodeURIComponent(linkParam.search))
-        let link = $(this).children('a').attr('href');
+        // let link = $(this).children('a').attr('href');
+        let link = sessionStorage.getItem('prevLink');
         Object.entries(linkParam).forEach(function([key, value]){
             link += `?${key}=${value}`;
         })
