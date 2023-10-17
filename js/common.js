@@ -798,6 +798,7 @@ function memberDetailWorkOut(){
     Api_workOut(filters);
 
     function insertData(data){
+        console.log(data);
         let htmlContent = '';
         let currentDate = '';
         data.forEach(function(data){
@@ -819,7 +820,7 @@ function memberDetailWorkOut(){
                                         (data.measurement_type === 'ae_m' ? 'data-time="아"' :
                                             (data.measurement_type === 'ae_a' ? 'data-time="점"' : 'data-time="저"')
                                             ) : ''}>
-                                    <span ${(data.measurement_type.includes('ae') && data.eat_time === null) ? 'data-none' : ''}>${data.eat_time ? data.eat_time : ''}</span>
+                                    <span ${(data.measurement_type.includes('ae') && data.eat_time_confirm_yn === 'n') ? 'data-none' : ''}>${(/* data.eat_time &&  */data.eat_time_confirm_yn === 'y') ? data.eat_time : ''}</span>
                                 </div>
                                 <span ${data.start_date_time === null ? 'data-none' : ''}>${data.start_date_time ? data.start_date_time : ''}</span>
                                 <span>${data.measurement_type.includes('ae') ? 'AE(걷기)' : 'RE(스쿼트)'}</span>
@@ -884,10 +885,9 @@ function memberDetailMeasure() {
         })
         dataArray = dataArray.map((arr) =>
             arr.sort((a , b) =>
-                Number(a.measurement_time.split(':').join('')) - Number(b.measurement_time.split(':').join(''))
+                Number(a.measurement_time2.split(':').join('')) - Number(b.measurement_time2.split(':').join(''))
             )
         )
-
         let htmlContent = '';
         dataArray.forEach(function(arr){
             arr.forEach(function(data, idx){
