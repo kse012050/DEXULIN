@@ -977,6 +977,11 @@ function addPager(currentPage, totalPage) {
     $('.pagerBox').remove();
     if(!totalPage){return}
     let pageName = location.pathname.split('/').at(-1);
+    const showPage = currentPage > 2 ? 
+                        (currentPage > totalPage - 4) ? 
+                                totalPage - 4 : 
+                            currentPage - 2 : 
+                        1;
     userId && (pageName += `?userId=${userId}`)
     filters && (pageName += `?filters=${filters}`)
     search && (pageName += `?search=${search}`)
@@ -985,7 +990,8 @@ function addPager(currentPage, totalPage) {
                         <a href="${pageName}?page=${1}" ${currentPage !== 1 ? 'class="active"' : ''}>맨 앞 페이지로 이동</a>
                         <a href="${pageName}?page=${currentPage - 1}" ${currentPage !== 1 ? 'class="active"' : ''}>앞 페이지로 이동</a>
                         <ol>`;
-    for(let a = 1; a < totalPage + 1; a++){
+    // for(let a = 1; a < totalPage + 1; a++){
+    for(let a = showPage; a <= showPage + 4; a++){
         htmlContent += `<li ${currentPage === a ? 'class="active"' : ''}><a href="${pageName}?page=${a}">${a}</a></li>`
     }
     htmlContent += `</ol>
