@@ -991,7 +991,7 @@ function addPager(currentPage, totalPage) {
                         <a href="${pageName}?page=${currentPage - 1}" ${currentPage !== 1 ? 'class="active"' : ''}>앞 페이지로 이동</a>
                         <ol>`;
     // for(let a = 1; a < totalPage + 1; a++){
-    for(let a = showPage; a <= showPage + 4; a++){
+    for(let a = showPage; a <= (showPage + 4 > totalPage ? totalPage : showPage + 4); a++){
         htmlContent += `<li ${currentPage === a ? 'class="active"' : ''}><a href="${pageName}?page=${a}">${a}</a></li>`
     }
     htmlContent += `</ol>
