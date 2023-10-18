@@ -740,6 +740,7 @@ function manageUpdateForm() {
         e.preventDefault();
         const div = $(this).parent().parent();
         const input = $(this).parent().siblings('input');
+        const popup = $(this).siblings('[data-popup]');
         const inputFormet = input.attr('data-formet');
         const inputName = input.attr('name');
         div.removeClass('error').removeClass('update')
@@ -752,8 +753,15 @@ function manageUpdateForm() {
             $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));
         }
         api('update',{admin_yn: isAdmin, [inputName]: userData[inputName], u_id: id}).then(function(data){
-            // console.log(data);
+            console.log(data);
+            !data.result && popup.addClass('active');
         })
+    })
+
+    $('[data-mobile]').click(function(e){
+        e.preventDefault();
+        $('input#mobile').val(currentDate['mobile']);
+        $('.popup').removeClass('active');
     })
 
     // 초기화 버튼
