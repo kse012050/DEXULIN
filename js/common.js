@@ -389,8 +389,10 @@ function member() {
                     ${data.gender === 'm' ? '남성' : ''}
                     ${data.gender === 'f' ? '여성' : ''}
                 </span>
-                <span>${data.clinical_start_date.replaceAll('-', '.')}</span>
-                <span>${data.clinical_start_date.replaceAll('-', '.')}</span>
+                <span>${data.join_date ? data.join_date.replaceAll('-', '.') : ''}</span>
+                <span ${!data.clinical_start_date ? 'data-none' : ''}>
+                    ${data.clinical_start_date ? data.clinical_start_date.replaceAll('-', '.') : ''}
+                </span>
                 <div><a href="member-detail-info.html?userId=${data.user_id}">상세</a></div>
             </li>
             `
@@ -407,7 +409,6 @@ function member() {
                 return
             }
             const searchData = data.list;
-            // console.log(searchData.length);
             // searchData.length || select.siblings('div').html(`<p>검색 결과 없음</p>`)
             let htmlContent = '';
             searchData.forEach(function(data){
@@ -536,7 +537,6 @@ function manager(){
     }
 
     $('[data-disabled]').click(function(){
-        console.log(activeArray.join(','));
         api('admin_unactivie_update',{u_ids: activeArray.join(',')}).then(function(data){
             data.result && location.reload();
         })
@@ -747,13 +747,12 @@ function manageUpdateForm() {
         input.attr('disabled', true)
         if(input[0].type === 'radio'){
             userData[inputName] = input.siblings(':checked').val();
-            // console.log(inputName, userData[inputName]);
         } else {
             userData[inputName] = input.val();
             $(`input[name="${inputName}"]`).val(dataChange(inputFormet, userData[inputName]));
         }
+
         api('update',{admin_yn: isAdmin, [inputName]: userData[inputName], u_id: id}).then(function(data){
-            console.log(data);
             !data.result && popup.addClass('active');
         })
     })
@@ -806,7 +805,6 @@ function memberDetailWorkOut(){
     Api_workOut(filters);
 
     function insertData(data){
-        console.log(data);
         let htmlContent = '';
         let currentDate = '';
         data.forEach(function(data){
