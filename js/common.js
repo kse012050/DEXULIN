@@ -996,8 +996,10 @@ function addPager(currentPage, totalPage) {
     let pageName = location.pathname.split('/').at(-1);
     const showPage = currentPage > 2 ? 
                         (currentPage > totalPage - 4) ? 
+                            (totalPage - 4 < 1) ? 
+                                1 : 
                                 totalPage - 4 : 
-                            currentPage - 2 : 
+                        currentPage - 2 : 
                         1;
     userId && (pageName += `?userId=${userId}`)
     filters && (pageName += `?filters=${filters}`)
