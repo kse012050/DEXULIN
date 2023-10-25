@@ -476,6 +476,11 @@ function manager(){
 
     if($('.boardBox').length) {
         let data = {admin_yn: 'y', page}
+        if(sessionStorage.getItem('managerActive')){
+            sessionStorage.getItem('managerActive') === 'n' && $('.loading p').html('비활성화 중이에요!');
+            sessionStorage.getItem('managerActive') === 'y' && $('.loading p').html('활성화 중이에요!');
+            sessionStorage.removeItem('managerActive')
+        }
         $('.loading').addClass('active');
         api('list', data).then(function(data){
             if(data.result) {
@@ -538,7 +543,10 @@ function manager(){
 
     $('[data-disabled]').click(function(){
         api('admin_unactivie_update',{u_ids: activeArray.join(',')}).then(function(data){
-            data.result && location.reload();
+            if(data.result){
+                sessionStorage.setItem('managerActive','n')
+                location.reload();
+            } 
         })
     })
 }
@@ -644,6 +652,11 @@ function manageUpdateForm() {
 
     let userData = {};
     let currentDate;
+    if(sessionStorage.getItem('managerActive')){
+        sessionStorage.getItem('managerActive') === 'n' && $('.loading p').html('비활성화 중이에요!');
+        sessionStorage.getItem('managerActive') === 'y' && $('.loading p').html('활성화 중이에요!');
+        sessionStorage.removeItem('managerActive')
+    }
     $('.loading').addClass('active');
     api('detail', {'u_id': id}).then(function(data){
         if(data.result) {
@@ -781,7 +794,10 @@ function manageUpdateForm() {
     $('[data-disabled]').click(function(e){
         e.preventDefault();
         api('update',{u_id: id, activie_yn: 'n', admin_yn: 'y'}).then(function(data){
-            data.result && location.reload();
+            if(data.result){
+                sessionStorage.setItem('managerActive','n')
+                location.reload();
+            } 
         })
     })
     
@@ -789,7 +805,10 @@ function manageUpdateForm() {
     $('[data-active]').click(function(e){
         e.preventDefault();
         api('update',{u_id: id, activie_yn: 'y', admin_yn: 'y'}).then(function(data){
-            data.result && location.reload();
+            if(data.result){
+                sessionStorage.setItem('managerActive','y')
+                location.reload();
+            } 
         })
     })
 }
